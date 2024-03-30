@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@shoelace-style/shoelace": "^2.15.0",
+    "dom-helpers": "^5.2.1",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.22.3",
+    "react-transition-group": "^4.4.5"
+  }
+}
