@@ -1,9 +1,12 @@
-import Login from "../components/Login/Login";
+import LoginPage from "@pages/Login/Login.jsx";
 
-export default function LoginRoute(){
-    return(
-        <>
-            <Login />
-        </>
+
+function LoginRoute() {
+    return (
+      <>
+        <LoginPage />
+      </>
     )
-}
+  }
+  
+  export default LoginRoute;

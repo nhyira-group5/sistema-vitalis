@@ -1,12 +1,12 @@
-import { Outlet, Link } from "react-router-dom";
+import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx";
 
-export default function RootRoute() {
-  return (
-    <>
-        <div>
-            <Link to={`/login/aluno`}>Login aluno</Link>
-            <Link to={`/login/instrutor`}>Login instrutor</Link>
-        </div>
-    </>
-  );
-}
+
+function Root() {
+    return (
+      <>
+        <SiteInstitucional />
+      </>
+    )
+  }
+  
+  export default Root;
