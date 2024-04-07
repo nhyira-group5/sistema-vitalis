@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="Assets/logo verde - normal size.png" alt="Logo Vitalis" width="600">
+   <img src="/src/assets/logos/greenNormalSize.svg" alt="Logo Vitalis" width="600">
 </div>
 
 
