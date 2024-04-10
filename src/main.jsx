@@ -1,16 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.scss'
 import WebFont from 'webfontloader';
 
-import Root from "@routes/Root";
-import ErrorPage from "@routes/errorPage";
-import LoginRoute  from "@routes/LoginRoute" 
+import "./index.css"
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+// import Root from "@routes/Root";
+// import ErrorPage from "@routes/errorPage";
+// import LoginRoute  from "@routes/LoginRoute" 
+
+import CadastroPage from '@pages/Cadastro/cadastroPage';
+
+// import {
+//   createBrowserRouter,
+//   RouterProvider,
+// } from "react-router-dom";
 
 WebFont.load({
   google: {
@@ -23,23 +26,23 @@ WebFont.load({
 })
 
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: "login",
-    element: <LoginRoute />,
-    errorElement: <ErrorPage />,
-  }, 
-
-
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <Root />,
+//     errorElement: <ErrorPage />
+//   },
+//   {
+//     path: "login",
+//     element: <LoginRoute />,
+//     errorElement: <ErrorPage />,
+//   }, 
+// ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <div className='font-inter font-normal bg-black500 m-0 min-w-80 min-h-screen'>
+    <CadastroPage />
+    </div>
   </React.StrictMode>
 );
