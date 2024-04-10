@@ -1,6 +1,5 @@
-import React from "react";
 import "./site-inst-stylesheet.scss";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import logoSmallWB from "@assets/logos/greenSmallSizeNBG.svg";
 import cordaoTDAH from "@assets/inst-assets/cordaoTdah.svg";
@@ -18,11 +17,11 @@ import logoNormal from "@assets/logos/greenNormalSize.svg";
 
 
 
-const SiteInstitucional = () =>{
+const SiteInstitucional = () => {
     return(
         <main>
-        <section class="header">
-            <div class="lateralNav">
+        <section className="header">
+            <div className="lateralNav">
                 <ul>
                     <li><a href="#projetoInfo">Projeto</a></li>
                
@@ -34,23 +33,23 @@ const SiteInstitucional = () =>{
                 </ul>
             </div>
 
-            <div class="headerWrapper">
+            <div className="headerWrapper">
                 <nav>
                     <div>
-                    <img class="logo" src={logoSmallWB} alt="" srcset=""/>
+                    <img className="logo" src={logoSmallWB} alt="" srcset=""/>
                     <img src={cordaoTDAH} alt="" srcset=""/> 
                     </div>
 
-                    <h1 class="noUnderline">Plataforma que te guiará ao seu bem-estar!</h1>
+                    <h1 className="noUnderline">Plataforma que te guiará ao seu bem-estar!</h1>
 
                     <div>                
                         <Link to={'login/aluno'}><button>Sign In</button></Link>
                     </div>
                 </nav>
 
-                <div class="headerContainer">
+                <div className="headerContainer">
 
-                    <div class="headerSocialMidia">
+                    <div className="headerSocialMidia">
                         <ul>
                             <li><a href="">Instagram</a></li>
 
@@ -60,8 +59,8 @@ const SiteInstitucional = () =>{
                         </ul>
                     </div>
 
-                    <div class="headerContent">
-                        <h1 class="headerTittle noUnderline">
+                    <div className="headerContent">
+                        <h1 className="headerTittle noUnderline">
                             Bem estar de forma certa<b>.</b>
                         </h1>
         
@@ -77,19 +76,19 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="projetoInfo">
-            <div class="projetoInfoWrapper">
-                <h1 class="noUnderline" >VITALIS</h1>
+            <div className="projetoInfoWrapper">
+                <h1 className="noUnderline" >VITALIS</h1>
 
                 <img src={vectorParalelepipedo} alt=""/>
                 <img src={vectorParalelepipedoInvertido} alt=""/>
 
 
-                <div class="projetoInfoContent">
-                    <img src="Assets/celularGenerico.svg" alt="" srcset=""/>
+                <div className="projetoInfoContent">
+                    <img src="Assets/celularGenerico.svg" alt="" /*srcset=""*//>
 
-                    <div class="beneficios noUnderline">
+                    <div className="beneficios noUnderline">
 
-                        <div class="beneficio noUnderline">
+                        <div className="beneficio noUnderline">
                             <div>
                                 <h1>Guia ao bem-estar</h1>
                                 <h4>Descubra o caminho para uma vida equilibrada e feliz.</h4>
@@ -98,7 +97,7 @@ const SiteInstitucional = () =>{
                             <img src={vectorCoracao} alt=""/>
                         </div>
 
-                        <div class="beneficio noUnderline">
+                        <div className="beneficio noUnderline">
                             <div>
                                 <h1>Mais produtividade</h1>
                                 <h4>Dicas essenciais para alcançar seus objetivos com eficiência.</h4>
@@ -107,7 +106,7 @@ const SiteInstitucional = () =>{
                             <img src={vectorCaraCorrendo} alt=""/>
                         </div>
 
-                        <div class="beneficio noUnderline">
+                        <div className="beneficio noUnderline">
                             <div>
                                 <h1>Rotina organizada</h1>
                                 <h4>Transforme o caos em ordem e conquiste seus dias.</h4>
@@ -116,7 +115,7 @@ const SiteInstitucional = () =>{
                             <img src={vectorCalendario} alt=""/>
                         </div>
 
-                        <div class="beneficio noUnderline">
+                        <div className="beneficio noUnderline">
                             <div>
                                 <h1>Auto-estima</h1>
                                 <h4>Fortaleça sua confiança e amor próprio para uma vida plena.</h4>
@@ -131,9 +130,9 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="objetivo">
-            <div class="objetivoWrapper">
-                <div class="objetivoContent">
-                    <h1 class="noUnderline">Nosso objetivo</h1>
+            <div className="objetivoWrapper">
+                <div className="objetivoContent">
+                    <h1 className="noUnderline">Nosso objetivo</h1>
 
                     <b>
                         <h3>
@@ -162,29 +161,29 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="recursos">
-            <div class="recursosWrapper noUnderline">
+            <div className="recursosWrapper noUnderline">
 
-                <div class="recursos">
-                    <div class="recurso noUnderline">
+                <div className="recursos">
+                    <div className="recurso noUnderline">
                         <h1>Lista de Personal Trainers Especializados</h1>
                         <h4>Encontre personal trainers qualificados em hipertrofia e crescimento muscular.
                             Localize profissionais próximos com a integração da Google Places API</h4>
                     </div>
-                    <div class="recurso noUnderline">
+                    <div className="recurso noUnderline">
                         <h1>Agendamento de Sessões de Treinamento</h1>
                         <h4>Agende sessões de treinamento personalizado diretamente pelo aplicativo. Você tem controle da sua agenda e rotina pelo aolicativo.</h4>
                     </div>
-                    <div class="recurso noUnderline">
+                    <div className="recurso noUnderline">
                         <h1>Monitoramento de Progresso</h1>
                         <h4>Encontre personal trainers qualificados em hipertrofia e crescimento muscular.
                             Localize profissionais próximos com a integração da Google Places API</h4>
                     </div>
-                    <div class="recurso noUnderline">
+                    <div className="recurso noUnderline">
                         <h1>Lembretes e acompanhamento</h1>
                         <h4>Encontre personal trainers qualificados em hipertrofia e crescimento muscular.
                             Localize profissionais próximos com a integração da Google Places API</h4>
                     </div>
-                    <div class="recurso noUnderline">
+                    <div className="recurso noUnderline">
                         <h1>Guia e rotina para o seu bem-estar</h1>
                         <h4>Encontre personal trainers qualificados em hipertrofia e crescimento muscular.
                             Localize profissionais próximos com a integração da Google Places API</h4>
@@ -195,13 +194,13 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="depoimentos">
-            <div class="depoimentosWrapper">
+            <div className="depoimentosWrapper">
                 <sl-carousel navigation loop slides-per-page="2" slides-per-move="2">
-                    <sl-carousel-item class="testimonial-item">
-                        <div class="carouselItemBody personal">
+                    <sl-carousel-item className="testimonial-item">
+                        <div className="carouselItemBody personal">
                             <img src={ProtoPersonaMarcelo} alt=""/>
-                            <div class="carouselItemContent">
-                                <h1 class="noUnderline">Marcelo da Silva</h1>
+                            <div className="carouselItemContent">
+                                <h1 className="noUnderline">Marcelo da Silva</h1>
                                 <div>
                                     <h3>Os lembretes de sessões agendadas foram muito úteis. Antes, eu costumava perder alguns treinos devido à minha agenda, mas agora consigo me manter consistente. O sistema de agendamento é simples e eficiente</h3>
                                     <h2>Personal Trainer</h2>
@@ -210,11 +209,11 @@ const SiteInstitucional = () =>{
                         </div>
                     </sl-carousel-item>
         
-                    <sl-carousel-item class="testimonial-item">
-                        <div class="carouselItemBody aluno">
+                    <sl-carousel-item className="testimonial-item">
+                        <div className="carouselItemBody aluno">
                             <img src={ProtoPersonaTauane} alt=""/>
-                            <div class="carouselItemContent">
-                                <h1 class="noUnderline">Tauane da Silva</h1>
+                            <div className="carouselItemContent">
+                                <h1 className="noUnderline">Tauane da Silva</h1>
                                 <div>
                                     <h3>Adorei ter acesso a um guia completo para o meu bem-estar. As dicas de nutrição foram especialmente úteis, e as sugestões de exercícios me ajudaram a alcançar meus objetivos de saúde</h3>
                                     <h2>Estudante de administração</h2>
@@ -223,11 +222,11 @@ const SiteInstitucional = () =>{
                         </div>
                     </sl-carousel-item>
         
-                    <sl-carousel-item class="testimonial-item">
-                        <div class="carouselItemBody aluno">
+                    <sl-carousel-item className="testimonial-item">
+                        <div className="carouselItemBody aluno">
                             <img src={ProtoPersonaTauane} alt=""/>
-                            <div class="carouselItemContent">
-                                <h1 class="noUnderline">Will Dantas</h1>
+                            <div className="carouselItemContent">
+                                <h1 className="noUnderline">Will Dantas</h1>
                                 <div>
                                     <h3>Encontrei na plataforma uma fonte de motivação e apoio incrível para minha jornada de bem-estar. As orientações personalizadas me ajudaram a superar desafios e a alcançar resultados além do esperado.</h3>
                                     <h2>Estudante de Educação Física</h2>
@@ -240,9 +239,9 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="contato">
-            <div class="contatoWrapper">
+            <div className="contatoWrapper">
                 <img src={vectorParalelepipedo} alt=""/>
-                <h1 class="noUnderline">Entre em contato conosco!</h1>
+                <h1 className="noUnderline">Entre em contato conosco!</h1>
 
                 <div>
                     <h2>Queremos ouvir de você! Se você tiver alguma dúvida, comentário, sugestão ou simplesmente quiser entrar em contato conosco, sinta-se à vontade! Nossa equipe está aqui para ajudar e responder todas as suas perguntas.</h2>
@@ -253,8 +252,8 @@ const SiteInstitucional = () =>{
         </section>
 
         <section id="footer">
-            <div class="footerWrapper">
-                <div class="leftFooterContent">
+            <div className="footerWrapper">
+                <div className="leftFooterContent">
                     <div>
                         <h1>Endereço</h1>
                         <h3>Rua Haddock Lobo, 595 - Cerqueira César, São Paulo - SP, 01414-001</h3>
@@ -267,12 +266,12 @@ const SiteInstitucional = () =>{
                     </div>
                 </div>
 
-                <div class="middleFooterContent">
+                <div className="middleFooterContent">
                     <img src={logoNormal} alt=""/>
                     <h2>© 2024 nhyira. All Rights reserved</h2>
                 </div>
 
-                <div class="rightFooterContent">
+                <div className="rightFooterContent">
                     <div>
                         <h1>Legal</h1>
                         <h3>Informações Gerais</h3>

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'
 import './index.scss'
 import WebFont from 'webfontloader';
 
-import Root from "@routes/root";
+import Root from "@routes/Root";
 import ErrorPage from "@routes/errorPage";
-import LoginRoute from "@routes/loginRoute" 
+import LoginRoute  from "@routes/LoginRoute" 
 
 import {
   createBrowserRouter,
@@ -27,10 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />
   },
   {
-    path: "login/:tipo",
+    path: "login",
     element: <LoginRoute />,
     errorElement: <ErrorPage />,
   }, 
