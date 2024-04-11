@@ -1,8 +1,8 @@
-import { InputLogin } from "./input-login";
+import { InputLogin } from "../../components/Input/inputLogin";
 
 export function LoginPage() {
   return (
-    <div className="w-2/5 mx-auto h-screen py-8 flex flex-col flex-1 gap-5 justify-center bg-[FF00FF} text-nowrap">
+    <div className="max-w-xs mx-auto h-screen py-8 flex flex-col flex-1 gap-5 justify-center bg-[FF00FF} text-nowrap">
       <h1 className="font-mavenPro font-bold text-5xl text-center text-[#519747]">
         Bem-vindo(a) de volta!
       </h1>
