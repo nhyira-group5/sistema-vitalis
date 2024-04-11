@@ -12,7 +12,6 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@api': path.resolve(__dirname, 'src/axios'),
-      '@assets': path.resolve(__dirname, 'src/assets'),
       '@routes': path.resolve(__dirname, 'src/routes'),
     }
   }

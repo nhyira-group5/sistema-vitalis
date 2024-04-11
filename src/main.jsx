@@ -7,7 +7,7 @@ import "./index.css"
 // import Root from "@routes/Root";
 // import ErrorPage from "@routes/errorPage";
 // import LoginRoute  from "@routes/LoginRoute" 
-
+;
 import Login from '@pages/Login/loginPage.jsx';
 
 // import {
