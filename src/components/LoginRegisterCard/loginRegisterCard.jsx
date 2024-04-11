@@ -1,7 +1,7 @@
 import LogoGreenBlackNormalSize from "@assets/logos/greenNormalSizeBlackColor.svg"
 import LogoLilasBlackNormalSize from "@assets/logos/lilasNormalSizeblackColor.svg"
 
-const LoginRegisterCard = ({tittle, contentText, userType, Button}) =>{
+export function LoginRegisterCard ({tittle, contentText, userType, Button}){
     return(
         <div className="flex flex-col p-14 bg-white text-black500  items-center text-center w-1/3 h-full justify-between">
             <div className="flex flex-col items-center justify-center  gap-16">
@@ -22,5 +22,3 @@ const LoginRegisterCard = ({tittle, contentText, userType, Button}) =>{
         </div>
     )
 }
-
-export default LoginRegisterCard;

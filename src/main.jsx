@@ -8,7 +8,7 @@ import "./index.css"
 // import ErrorPage from "@routes/errorPage";
 // import LoginRoute  from "@routes/LoginRoute" 
 
-import CadastroPage from '@pages/Cadastro/cadastroPage';
+import {CadastroPage} from '@pages/Cadastro/cadastroPage';
 
 // import {
 //   createBrowserRouter,

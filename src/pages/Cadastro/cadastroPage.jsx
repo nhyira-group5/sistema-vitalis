@@ -1,11 +1,11 @@
-import LoginRegisterCard from "@components/LoginRegisterCard/loginRegisterCard";
+import { LoginRegisterCard } from "@components/LoginRegisterCard/loginRegisterCard";
 import { useState } from "react";
 import Button from "@components/Button/button.jsx"
 import * as Tabs from '@radix-ui/react-tabs';
 import { ChevronLeftIcon, ChevronRightIcon} from '@radix-ui/react-icons'
 
 
-const CadastroPage = () =>{
+export function CadastroPage() {
 
 const [userType, setUserType] = useState(true)
 
@@ -41,9 +41,9 @@ return(
                     <Tabs.Trigger value="tab2"><ChevronRightIcon /></Tabs.Trigger>
                 </Tabs.List>
 
-                <Tabs.Content  value="tab1">
+                <Tabs.Content value="tab1">
 
-
+                    <pinto/>
                 </Tabs.Content>
 
 
@@ -56,5 +56,3 @@ return(
 </>
 )
 }
-
-export default CadastroPage;
