@@ -1,4 +1,4 @@
-function InputLogin(props) {
+export function InputLogin(props) {
     return (
         <div className="flex flex-col gap-4">
           <span className="max-w-min font-mavenPro text-2xl border-b text-[#5EAF6B]" {...props} />
@@ -9,5 +9,3 @@ function InputLogin(props) {
         </div>
     )
 }
-
-export default InputLogin;

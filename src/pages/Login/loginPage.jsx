@@ -1,5 +1,4 @@
-import InputLogin from "@components/Input/inputLogin";
-
+import { InputLogin } from "../../components/Input/inputLogin";
 
 function LoginPage() {
   return (
