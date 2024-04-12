@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client'
 import WebFont from 'webfontloader';
 
 import "./index.css"
+import { LoginPage } from './pages/Login/loginPage';
+
 
 // import Root from "@routes/Root";
 // import ErrorPage from "@routes/errorPage";
-// import LoginRoute  from "@routes/LoginRoute" 
-;
-import Login from '@pages/Login/loginPage.jsx';
+// import LoginRoute from "@routes/LoginRoute" 
 
 // import {
 //   createBrowserRouter,
@@ -41,8 +41,8 @@ WebFont.load({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className='font-inter font-normal bg-black500 m-0 min-w-80 min-h-screen'>
-      <Login />
+    <div className='font-inter font-normal m-0 min-w-80 min-h-screen'>
+    <LoginPage />
     </div>
   </React.StrictMode>
 );

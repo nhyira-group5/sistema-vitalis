@@ -9,20 +9,13 @@ export function CadastroPage() {
 
 const [userType, setUserType] = useState(true)
 
-
-const handleUserTypeChange = () => {
-    setUserType(!userType);
-    console.log("Novo valor de userType: ", !userType);
-  };
-
-
 return(
 <>
     <div className="flex h-screen w-screen bg-black500 ">
         <LoginRegisterCard tittle={`${userType ? 'É um instrutor?' : 'É um aluno?'}`} 
                            contentText={`${userType ? 'macarao com sasicha' : 'socoro jesus'}`} 
                            userType = {userType} 
-                           Button={<Button onClick={handleUserTypeChange} style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
+                           Button={<Button onClick={() => setUserType(!userType)} style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
 
         <div className="flex flex-col gap-4 text-white p-14 pt-20 w-full">
             <div className="flex flex-col gap-3">
