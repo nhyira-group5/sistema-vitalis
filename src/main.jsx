@@ -8,7 +8,8 @@ import "./index.css"
 // import ErrorPage from "@routes/errorPage";
 // import LoginRoute  from "@routes/LoginRoute" 
 ;
-import Login from '@pages/Login/loginPage.jsx';
+
+import { CadastroPage } from '@pages/Cadastro/cadastroPage';
 
 // import {
 //   createBrowserRouter,
@@ -42,7 +43,7 @@ WebFont.load({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <div className='font-inter font-normal bg-black500 m-0 min-w-80 min-h-screen'>
-      <Login />
+      <CadastroPage />
     </div>
   </React.StrictMode>
 );
