@@ -3,7 +3,7 @@ import LogoLilasBlackNormalSize from "@assets/logos/lilasNormalSizeblackColor.sv
 
 export function LoginRegisterCard ({tittle, contentText, userType, Button}){
     return(
-        <div className="flex flex-col p-14 bg-white text-black500  items-center text-center w-1/3 h-full justify-between">
+        <div className="flex flex-col p-14 bg-white text-black500  items-center text-center w-full h-full justify-between">
             <div className="flex flex-col items-center justify-center  gap-16">
                 {userType ? 
                 (<img className="w-4/5" src={LogoGreenBlackNormalSize} alt="Logo vitalis"/>) 
