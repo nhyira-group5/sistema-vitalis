@@ -19,7 +19,6 @@ return(
                             content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
 
         <div className="flex flex-col gap-6 text-white p-14  w-full ">
-
             <div className="flex flex-col gap-3">
                 <span className="text-6xl font-bold text-primary-green300 ">Realizando cadastro</span>
 
