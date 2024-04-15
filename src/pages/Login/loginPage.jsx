@@ -1,8 +1,10 @@
 import { InputLogin } from "../../components/Input/inputLogin";
 
 export function LoginPage() {
+  // const [userType, setUserType] = useState(true);
+
   return (
-    <div className="max-w-xs mx-auto h-screen py-8 flex flex-col flex-1 gap-5 justify-center bg-[FF00FF} text-nowrap">
+    <div className="max-w-min mx-auto h-screen py-8 flex flex-col flex-1 gap-5 justify-center bg-[FF00FF} text-nowrap">
       <h1 className="font-mavenPro font-bold text-5xl text-center text-[#519747]">
         Bem-vindo(a) de volta!
       </h1>
@@ -16,8 +18,8 @@ export function LoginPage() {
       </div>
 
       <div className="w-full py-8 flex flex-col gap-8 ">
-        <InputLogin>E-MAIL OU NICKNAME</InputLogin>
-        <InputLogin>SENHA</InputLogin>
+        <InputLogin label={"E-MAIL OU NICKNAME"}></InputLogin>
+        <InputLogin label={"E-MAIL OU NICKNAME"}>SENHA</InputLogin>
 
         <div className="flex justify-between text-xs tracking-wider">
           <div className="flex gap-4 items-center">
