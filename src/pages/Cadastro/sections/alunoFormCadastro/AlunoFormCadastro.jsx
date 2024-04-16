@@ -55,9 +55,9 @@ const handleChange = (event) =>{
                             <Input isColum={true}
                                    labelContent={"Nome do usuário"}
                                    placeholder={"Ex: Cauã gustavo"}
-                                   onChangeFunction={() => {handleChange()}}
+                                   onChangeFunction={handleChange}
                                    value={formData.nome}
-                                   name={"nome"}
+                                   nome={"nome"}
                                    id={"data-nomeUsuaruo"}
                                    type={"text"}
                                    isRequired={true}

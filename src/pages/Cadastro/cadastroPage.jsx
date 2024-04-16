@@ -15,8 +15,8 @@ return(
                            contentText={`${userType ? 'macarao com sasicha' : 'socoro jesus'}`} 
                            userType = {userType} 
                            Button={<Button onClick={()=>setUserType(!userType)} 
-                            style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} 
-                            content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
+                           style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} 
+                           content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
 
         <div className="flex flex-col gap-6 text-white p-14  w-full ">
             <div className="flex flex-col gap-3">
