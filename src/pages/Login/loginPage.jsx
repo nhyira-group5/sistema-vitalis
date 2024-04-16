@@ -1,4 +1,4 @@
-import { InputLogin } from "../../components/Input/inputLogin";
+import { Input } from "../../components/Input/input";
 
 export function LoginPage() {
   // const [userType, setUserType] = useState(true);
@@ -18,8 +18,8 @@ export function LoginPage() {
       </div>
 
       <div className="w-full py-8 flex flex-col gap-8 ">
-        <InputLogin label={"E-MAIL OU NICKNAME"}></InputLogin>
-        <InputLogin label={"E-MAIL OU NICKNAME"}>SENHA</InputLogin>
+        <Input label={"E-MAIL OU NICKNAME"}></Input>
+        <Input label={"E-MAIL OU NICKNAME"}>SENHA</Input>
 
         <div className="flex justify-between text-xs tracking-wider">
           <div className="flex gap-4 items-center">
@@ -36,7 +36,7 @@ export function LoginPage() {
           </div>
         </div>
 
-        <div className="w-full git pt-2 flex justify-around">
+        <div className="w-full pt-2 flex justify-around">
           <div className="w-1/3">
             <button className="w-full p-6 rounded-2xl text-black500 text-sm border-4 ">
               Entrar com o Google G

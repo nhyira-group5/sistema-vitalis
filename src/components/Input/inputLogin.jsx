@@ -24,3 +24,4 @@ export function InputLogin({ isColumn, style, label, placeholder }) {
     </div>
   );
 }
+

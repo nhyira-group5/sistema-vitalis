@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon} from '@radix-ui/react-icons'
 import * as Tabs from '@radix-ui/react-tabs';
 import * as Label from '@radix-ui/react-label';
 import Button from "@components/Button/button.jsx"
+import { Input } from '@components/Input/input';
 
 
 
@@ -50,19 +51,18 @@ const handleChange = (event) =>{
 
                 <Tabs.Content className="w-full flex flex-col justify-between gap-3 h-full data-[state=inactive]:hidden " value="tab1">
                         <form className="w-full grid grid-cols-2 gap-5">
-                            <fieldset className="flex flex-col w-4/5 gap-2">
-                                <Label.Root htmlFor="data-username">
-                                    Nome do usuário
-                                </Label.Root>
-                                <input type="text" 
-                                       className="text-black500 p-2 font-semibold placeholder:font-medium " 
-                                       placeholder="Ex: Cauã Gustavo" 
-                                       id="data-username" 
-                                       name="nome" 
-                                       value={formData.nome}
-                                       onChange={handleChange}
-                                       required/>
-                            </fieldset>
+
+                            <Input isColum={true}
+                                   labelContent={"Nome do usuário"}
+                                   placeholder={"Ex: Cauã gustavo"}
+                                   onChangeFunction={handleChange}
+                                   value={formData.nome}
+                                   nome={"nome"}
+                                   id={"data-nomeUsuaruo"}
+                                   type={"text"}
+                                   isRequired={true}
+                                   />
+
 
                             <fieldset className="flex flex-col w-4/5 gap-2 place-self-end">
                                 <Label.Root htmlFor="data-senha">
@@ -133,63 +133,7 @@ const handleChange = (event) =>{
 
                 <Tabs.Content className="w-full flex flex-col justify-between gap-3 h-full data-[state=inactive]:hidden " value="tab2">
                         <form className="w-full grid grid-cols-2 gap-5">
-                            <fieldset className="flex flex-col w-4/5 gap-2">
-                                <Label.Root htmlFor="data-username">
-                                    Gênero
-                                </Label.Root>
-                                <input type="text" 
-                                       className="text-black500 p-2 font-semibold placeholder:font-medium " 
-                                       placeholder="Ex: Cauã Gustavo" 
-                                       id="data-genero" 
-                                       name="genero" 
-                                       value={formData.genero}
-                                       onChange={handleChange}
-                                       required/>
-                            </fieldset>
-
-                            <fieldset className="flex flex-col w-4/5 gap-2">
-                                <Label.Root htmlFor="data-altura">
-                                    Altura
-                                </Label.Root>
-                                <input type="text" 
-                                       className="text-black500 p-2 font-semibold placeholder:font-medium " 
-                                       placeholder="Ex: Cauã Gustavo" 
-                                       id="data-altura" 
-                                       name="altura" 
-                                       value={formData.altura}
-                                       onChange={handleChange}
-                                       required/>
-                            </fieldset>
-
-                            <fieldset className="flex flex-col w-4/5 gap-2">
-                                <Label.Root htmlFor="data-peso">
-                                    Peso
-                                </Label.Root>
-                                <input type="text" 
-                                       className="text-black500 p-2 font-semibold placeholder:font-medium " 
-                                       placeholder="Ex: Cauã Gustavo" 
-                                       id="data-peso" 
-                                       name="peso" 
-                                       value={formData.peso}
-                                       onChange={handleChange}
-                                       required/>
-                            </fieldset>
-
-                            <fieldset className="flex flex-col w-4/5 gap-2">
-                                <Label.Root htmlFor="data-dtNasc">
-                                    Peso
-                                </Label.Root>
-                                <input type="text" 
-                                       className="text-black500 p-2 font-semibold placeholder:font-medium " 
-                                       placeholder="Ex: Cauã Gustavo" 
-                                       id="data-dtNasc" 
-                                       name="dtNasc" 
-                                       value={formData.dtNasc}
-                                       onChange={handleChange}
-                                       required/>
-                            </fieldset>
- 
-    
+                               <Input/>
                             <fieldset className="place-self-end">
                                 <Tabs.List className="flex gap-6 items-center"   aria-label="tabs">
                                         <Tabs.Trigger value="tab2">
