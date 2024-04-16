@@ -9,7 +9,8 @@ import { LoginPage } from './pages/Login/loginPage';
 
 // import Root from "@routes/Root";
 // import ErrorPage from "@routes/errorPage";
-// import LoginRoute from "@routes/LoginRoute" 
+
+import { CadastroPage } from '@pages/Cadastro/cadastroPage';
 
 // import {
 //   createBrowserRouter,
@@ -42,8 +43,8 @@ WebFont.load({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className='font-inter font-normal m-0 min-w-80 min-h-screen'>
-    <LoginPage />
+    <div className='font-inter font-normal bg-black500 m-0 min-w-80 min-h-screen'>
+      <CadastroPage />
     </div>
   </React.StrictMode>
 );

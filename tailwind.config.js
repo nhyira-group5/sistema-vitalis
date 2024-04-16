@@ -26,7 +26,8 @@ export default {
     fontFamily: {
       'inter': ['Inter', 'sans-serif'],
       'mavenPro': ['Maven Pro', 'sans-serif']
-    }
+    },
+
   },
   plugins: [],
 }

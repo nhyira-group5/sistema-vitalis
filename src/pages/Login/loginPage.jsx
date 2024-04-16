@@ -1,6 +1,8 @@
+
 import { InputLogin } from "../../components/Input/inputLogin";
 import myImage from "../../assets/icon-google.svg";
 import myLogo from "../../assets/logos/lilasNormalSizeblackColor.svg";
+
 
 export function LoginPage() {
   // const [userType, setUserType] = useState(true);
@@ -60,6 +62,7 @@ export function LoginPage() {
         <div className="font-mavenPro text-center flex flex-col gap-7">
           <div className="font-bold text-6xl text-center text-[#519747]">
             Bem vindo(a) de volta!
+
           </div>
           <div className="text-base flex flex-col gap-5">
             <p className="">
