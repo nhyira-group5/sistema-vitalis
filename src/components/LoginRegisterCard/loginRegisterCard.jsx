@@ -1,9 +1,9 @@
 import LogoGreenBlackNormalSize from "@assets/logos/greenNormalSizeBlackColor.svg"
 import LogoLilasBlackNormalSize from "@assets/logos/lilasNormalSizeblackColor.svg"
 
-export function LoginRegisterCard ({tittle, contentText, userType, Button}){
+export function LoginRegisterCard ({tittle, contentText, userType, Button, style}){
     return(
-        <div className="flex flex-col p-14 bg-white text-black500  items-center text-center w-full h-full justify-between">
+        <div className={`flex flex-col p-14 bg-white text-black500  items-center text-center w-full h-full justify-between ${style}`}>
             <div className="flex flex-col items-center justify-center  gap-16">
                 {userType ? 
                 (<img className="w-4/5" src={LogoGreenBlackNormalSize} alt="Logo vitalis"/>) 
