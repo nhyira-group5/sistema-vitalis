@@ -36,7 +36,7 @@ export function LoginPage() {
           </div>
         </div>
 
-        <div className="w-full pt-2 flex justify-around">
+        <div className="w-full git pt-2 flex justify-around">
           <div className="w-1/3">
             <button className="w-full p-6 rounded-2xl text-black500 text-sm border-4 ">
               Entrar com o Google G
