@@ -3,6 +3,7 @@ import myImage from "../../assets/icon-google.svg";
 import myLogo from "../../assets/logos/blackNormalSize.svg";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
   // const [userType, setUserType] = useState(true);
@@ -109,9 +110,7 @@ export function LoginPage() {
             </div>
             <div>
               <span>Ainda não tem uma conta? </span>
-              <a href="#" className="font-bold text-[#519747]">
-                Clique aqui!
-              </a>
+              <Link to={'/cadastro'} className="font-bold text-[#519747]">Clique aqui! </Link>
             </div>
           </div>
         </div>
