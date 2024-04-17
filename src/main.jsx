@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import WebFont from 'webfontloader';
 
 import "./index.css"
-import { LoginPage } from './pages/Login/loginPage';
 
 
 
