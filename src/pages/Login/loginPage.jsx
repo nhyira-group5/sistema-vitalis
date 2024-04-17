@@ -1,8 +1,8 @@
-
-import { InputLogin } from "../../components/Input/inputLogin";
+import { Input } from "../../components/Input/input";
 import myImage from "../../assets/icon-google.svg";
-import myLogo from "../../assets/logos/lilasNormalSizeblackColor.svg";
-
+import myLogo from "../../assets/logos/blackNormalSize.svg";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
   // const [userType, setUserType] = useState(true);
@@ -55,14 +55,15 @@ export function LoginPage() {
     //   </div>
     // </div>
 
-    <div className="flex justify-around h-screen p-12">
-      <div><img className="w-36" src={myLogo} alt="img logo" /></div>
+    <div className="flex justify-evenly h-screen py-12 px-14">
+      <div>
+        <img className="w-40" src={myLogo} alt="img logo" />
+      </div>
       <div className="max-w-min w-fit mx-auto flex flex-col gap-10 justify-between bg-[FF00FF} text-nowrap">
         {/* CABEÇALHO/TITULO  */}
         <div className="font-mavenPro text-center flex flex-col gap-7">
           <div className="font-bold text-6xl text-center text-[#519747]">
             Bem vindo(a) de volta!
-
           </div>
           <div className="text-base flex flex-col gap-5">
             <p className="">
@@ -76,11 +77,23 @@ export function LoginPage() {
         </div>
 
         {/* FORMS COM INPUT */}
-        <div>
-          {/* <form action="#">
-        <InputLogin label="Email"/>
-        <InputLogin label="Senha"/>
-      </form> */}
+        <div className="flex flex-col gap-6">
+          <form className="flex flex-col gap-3" action="#">
+            <Input
+              labelContent="E-mail ou Username:"
+              isColum={true}
+              inputStyle={
+                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-white border-none"
+              }
+            ></Input>
+            <Input
+              labelContent="Senha:"
+              isColum={true}
+              inputStyle={
+                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-white border-[#111111]/80 border-none "
+              }
+            ></Input>
+          </form>
 
           {/* CHECKBOX CONECTADO E ESQUECEU A SENHA */}
           <div className="flex justify-between">
@@ -95,8 +108,9 @@ export function LoginPage() {
               </label>
             </div>
             <div>
-              <a href="#" className="text-[#0070d2]">
-                Esqueceu sua senha?
+              <span>Ainda não tem uma conta? </span>
+              <a href="#" className="font-bold text-[#519747]">
+                Clique aqui!
               </a>
             </div>
           </div>
@@ -104,10 +118,19 @@ export function LoginPage() {
 
         {/* BOTÕES GOOGLE E ENTRAR */}
         <div className="flex justify-around">
-          <button className="w-64 flex justify-around gap-3 py-4 px-7 rounded-2xl border-[3px] bg-[#ebebeb]/80">
+          {/* <button className="w-64 flex justify-around gap-3 py-4 px-7 rounded-2xl border-[3px] bg-[#ebebeb]/80">
             Entrar com Google
             <img className="size-5" src={myImage} alt="vai da nao" />
-          </button>
+          </button> */}
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse.credential);
+              console.log(decoded);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
           <button className="w-64 flex justify-around py-4 px-7 rounded-2xl text-white bg-[#5EAF6B]/80">
             Entrar
           </button>
