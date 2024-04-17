@@ -12,7 +12,7 @@ return(
 <>
     <div className="grid grid-cols-[0.30fr_0.70fr] grid-rows-1 bg-black500 w-screen h-screen">
         <LoginRegisterCard tittle={`${userType ? 'É um instrutor?' : 'É um aluno?'}`} 
-                           contentText={`${userType ? 'macarao com sasicha' : 'socoro jesus'}`} 
+                           contentText={`${userType ? 'Bem-vindo à nossa plataforma! Se você é um personal trainer e deseja se cadastrar para acessar recursos exclusivos e trabalhar conosco, clique no botão abaixo para iniciar o processo de registro.' : 'Bem-vindo à nossa plataforma! Se você está pronto para dar o primeiro passo em direção a uma vida mais saudável e ativa, você está no lugar certo. Clique no botão abaixo para iniciar sua jornada fitness conosco.'}`} 
                            userType = {userType} 
                            Button={<Button onClick={()=>setUserType(!userType)} 
                            style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} 
