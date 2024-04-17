@@ -46,6 +46,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <LoginPage />
       </div>
     </GoogleOAuthProvider>
-    ;
   </React.StrictMode>
 );
