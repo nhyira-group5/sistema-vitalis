@@ -29,7 +29,7 @@ export function LoginPage() {
     //     <div className="flex justify-between text-xs tracking-wider">
     //       <div className="flex gap-4 items-center">
     //         <input
-    //           className="size-4 bg-black//20 rounded border-4 border-white/50"
+    //           className="size-4 bg-black//20 rounded border-4 border-gray100/50"
     //           type="checkbox"
     //         />
     //         <span>Deseja se manter conectado?</span>
@@ -48,7 +48,7 @@ export function LoginPage() {
     //         </button>
     //       </div>
     //       <div className="w-1/3">
-    //         <button className="w-full p-6 rounded-2xl bg-[#5EAF6B] text-white text-sm">
+    //         <button className="w-full p-6 rounded-2xl bg-[#5EAF6B] text-gray500 text-sm">
     //           Entrar
     //         </button>
     //       </div>
@@ -84,14 +84,14 @@ export function LoginPage() {
               labelContent="E-mail ou Username:"
               isColum={true}
               inputStyle={
-                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-white border-none"
+                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-gray500 border-none"
               }
             ></Input>
             <Input
               labelContent="Senha:"
               isColum={true}
               inputStyle={
-                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-white border-[#111111]/80 border-none "
+                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-gray500 border-[#111111]/80 border-none "
               }
             ></Input>
           </form>
@@ -102,7 +102,7 @@ export function LoginPage() {
               <input
                 id="conectado"
                 type="checkbox"
-                className="border-3 rounded-md border-black100 size-3"
+                className="border-3 rounded-md border-gray100100 size-3"
               />
               <label htmlFor="conectado" className="tracking-wider">
                 Lembre de mim
@@ -130,7 +130,7 @@ export function LoginPage() {
               console.log("Login Failed");
             }}
           />
-          <button className="w-64 flex justify-around py-4 px-7 rounded-2xl text-white bg-[#5EAF6B]/80">
+          <button className="w-64 flex justify-around py-4 px-7 rounded-2xl text-gray500 bg-[#5EAF6B]/80">
             Entrar
           </button>
         </div>
