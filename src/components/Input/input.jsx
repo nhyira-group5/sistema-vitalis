@@ -6,26 +6,27 @@ import {useState} from 'react';
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 
-export function Input({inputType, inputStyle, labelContent, labelStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid}) {
+export function Input({inputType, inputStyle, labelContent, labelStyle, separatorStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, variant}) {
   
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
+  
   return (
 
     <div className="relative group">
       <Label.Root
-        className={`${labelStyle ? labelStyle : ' group-focus-within:text-primary-green300 text-lg font-bold pl-[8%]'} ${valid ? 'text-errorRed' : ''}`}
+        className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' group-focus-within:text-primary-green300 text-lg font-bold pl-[8%]'}`}
         htmlFor={id}
       >
         {labelContent}
       </Label.Root>
 
-      <div  className={ inputStyle || ` ${valid ? '  !ring-errorRed ' : ''}  group-focus-within:!ring-primary-green300 h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}>
+      <div className={`${valid ? '  !ring-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : ' group-focus-within:!ring-primary-green300 h-16 p-3 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500'} `}>
       
         <div className="flex items-center">
               {icon}
               <Separator.Root
-                className={` ${valid ? '!bg-errorRed': ''} group-focus-within:!bg-primary-green300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
+                className={`${valid ? '!bg-errorRed' : ''} ${separatorStyle ? ` ${separatorStyle}` : ' group-focus-within:!bg-primary-green300'} bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
                 decorative
                 orientation="vertical"
               />
@@ -33,7 +34,9 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, placehol
 
         <input
           className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
-            
+          
+          disabled={disabled}
+
           placeholder={placeholder}
           onChange={onChangeFunction}
           onBlur={onBlurFunction}
