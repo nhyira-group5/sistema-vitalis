@@ -33,7 +33,7 @@ export function AlunoFormCadastro() {
     const [isSexoSelecionado , setIsSexoSelecionado ] = useState(true);
     const [isFormValid, setIsFormValid] = useState(true);
     const [formData, setFormData] = useState({
-        tipo: 'ALUNO',
+        tipo: 'USUARIO',
         nome: '',
         username: '',
         email: '',

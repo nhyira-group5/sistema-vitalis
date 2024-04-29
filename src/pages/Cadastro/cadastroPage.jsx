@@ -33,7 +33,7 @@ return(
 
         <div className="flex flex-col gap-6 text-gray100 py-20 px-14 w-full">
             <div className="flex flex-col gap-3 font-mavenPro text-start">
-                <span className={`text-7xl font-bold ${userType ? 'text-primary-green300' : 'text-alt-purple300' } `}>Realizando cadastro</span>
+                <span className={`text-7xl font-bold ${userType ? 'text-primary-green300' : 'text-alt-purple300'} `}>Realizando cadastro</span>
                 
                 <div className="flex flex-col gap-5">
                     <span className="text-lg font-normal">Quer acessar nossa aplicação? Vamos realizar seu cadastro!</span>
