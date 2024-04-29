@@ -2,17 +2,17 @@ import "./site-inst-stylesheet.scss";
 import { Link } from "react-router-dom";
 
 import logoSmallWB from "@assets/logos/greenSmallSizeNBG.svg";
-import cordaoTDAH from "@assets/inst-assets/cordaoTdah.svg";
-import vectorParalelepipedo from "@assets/inst-assets/vectorParalelepipedo.png"
-import vectorParalelepipedoInvertido from "@assets/inst-assets/vectorParalelepipedoInvertido.svg"
-import vectorCoracao from "@assets/inst-assets/vectorCoracao.svg"
-import vectorCaraCorrendo from "@assets/inst-assets/VectorCaraCorrendo.svg"
-import vectorCalendario from "@assets/inst-assets/VectorCalendario.svg"
-import vectorSorriso from "@assets/inst-assets/VectorSorriso.svg"
-import celularENotebook from "@assets/inst-assets/celularEnotebook.svg"
-import vectorBottomRecursos from "@assets/inst-assets/vectorBottomRecursos.svg"
-import ProtoPersonaMarcelo from "@assets/inst-assets/ProtoPersona_Marcelo.png"
-import ProtoPersonaTauane from "@assets/inst-assets/ProtoPersona_Tauane.png"
+import cordaoTDAH from "@assets/cordao-tdah.svg";
+import vectorParalelepipedo from "@assets/vector-paralelepipedo.png"
+import vectorParalelepipedoInvertido from "@assets/vector-paralelepipedo-invertido.svg"
+import vectorCoracao from "@assets/vector-coracao.svg"
+import vectorCaraCorrendo from "@assets/vector-cara-correndo.svg"
+import vectorCalendario from "@assets/vector-calendario.svg"
+import vectorSorriso from "@assets/vector-sorriso.svg"
+import celularENotebook from "@assets/celular-e-notebook.svg"
+import vectorBottomRecursos from "@assets/vector-bottom-recursos.svg"
+import ProtoPersonaMarcelo from "@assets/proto-persona-marcelo.png"
+import ProtoPersonaTauane from "@assets/proto-persona-tauane.png"
 import logoNormal from "@assets/logos/greenNormalSize.svg";
 
 
@@ -43,7 +43,7 @@ const SiteInstitucional = () => {
                     <h1 className="noUnderline">Plataforma que te guiará ao seu bem-estar!</h1>
 
                     <div>                
-                        <Link to={'login/aluno'}><button>Sign In</button></Link>
+                        <Link to={'login'}><button>Sign In</button></Link>
                     </div>
                 </nav>
 

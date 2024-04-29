@@ -1,51 +1,51 @@
-import { LoginRegisterCard } from "@components/LoginRegisterCard/loginRegisterCard";
+import { SideCard } from "./sections/sideCard/SideCard";
 import { useState } from "react";
 import Button from "@components/Button/button.jsx"
-import * as Tabs from '@radix-ui/react-tabs';
-import { ChevronLeftIcon, ChevronRightIcon} from '@radix-ui/react-icons'
 
-
+import { AlunoFormCadastro } from "./sections/alunoFormCadastro/AlunoFormCadastro";
+import { InstrutorFormCadastro } from "./sections/instrutorFormCadastro/InstrutorFormCadastro";
 export function CadastroPage() {
 
 const [userType, setUserType] = useState(true)
 
 return(
 <>
-    <div className="flex h-screen w-screen bg-black500 ">
-        <LoginRegisterCard tittle={`${userType ? 'É um instrutor?' : 'É um aluno?'}`} 
-                           contentText={`${userType ? 'macarao com sasicha' : 'socoro jesus'}`} 
-                           userType = {userType} 
-                           Button={<Button onClick={() => setUserType(!userType)} style={`text-md px-7 py-3 rounded-xl tracking-[0.2rem] text-white font-bold ${userType ? 'bg-primary-green300' : 'bg-alt-purple300'}`} content={`${userType ? 'Instrutor' : 'Aluno'}`} />}/>
 
-        <div className="flex flex-col gap-4 text-white p-14 pt-20 w-full">
-            <div className="flex flex-col gap-3">
-                <span className="text-5xl font-bold text-primary-green300">Realizando cadastro</span>
 
-                <span className="mt-3 text-sm font-light">Quer acessar nossa aplicação? Vamos realizar seu cadastro!</span>
-                <span className="text-sm font-light">Insira algumas informações sobre você para fazermos o cadastro de sua conta!</span>
+                   
+<div className="relative grid grid-cols-[0.30fr_0.70fr] grid-rows-1 w-screen h-screen bg-gray500 transition-all duration-500 ease-in-out">
+
+        <SideCard
+            tittle={`${userType ? 'É um instrutor?' : 'É um aluno?'}`}
+            contentText={`${userType ? 'Bem-vindo à nossa plataforma! Se você é um personal trainer e deseja se cadastrar para acessar recursos exclusivos e trabalhar conosco, clique no botão abaixo para iniciar o processo de registro.' : 'Bem-vindo à nossa plataforma! Se você está pronto para dar o primeiro passo em direção a uma vida mais saudável e ativa, você está no lugar certo. Clique no botão abaixo para iniciar sua jornada fitness conosco.'}`}
+            userType={userType}
+            Button={
+            <Button
+                iconVisibility={false}
+                content={userType ? "Sou um instrutor!" : "Sou um aluno!"}
+                onClick={()=>setUserType(!userType)}
+                style={`rounded-full font-bold px-5 py-4 transition-all flex items-center gap-1 text-gray100 ${userType ? 'bg-primary-green300 hover:bg-primary-green400' : 'bg-alt-purple300 hover:bg-alt-purple400'}`}
+            />
+            }
+        />
+  
+
+
+        <div className="flex flex-col gap-6 text-gray100 py-20 px-14 w-full">
+            <div className="flex flex-col gap-3 font-mavenPro text-start">
+                <span className={`text-7xl font-bold ${userType ? 'text-primary-green300' : 'text-alt-purple300' } `}>Realizando cadastro</span>
+                
+                <div className="flex flex-col gap-5">
+                    <span className="text-lg font-normal">Quer acessar nossa aplicação? Vamos realizar seu cadastro!</span>
+                    <span className="text-lg font-normal">Insira algumas informações sobre você para fazermos o cadastro de sua conta!</span>
+                </div>
             </div>
 
-        
-            <Tabs.Root className="w-full flex flex-col items-center" defaultValue="tab1">
-                <Tabs.List className="flex gap-6"  aria-label="tabs">
-                    <Tabs.Trigger value="tab1"><ChevronLeftIcon /></Tabs.Trigger>
-                     <Tabs.Trigger className="border-2 px-2 rounded-full" value="tab1">1</Tabs.Trigger>
-                     <Tabs.Trigger className="border-2 px-2 rounded-full" value="tab2">2</Tabs.Trigger>
-                    <Tabs.Trigger value="tab2"><ChevronRightIcon /></Tabs.Trigger>
-                </Tabs.List>
-
-                <Tabs.Content value="tab1">
-
-                    <pinto/>
-                </Tabs.Content>
-
-
-                <Tabs.Content value="tab2">Tab two content</Tabs.Content>
-
-            </Tabs.Root>
-        
+            {userType ? <AlunoFormCadastro/> : <InstrutorFormCadastro/>}
         </div>
-    </div>
+    
+</div>
+
 </>
 )
 }
