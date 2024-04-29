@@ -268,9 +268,11 @@ export function AlunoFormCadastro() {
                 valid={!isSexoSelecionado}
         />
 
-        <fieldset className='col-span-2 grid place-items-center'>
+        <fieldset className='col-span-2 grid justify-center items-start'>
            <Button content={"Criar conta"}
                    type={"submit"}
+
+                   buttonStyle={"text-gray100 bg-primary-green300 rounded-full font-bold px-5 py-4 hover:bg-primary-green400 transition-all flex items-center gap-1 w-[16rem] justify-center flex-row-reverse"}
                    />
         </fieldset>
     </form>

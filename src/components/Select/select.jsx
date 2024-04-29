@@ -2,7 +2,7 @@ import * as Label from "@radix-ui/react-label";
 import { CaretLineDown } from "@phosphor-icons/react";
 import { useState } from "react";
 
-export function Select({options, SelectStyle, labelContent, labelStyle, placeholder, onChangeFunction, id, nome, valid}) {
+export function Select({options, selectStyle, labelContent, labelStyle, placeholder, onChangeFunction, id, nome, valid}) {
     const [isSelectOpen, setIsSelectOpen] = useState(false);
 
     return (
@@ -15,7 +15,7 @@ export function Select({options, SelectStyle, labelContent, labelStyle, placehol
         {labelContent}
       </Label.Root>
 
-      <div  className={ SelectStyle || ` ${valid ? '  !ring-errorRed ' : ''} animate-bounce group-focus-within:!ring-primary-green300 h-16 p-3 relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}>
+      <div className={`${valid ? '  !ring-errorRed ' : ''}${selectStyle ? ` ${selectStyle}` : ' animate-bounce group-focus-within:!ring-primary-green300'} h-16 p-3 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}>
 
         <select className="outline-none appearance-none w-full text-gray500 font-mavenPro text-lg" 
                 name={nome} 

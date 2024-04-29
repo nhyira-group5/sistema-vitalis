@@ -64,3 +64,7 @@ export const validateCPF = (cpf) =>{
    
     return true;
 }
+
+export const validateCEP = (CEP) =>{
+    return CEP.length == 8;
+}
