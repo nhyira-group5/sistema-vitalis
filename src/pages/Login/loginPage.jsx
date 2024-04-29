@@ -1,76 +1,34 @@
+import {
+  User,
+  PencilSimpleLine,
+  EnvelopeSimple,
+  Lock,
+  CalendarDots,
+  Hash,
+} from "@phosphor-icons/react";
 import { Input } from "../../components/Input/input";
-import myImage from "../../assets/icon-google.svg";
-import myLogo from "../../assets/logos/blackNormalSize.svg";
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
+// import { GoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
-  // const [userType, setUserType] = useState(true);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
   return (
-    // <div className="max-w-min mx-auto h-screen py-8 flex flex-col flex-1 gap-5 justify-center bg-[FF00FF} text-nowrap">
-    //   <h1 className="font-mavenPro font-bold text-5xl text-center text-[#519747]">
-    //     Bem-vindo(a) de volta!
-    //   </h1>
-
-    //   <div className="text-sm text-right flex flex-col gap-5">
-    //     <p className="text-wrap min-w-min">Bem-vindo de volta! Estamos felizes em tê-lo conosco novamente.</p>
-    //     <p className="text-wrap">
-    //       Faça login para acessar sua conta e explorar todas as novidades que
-    //       preparamos para você.
-    //     </p>
-    //   </div>
-
-    //   <div className="w-full py-8 flex flex-col gap-8 ">
-    //     <InputLogin label={"E-MAIL OU NICKNAME"}></InputLogin>
-    //     <InputLogin label={"E-MAIL OU NICKNAME"}>SENHA</InputLogin>
-
-    //     <div className="flex justify-between text-xs tracking-wider">
-    //       <div className="flex gap-4 items-center">
-    //         <input
-    //           className="size-4 bg-black//20 rounded border-4 border-gray100/50"
-    //           type="checkbox"
-    //         />
-    //         <span>Deseja se manter conectado?</span>
-    //       </div>
-    //       <div>
-    //         <span>
-    //           Esqueceu a senha? <a href="#">Clique aqui!</a>
-    //         </span>
-    //       </div>
-    //     </div>
-
-    //     <div className="w-full pt-2 flex justify-around">
-    //       <div className="w-1/3">
-    //         <button className="w-full p-6 rounded-2xl text-black500 text-sm border-4 ">
-    //           Entrar com o Google G
-    //         </button>
-    //       </div>
-    //       <div className="w-1/3">
-    //         <button className="w-full p-6 rounded-2xl bg-[#5EAF6B] text-gray500 text-sm">
-    //           Entrar
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-
-    <div className="flex justify-evenly h-screen py-12 px-14">
-      <div>
-        <img className="w-40" src={myLogo} alt="img logo" />
-      </div>
-      <div className="max-w-min w-fit mx-auto flex flex-col gap-10 justify-between bg-[FF00FF} text-nowrap">
+    <div className="bg-[#F7FBFC]">
+      <div className="h-screen py-12 px-14 max-w-min w-fit mx-auto flex flex-col gap-10 justify-between bg-[FF00FF} text-nowrap font-mavenPro">
         {/* CABEÇALHO/TITULO  */}
-        <div className="font-mavenPro text-center flex flex-col gap-7">
-          <div className="font-bold text-6xl text-center text-[#519747]">
+        <div className="text-center flex flex-col gap-7">
+          <h1 className="font-bold text-6xl text-center bg-gradient-to-r from-[#64C273] from-35% to-[#734A91] to-70% text-transparent bg-clip-text">
             Bem vindo(a) de volta!
-          </div>
-          <div className="text-base flex flex-col gap-5">
+          </h1>
+          <div className="text-base flex flex-col gap-5 items-center font-extrabold ">
             <p className="">
               Bem-vindo de volta! Estamos felizes em tê-lo conosco novamente.
             </p>
-            <p className=" text-wrap">
+            <p className="w-11/12 text-wrap">
               Faça login para acessar sua conta e explorar todas as novidades
               que preparamos para você.
             </p>
@@ -78,69 +36,58 @@ export function LoginPage() {
         </div>
 
         {/* FORMS COM INPUT */}
-        <div className="flex flex-col gap-6">
-          <form className="flex flex-col gap-3" action="#">
+        <div className="flex flex-col gap-10">
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <Input
-              labelContent="E-mail ou Username:"
-              isColum={true}
+              icon={<User size={24} color="#000000" />}
+              labelContent={"E-mail ou Username:"}
               inputStyle={
-                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-gray500 border-none"
+                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500"
               }
-            ></Input>
+            />
             <Input
-              labelContent="Senha:"
-              isColum={true}
+              labelContent={"Senha:"}
+              icon={<Lock size={24} color="#000000" />}
+              inputType={"password"}
+              
               inputStyle={
-                "peer w-full px-3 font-inter py-3 bg-[#111111]/80 border-2 rounded-xl outline-none focus:ring focus:ring-primary-green300 text-gray500 border-[#111111]/80 border-none "
+                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 items-center"
               }
             ></Input>
           </form>
 
           {/* CHECKBOX CONECTADO E ESQUECEU A SENHA */}
-          <div className="flex justify-between">
-            <div className="flex gap-2 items-center">
-              <input
-                id="conectado"
-                type="checkbox"
-                className="border-3 rounded-md border-gray100100 size-3"
-              />
-              <label htmlFor="conectado" className="tracking-wider">
-                Lembre de mim
-              </label>
-            </div>
+          <div className="w-full flex justify-center">
             <div>
               <span>Ainda não tem uma conta? </span>
-              <Link to={'/cadastro'} className="font-bold text-[#519747]">Clique aqui! </Link>
+              <Link to={"/cadastro"} className="font-bold text-[#519747]">
+                Clique aqui!{" "}
+              </Link>
             </div>
           </div>
         </div>
 
         {/* BOTÕES GOOGLE E ENTRAR */}
         <div className="flex justify-around">
-          {/* <button className="w-64 flex justify-around gap-3 py-4 px-7 rounded-2xl border-[3px] bg-[#ebebeb]/80">
-            Entrar com Google
-            <img className="size-5" src={myImage} alt="vai da nao" />
-          </button> */}
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              const decoded = jwtDecode(credentialResponse.credential);
-              console.log(decoded);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-          <button className="w-64 flex justify-around py-4 px-7 rounded-2xl text-gray500 bg-[#5EAF6B]/80">
+          {/* <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            const decoded = jwtDecode(credentialResponse.credential);
+            console.log(decoded);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        /> */}
+          <button className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]">
             Entrar
           </button>
         </div>
 
         {/* RODAPÉ */}
-        <span className="w-full text-center">
+        <span className="w-full text-center text-xs">
           © 2024 nhyira. All Rights reserved
         </span>
       </div>
-      <div className="w-36"></div>
     </div>
   );
 }

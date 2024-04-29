@@ -44,12 +44,9 @@ export function AlunoFormCadastro() {
         sexo: '',
     })
 
-
-
     const handleSubmit = (event) => {
     event.preventDefault();
     
-
     const isNomeValid = validateNome(formData.nome);
     const isSenhaValid = validateSenha(formData.senha);
     const isUsernameValid = validateUsername(formData.username);
@@ -58,7 +55,6 @@ export function AlunoFormCadastro() {
     const isIdadeValid = validateIdade(formData.dtNasc);
     const isCPFValid = validateCPF(formData.CPF);
     const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== '';
-
 
     setIsNomeValid(isNomeValid);
     setIsSenhaValid(isSenhaValid);
@@ -78,10 +74,10 @@ export function AlunoFormCadastro() {
        
      }
     }
+
     const handleChange = (event) =>{
         const{name, value} = event.target;
 
-        
         setFormData(prevState =>({
             ...prevState,
             [name]: value,
