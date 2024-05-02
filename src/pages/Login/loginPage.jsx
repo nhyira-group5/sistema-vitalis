@@ -7,13 +7,53 @@ import {
   Hash,
 } from "@phosphor-icons/react";
 import { Input } from "../../components/Input/input";
-// import { GoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
+// import { GoogleLogin } from "@react-oauth/google";
+// import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  function onEmailInputChanged(event) {
+    setEmail(event.target.value);
+  }
+
+  function onSenhaInputChanged(event) {
+    setSenha(event.target.value);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const myForm = document.getElementById("myForm");
+    const dadosFormulario = new FormData(myForm);
+
+    const emailForm = dadosFormulario.get("email");
+    const senhaForm = dadosFormulario.get("senha");
+
+    const userBody = {
+      email: emailForm,
+      senha: senhaForm,
+    };
+
+    // GET USUARIOS WHERE (USERNAME == ?? || EMAIL == ??) && SENHA == ???
+    // api
+    //   .get(`/usuarios`, userBody)
+    //   .then(() => {
+    //     console.log("usuario existe");
+    //     console.log("get objeto usuario");
+    //     console.log("redirecionando...");
+    //     if (usuario) {
+    //       tela usuario
+    //     } else {
+    //       tela personal
+    //     }
+    //   })
+    //   .catch(() => {
+    //     console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
+    //   });
   };
 
   return (
@@ -37,19 +77,22 @@ export function LoginPage() {
 
         {/* FORMS COM INPUT */}
         <div className="flex flex-col gap-10">
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-6" id="myForm">
             <Input
-              icon={<User size={24} color="#000000" />}
               labelContent={"E-mail ou Username:"}
+              nome={"email"}
+              icon={<User size={24} color="#000000" />}
+              onChangeFunction={onEmailInputChanged}
               inputStyle={
                 "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500"
               }
             />
             <Input
               labelContent={"Senha:"}
+              nome={"senha"}
               icon={<Lock size={24} color="#000000" />}
+              onChangeFunction={onSenhaInputChanged}
               inputType={"password"}
-              
               inputStyle={
                 "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 items-center"
               }
@@ -78,7 +121,12 @@ export function LoginPage() {
             console.log("Login Failed");
           }}
         /> */}
-          <button className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]">
+          <button
+            className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]"
+            type="submit"
+            id="btnForm"
+            onClick={handleSubmit}
+          >
             Entrar
           </button>
         </div>
