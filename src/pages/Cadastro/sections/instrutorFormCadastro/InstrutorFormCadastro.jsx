@@ -56,7 +56,7 @@ export function InstrutorFormCadastro() {
     const [isForm2Valid, setIsForm2Valid] = useState(true);
 
     const [formData, setFormData] = useState({
-        tipo: 'INSTRUTOR',
+        tipo: 'PERSONAL',
         nome: '',
         username: '',
         email: '',
