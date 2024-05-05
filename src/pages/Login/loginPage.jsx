@@ -9,6 +9,7 @@ import {
 import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { api } from "../../apis/api";
 // import { GoogleLogin } from "@react-oauth/google";
 // import { jwtDecode } from "jwt-decode";
 
@@ -34,26 +35,26 @@ export function LoginPage() {
     const senhaForm = dadosFormulario.get("senha");
 
     const userBody = {
-      email: emailForm,
+      login: emailForm,
       senha: senhaForm,
+      tipo: "USUARIO"
     };
 
     // GET USUARIOS WHERE (USERNAME == ?? || EMAIL == ??) && SENHA == ???
-    // api
-    //   .get(`/usuarios`, userBody)
-    //   .then(() => {
-    //     console.log("usuario existe");
-    //     console.log("get objeto usuario");
-    //     console.log("redirecionando...");
-    //     if (usuario) {
-    //       tela usuario
-    //     } else {
-    //       tela personal
-    //     }
-    //   })
-    //   .catch(() => {
-    //     console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
-    //   });
+    api.post(`/login/usuario`, userBody)
+      .then(() => {
+        console.log("usuario existe");
+        console.log("get objeto usuario");
+        console.log("redirecionando...");
+        if (1 == 1) {
+          console.log("tela usuario")
+        } else {
+          console.log("tela personal")
+        }
+      })
+      .catch(() => {
+        console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
+      });
   };
 
   return (
