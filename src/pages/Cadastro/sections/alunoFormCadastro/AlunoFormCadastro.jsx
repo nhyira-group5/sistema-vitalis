@@ -31,7 +31,7 @@ export function AlunoFormCadastro() {
       username: userFormInfo.username,
       cpf: userFormInfo.CPF,
       dtNasc: userFormInfo.dtNasc,
-      genero: userFormInfo.sexo,
+      genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
       email: userFormInfo.email,
       senha: userFormInfo.senha,
     };

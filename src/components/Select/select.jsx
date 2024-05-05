@@ -32,7 +32,7 @@ export function Select({
         className={`${valid ? "  !ring-errorRed " : ""}${
           selectStyle
             ? ` ${selectStyle}`
-            : " animate-bounce group-focus-within:!ring-primary-green300"
+            : " group-focus-within:!ring-primary-green300"
         } h-16 p-3 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}
       >
         <select
