@@ -37,11 +37,12 @@ export function AlunoFormCadastro() {
     };
 
     api.post(`/usuarios`, userBody)
-      .then(() => {
+      .then(response => {
         console.log("ufaaaa");
+        console.log(response.data);
       })
-      .catch(() => {
-        console.log("ele num quer nao");
+      .catch(error => {
+        console.error("ele num quer nao", error);
       });
 
     return userBody;
