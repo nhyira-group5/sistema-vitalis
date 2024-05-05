@@ -1,3 +1,6 @@
+//@import "@shoelace-style/shoelace/dist/themes/base.css";
+//@import "@shoelace-style/shoelace/dist/components/carousel/carousel.css";
+
 $primary-color: #64c273;
 $secundary-color: #9bfab0;
 $aux-color: #d7fdd0;
@@ -41,7 +44,7 @@ $lg-font-size: 2rem;
 }
 
 body {
-  position: relative;
+  overflow-x: hidden;
 }
 
 .lateralNav {
@@ -223,7 +226,6 @@ body {
     font-size: $lg-font-size + 8;
     letter-spacing: 4rem;
     font-weight: 500;
-    margin-left: 5rem;
   }
 
   > :nth-child(2) {
@@ -417,6 +419,10 @@ body {
     transform: scale(1.05);
   }
 
+  .break-line:hover {
+    word-wrap: break-word;
+  }
+
   .recursosWrapper > img {
     transition: all 0.5s ease-out;
   }
@@ -434,17 +440,15 @@ body {
 
     .recurso {
       display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center; 
+      text-align: center; 
       width: 100%;
-      border-radius: 1rem;
-
       height: 15rem;
-
+      border-radius: 1rem;
       overflow: hidden;
       position: relative;
-
       box-shadow: 0px 20px 30px -17px rgb(100 194 115 / 30%);
     }
 
@@ -455,6 +459,10 @@ body {
         position: absolute;
         left: 35rem;
         transition: all 600ms ease-in-out;
+      }
+
+      .break-line:hover {
+         white-space: pre-line;
       }
 
       h4 {
@@ -474,6 +482,7 @@ body {
         position: absolute;
         right: 35rem;
         transition: all 600ms ease-in-out;
+
       }
 
       h4 {
@@ -625,7 +634,7 @@ body {
   }
 
   h1 {
-    font-size: $lg-font-size + 3.5;
+    font-size: $lg-font-size + 1; // Alterei o tamanho da fonte aqui
     font-weight: 700;
     color: $primary-color;
   }
@@ -638,7 +647,7 @@ body {
 
     h2 {
       width: 55rem;
-      font-size: $md-font-size + 0.4;
+      font-size: $md-font-size + 0.2; // Alterei o tamanho da fonte aqui
       justify-self: start;
     }
 
@@ -647,12 +656,12 @@ body {
       background-color: #5eaf6b;
       color: $white-color;
       align-self: end;
-      padding-block: $lg-padding + 1;
+      padding-block: $lg-padding + 0.5;
       border-radius: 2rem;
       @include text-mavenPro();
-      font-size: $lg-font-size + 0.7;
-      font-weight: 600;
-      padding-inline: $lg-padding + 4;
+      font-size: $lg-font-size;
+      font-weight: 450;
+      padding-inline: $lg-padding + 2;
       box-shadow: 1px 6px 20px 0px #64c2734d;
       cursor: pointer;
       transition: all 0.1s ease-in-out;
