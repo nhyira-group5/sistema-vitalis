@@ -26,6 +26,7 @@ import {
   ArrowRight,
 } from "@phosphor-icons/react";
 import { api } from "../../../../apis/api";
+import { toast } from "react-toastify";
 
 function userCriacaoDto(userFormInfo) {
   const userDto = {
@@ -204,6 +205,7 @@ export function InstrutorFormCadastro() {
     api.post(`/usuarios`, userDto)
       .then((response) => {
         console.log("usuario criado");
+        toast.success("Usuário criado com sucesso!")
         idUsuario = response.data.id;
         console.log("id: " + idUsuario);
 
@@ -216,14 +218,17 @@ export function InstrutorFormCadastro() {
         
         api.post(`/endereco`, enderecoAcademia)
           .then((response) => {
+            toast.success("Endereço criado com sucesso!")
             console.log("endereço da academia criado");
           })
           .catch((error) => {
             console.error("ele num qr n", error);
+            toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
           });
       })
       .catch((error) => {
         console.error("erro criacao usuario", error);
+        toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
       });
   }
 
@@ -484,7 +489,7 @@ export function InstrutorFormCadastro() {
           nome={"CPF"}
           value={formData.CPF}
           onChangeFunction={handleChange}
-          inputType={"number"}
+          inputType={"text"}
           valid={!isCPFValid}
           invalidMessage={CPFErrorList}
         />
@@ -539,7 +544,7 @@ export function InstrutorFormCadastro() {
           value={formData.cep}
           onChangeFunction={handleChange}
           onBlurFunction={buscaCep}
-          inputType={"number"}
+          inputType={"text"}
           valid={!isCepValid}
           invalidMessage={CEPErrorList}
         />

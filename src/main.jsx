@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import WebFont from "webfontloader";
 import "./index.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import {CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
 
@@ -39,6 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
       <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
         <RouterProvider router={router} />
+        <ToastContainer />
       </div>
   </React.StrictMode>
 );
