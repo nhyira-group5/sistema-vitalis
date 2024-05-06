@@ -25,6 +25,7 @@ import {
   ArrowLeft,
   ArrowRight,
 } from "@phosphor-icons/react";
+import { api } from "../../../../apis/api";
 
 function userCriacaoDto(userFormInfo) {
   const userDto = {
@@ -47,7 +48,10 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
     numero: userFormInfo.numero,
     bairro: userFormInfo.bairro,
     cidade: userFormInfo.cidade,
+    estado: userFormInfo.estado,
     cep: userFormInfo.cep,
+    complemento: "",
+    fkPersonal: 0,
   };
 
   return enderecoAcademiaDto;
@@ -188,18 +192,41 @@ export function InstrutorFormCadastro() {
     if (isForm2Valid) {
       const userDto = userCriacaoDto(formData);
       const enderecoAcademiaDto = enderecoAcademiaCriacaoDto(formData);
-      handleForm(userDto, enderecoAcademiaDto);
       console.log(userDto);
       console.log(enderecoAcademiaDto);
+      handleForm(userDto, enderecoAcademiaDto);
     }
   };
 
   function handleForm(userDto, enderecoAcademiaDto) {
-    api.post(``, userDto)
-    .then(() => {
-        console.log("usuario criado")
-        console.log("id: " user)
-    })
+    let idUsuario = 0;
+    api
+      .post(`/usuarios`, userDto)
+      .then((response) => {
+        console.log("usuario criado");
+        idUsuario = response.data.id;
+        console.log("id: " + idUsuario);
+
+        console.log("iniciando criação de endereço da academia");
+
+        const enderecoAcademia = enderecoAcademiaDto;
+        console.log("primeiro objeto:", enderecoAcademia);
+        enderecoAcademia.fkPersonal = idUsuario;
+        console.log("segundo objeto:", enderecoAcademia);
+        
+        api.post(`/endereco/adicionar`, enderecoAcademia)
+          .then((response) => {
+            console.log("endereço da academia criado");
+          })
+          .catch((error) => {
+            console.error("ele num qr n", error);
+          });
+      })
+      .catch((error) => {
+        console.error("erro criacao usuario", error);
+      });
+
+    
   }
 
   const handleChange = (event) => {
