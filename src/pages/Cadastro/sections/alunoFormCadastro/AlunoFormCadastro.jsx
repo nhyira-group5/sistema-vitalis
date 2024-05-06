@@ -204,7 +204,7 @@ export function AlunoFormCadastro() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="gap-x-16 gap-y-10 h-full overflow-auto xl:grid xl:grid-cols-2 lg:grid-rows-5  lg:flex lg:flex-col"
+      className="gap-x-16 gap-y-28 h-full  grid grid-cols-2 grid-rows-5 overflow-auto"
     >
       <Input
         labelContent={"Nome do usuário"}
