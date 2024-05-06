@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 // import "@shoelace-style/shoelace/dist/themes/base.css";
 // import "@shoelace-style/shoelace/dist/components/carousel/carousel.css";
 
-import logoSmallWB from "@assets/logos/greenSmallSizeNBG.svg";
-import cordaoTDAH from "@assets/cordao-tdah.svg";
+import blackNormalSize from "@assets/logos/greenNormalSizeBlackColor.svg";
 import vectorParalelepipedo from "@assets/vector-paralelepipedo.png"
 import vectorParalelepipedoInvertido from "@assets/vector-paralelepipedo-invertido.svg"
 import vectorCoracao from "@assets/vector-coracao.svg"
@@ -17,58 +16,78 @@ import vectorBottomRecursos from "@assets/vector-bottom-recursos.svg"
 import ProtoPersonaMarcelo from "@assets/proto-persona-marcelo.png"
 import ProtoPersonaTauane from "@assets/proto-persona-tauane.png"
 import logoNormal from "@assets/logos/greenNormalSize.svg";
-import celularGenerico from "@assets/celular-generico.svg";
-import vai from "@assets/vai.png";
-import volta from "@assets/volta.png";
+import celulaesrGenericos from "@assets/celulares-genericos.png";
+// import vai from "@assets/vai.png";
+// import volta from "@assets/volta.png";
+
+import {
+    PersonSimpleCircle,
+    EnvelopeSimple,
+    Phone 
+  } from "@phosphor-icons/react";
+import Button from "../../components/Button/button";
+  
 
 const SiteInstitucional = () => {
 
     return (
         <main>
-            
 
-            <section className="w-full h-screen">
-                <div className="bg-white py-6 px-6 relative">
+            <div className="fixed right-5 z-10 h-full  flex items-center" >
+                        <ul className="flex flex-col gap-5   rounded-lg items-center backdrop-blur-sm bg-white/10 *:text-center *:w-12 *:transition-all *:px-4 w-fit ">
+                            
+                                <a href="#projetoInfo" className="pt-3 rounded-t-lg text-primary-green300 font-medium text-lg hover:bg-primary-green300/50 hover:text-gray100">P r o j e t o</a>
+                           
+                                <a href="#objetivo" className="text-primary-green300 font-medium text-lg hover:bg-primary-green300/50 hover:text-gray100">O b j e t i v o</a>
+                          
+                                <a href="#contato" className="pb-3 rounded-b-lg text-primary-green300 font-medium text-lg hover:bg-primary-green300/50 hover:text-gray100">C o n t a t o</a>
+                           
+                        </ul>
+            </div>
+            
+            <section className="w-full">
+                <div className="bg-white p-6 relative">
+                    
                     <nav className="flex justify-between items-center py-4 px-1 sm:px-4 mt-4">
                         <div className="flex items-center gap-4">
-                            <img className="w-16 cursor-pointer" src={logoSmallWB} alt="Logo" />
-                            <img src={cordaoTDAH} alt="Cordão" />
+                            <img className="w-36 cursor-pointer" src={blackNormalSize} alt="Logo" />
+                            <PersonSimpleCircle size={32} className="cursor-pointer"/>
+                            {/* fazer algo de acessibilidade ainda hoje, puta merda */}
                         </div>
-                        <h1 className="no-underline font-megrim text-3xl font-bold text-center text-green-600 flex-grow">
-                            Plataforma que te guiará ao seu bem-estar!
-                        </h1>
+
+
                         <div>
-                            <Link to={'/login/aluno'}>
-                                <button className="py-2 px-4 rounded-lg bg-green-600 text-white font-semibold text-lg">
-                                    Sign In
-                                </button>
+                            <Link to={'/login'}>
+                              <Button iconVisibility={false} content={"Entrar"} buttonStyle={"text-gray100 bg-primary-green300 rounded-full font-bold w-40 py-4 hover:bg-primary-green400 transition-all flex items-center justify-center gap-1"}/>
                             </Link>
                         </div>
                     </nav>
-                    <div className="absolute right-5 top-6 z-10 h-full w-10 flex" style={{ marginTop: '5rem' }}>
-                        <ul className="flex flex-col gap-1 py-2 px-2 rounded items-center w-1 text-wrap">
-                            <li><a href="/projetoInfo" className="text-megrin text-green-600"> P r o j e t o</a></li>
-                            <li><a href="/recursos" className="text-megrin text-green-600"> R e c u r s o s</a></li>
-                            <li><a href="/contato" className="text-megrin text-green-600"> C o n t a t o s</a></li>
-                        </ul>
-                    </div>
+
+
+
                     <div className=" flex justify-center">
-                        <div className="text-center text-megrim text-green-600 absolute left-1 bottom-20 z-10">
-                            <ul className="flex items-center justify-center gap-6">
-                                <li><Link to="">Instagram</Link></li>
-                                <div className="h-2 w-2 bg-purple-700 transform rotate-45"></div>
-                                <li><Link to="">Github</Link></li>
-                                <div className="h-2 w-2 bg-purple-700 transform rotate-45"></div>
-                                <li><Link to="">Linkedin</Link></li>
+                        <div className=" absolute text-center text-primary-green300  left-10 bottom-20 z-10">
+                            <ul className="flex items-center justify-center gap-6 list-[square] marker:text-alt-purple300">
+                                <li>
+                                    <Link to="" className="font-medium hover:text-primary-green400 transition-all">Instagram</Link>
+                                </li>
+                                
+                                <li>
+                                    <Link to="" className="font-medium hover:text-primary-green400 transition-all">Github</Link>
+                                </li>
+                                
+                                <li>
+                                    <Link to="" className="font-medium hover:text-primary-green400 transition-all">Linkedin</Link>
+                                </li>
                             </ul>
                         </div>
-                        <div className="font-maven-pro text-center mx-auto mt-16 mb-16 max-w-lg">
 
-                            <h1 className="no-underline text-7xl text-green-600">
-                                Bem estar de forma certa<span className="text-purple-700 font-inter">.</span>
+                        <div className="text-center  max-w-3xl flex flex-col items-center gap-12 pb-36 pt-12">
+                            <h1 className=" text-primary-green300 text-8xl font-medium">
+                                Bem estar de forma certa<span className="text-alt-purple300 font-inter">.</span>
                             </h1>
 
-                            <h5 className="text-black-color text-lg mt-16 mb-20 mx-auto max-w-lg">
+                            <h5 className="text-gray500 font-medium text-lg max-w-lg">
                                 Nosso aplicativo é uma plataforma abrangente projetada para atender às necessidades específicas daqueles que buscam ganhos musculares. Com uma interface amigável e recursos personalizados, oferecemos uma experiência única que vai além do simples acompanhamento de exercícios.
                             </h5>
                         </div>
@@ -77,14 +96,14 @@ const SiteInstitucional = () => {
             </section>
 
             <section id="projetoInfo">
-                <div className="projetoInfoWrapper relative flex flex-col items-center md:items-start px-6 py-8 md:py-16">
-                    <h1 className="mx-auto noUnderline text-transparent bg-gradient-to-r from-green-500 to-green-900 text-4xl md:text-5xl font-semibold tracking-wider mb-8 text-center">VITALIS</h1>
+                <div className="projetoInfoWrapper relative flex flex-col items-center md:items-start px-6 py-8 md:py-16 gap-5">
+                    <h1 className="px-4 text-4xl md:text-5xl font-semibold tracking-wider ">VITALIS</h1>
 
                     <img src={{ vectorParalelepipedo }} alt="" className="absolute top-0 left-0 w-full md:w-auto" />
                     <img src={vectorParalelepipedoInvertido} alt="" className="absolute bottom-0 left-0 w-full md:w-auto" />
 
                     <div className="projetoInfoContent flex flex-col md:flex-row items-center md:justify-end w-full relative">
-                        <img src={celularGenerico} alt="" className="w-50 absolute left-0 top-0 md:top-20" />
+                        <img src={celulaesrGenericos} alt="" className="w-2/4 absolute left-0 -top-28" />
 
                         <div className="beneficios border-4 border-secondary rounded-lg md:ml-20 py-6 md:py-8 px-6 md:px-12 flex flex-col items-start md:items-end gap-8 md:gap-12 text-white">
                             <div className="beneficio flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
@@ -122,8 +141,9 @@ const SiteInstitucional = () => {
                     </div>
                 </div>
             </section>
+        
             <section id="objetivo">
-                <div className="objetivoWrapper relative flex justify-around items-center py-8 md:py-16">
+                <div className="objetivoWrapper relative flex justify-around items-center py-8 md:py-16 mb-16">
                     <div className="objetivoContent flex flex-col items-center px-6 md:px-12">
                         <h1 className="noUnderline text-primary">Nosso objetivo</h1>
                         <b>
@@ -140,7 +160,7 @@ const SiteInstitucional = () => {
                             </p>
 
                             <p>
-                                Conectamos você a personal trainers especializados em hipertrofia, facilitando o acesso à orientação profissional adaptada.
+                                Conectamos você a personal trainers especializados, facilitando o acesso à orientação profissional adaptada.
                             </p>
 
                             <p>
@@ -149,86 +169,29 @@ const SiteInstitucional = () => {
                         </div>
                     </div>
 
-                    <img src={celularENotebook} alt="" className="w-3/5" />
                 </div>
             </section>
-            <section id="recursos">
-                <div className="recursosWrapper noUnderline px-6 md:px-12">
-                    <div className="recursos flex flex-col gap-12 md:gap-20 mt-16 md:mt-0">
-
-                        <div className="group recurso flex flex-col items-center justify-center h-72 md:h-96 rounded-lg overflow-hidden shadow-md transition duration-500 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105">
-                            <h1 className="text-white group-hover:w-20 font-semibold text-lg md:text-xl text-center break-line transition duration-600 ease-in-out  transition: all 600ms ease-in-out;">Lista de Personal Trainers Especializados</h1>
-                            <h4 className="text-white text-base md:text-lg text-center transition duration-500 ease-in-out">Encontre personal trainers qualificados em hipertrofia e crescimento muscular. Localize profissionais próximos com a integração da Google Places API</h4>
-                        </div>
-
-                        <div className="group recurso flex flex-col items-center justify-center h-72 md:h-96 rounded-lg overflow-hidden shadow-md transition duration-500 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105">
-                            <h1 className="text-white group-hover:w-20 font-semibold text-lg md:text-xl text-center transition duration-600 ease-in-out m-9">Agendamento de Sessões de Treinamento</h1>
-                            <h4 className="text-white text-base md:text-lg text-center transition duration-500 ease-in-out">Agende sessões de treinamento personalizado diretamente pelo aplicativo. Você tem controle da sua agenda e rotina pelo aplicativo.</h4>
-                        </div>
-                        <div className="recurso flex flex-col items-center justify-center h-72 md:h-96 rounded-lg overflow-hidden shadow-md transition duration-500 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105">
-                            <h1 className="text-white font-semibold text-lg md:text-xl text-center transition duration-600 ease-in-out">Monitoramento de Progresso</h1>
-                            <h4 className="text-white text-base md:text-lg text-center transition duration-500 ease-in-out">Encontre personal trainers qualificados em hipertrofia e crescimento muscular. Localize profissionais próximos com a integração da Google Places API</h4>
-                        </div>
-                        <div className="recurso flex flex-col items-center justify-center h-72 md:h-96 rounded-lg overflow-hidden shadow-md transition duration-500 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105">
-                            <h1 className="text-white font-semibold text-lg md:text-xl text-center break-line transition duration-600 ease-in-out">Lembretes e Acompanhamento</h1>
-                            <h4 className="text-white text-base md:text-lg text-center transition duration-500 ease-in-out">Encontre personal trainers qualificados em hipertrofia e crescimento muscular. Localize profissionais próximos com a integração da Google Places API</h4>
-                        </div>
-                        <div className="recurso flex flex-col items-center justify-center h-72 md:h-96 rounded-lg overflow-hidden shadow-md transition duration-500 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105">
-                            <h1 className="text-white font-semibold text-lg md:text-xl text-center transition duration-600 ease-in-out">Guia e rotina para o seu bem-estar</h1>
-                            <h4 className="text-white text-base md:text-lg text-center transition duration-500 ease-in-out">Encontre personal trainers qualificados em hipertrofia e crescimento muscular. Localize profissionais próximos com a integração da Google Places API</h4>
-                        </div>
-                        <img src={vectorBottomRecursos} alt="" className="absolute bottom-0 left-0 w-full mt-16" />
-                    </div>
-
-                </div>
-            </section>
-            <section id="depoimentos">
-                <div>
-                    <sl-carousel loop navigation pagination>
-                        <sl-carousel-item>
-                            <div class="testimonial-item">
-                                <div class="carouselItemBody personal flex justify-center items-center shadow-md rounded-lg p-8 md:p-10 gap-8 md:gap-12">
-                                    <img src={ProtoPersonaMarcelo} alt="Foto de Marcelo da Silva" class="w-32 h-32 rounded-full" />
-                                    <div class="carouselItemContent">
-                                        <h1 class="noUnderline text-xl font-semibold">Marcelo da Silva</h1>
-                                        <div>
-                                            <h3 class="text-gray-700">Os lembretes de sessões agendadas foram muito úteis. Antes, eu costumava perder alguns treinos devido à minha agenda, mas agora consigo me manter consistente. O sistema de agendamento é simples e eficiente</h3>
-                                            <h2 class="text-primary">Personal Trainer</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </sl-carousel-item>
-                        <sl-carousel-item>
-                            <div class="testimonial-item">
-                                <div class="carouselItemBody aluno flex justify-center items-center shadow-md rounded-lg p-8 md:p-10 gap-8 md:gap-12">
-                                    <img src={ProtoPersonaTauane} alt="Foto de Tauane da Silva" class="w-32 h-32 rounded-full" />
-                                    <div class="carouselItemContent">
-                                        <h1 class="noUnderline text-xl font-semibold">Tauane da Silva</h1>
-                                        <div>
-                                            <h3 class="text-gray-700">Adorei ter acesso a um guia completo para o meu bem-estar. As dicas de nutrição foram especialmente úteis, e as sugestões de exercícios me ajudaram a alcançar meus objetivos de saúde</h3>
-                                            <h2 class="text-primary">Estudante de administração</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </sl-carousel-item>
-                    </sl-carousel>
-                </div>
-            </section>
+       
 
             <section id="contato">
                 <img src={vectorParalelepipedo} alt="" className="absolute w-full -top-20 left-0" />
-                <div className="contatoWrapper flex flex-col gap-12 items-center text-white px-6 md:px-12">
-                    <h1 className="noUnderline text-3xl font-bold text-primary">Entre em contato conosco!</h1>
+                <div className="contatoWrapper flex flex-col gap-12 text-white p-32">
+                    <h1 className="text-8xl font-bold text-primary">Entre em contato conosco!</h1>
                     <div className="flex flex-col md:flex-row justify-between gap-12 items-center">
-                        <h2 className="text-lg w-full md:w-1/2 leading-relaxed">
-                            Queremos ouvir de você! Se você tiver alguma dúvida, comentário, sugestão ou simplesmente quiser entrar em contato conosco, sinta-se à vontade! Nossa equipe está aqui para ajudar e responder todas as suas perguntas.
+                        <h2 className="text-3xl w-full leading-relaxed">
+                            Queremos ouvir de você!<br/><br/> 
+                            Se você tiver alguma dúvida, comentário, sugestão ou simplesmente quiser entrar em contato conosco, sinta-se à vontade!<br/><br/>
+                            Nossa equipe está aqui para ajudar e responder todas as suas perguntas.
                         </h2>
-                        <button className="bg-green-500 text-white py-2 px-6 md:py-2 md:px-6 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">Contate-nos!</button>
+                        
+                        <div className="flex flex-col items-center ring-4 ring-primary-green300 rounded-xl w-2/4 p-16 gap-6">
+                            <span className="flex items-center gap-4 text-2xl underline"><EnvelopeSimple size={32}/>contato.nhyira@gmail.com</span>
+                            <span className="flex items-center gap-4 text-2xl"><Phone size={32}/>+55 (11) 9-8982-4422</span>
+                        </div>
                     </div>
                 </div>
             </section>
+
             <section id="footer">
                 <div className="footerWrapper flex justify-center gap-12 px-6 md:px-12">
                     <div className="leftFooterContent flex flex-col gap-4">

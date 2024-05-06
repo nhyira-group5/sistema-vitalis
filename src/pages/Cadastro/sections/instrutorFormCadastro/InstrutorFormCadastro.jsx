@@ -199,6 +199,7 @@ export function InstrutorFormCadastro() {
   };
 
   function handleForm(userDto, enderecoAcademiaDto) {
+
     let idUsuario = 0;
     api
       .post(`/usuarios`, userDto)
@@ -225,8 +226,6 @@ export function InstrutorFormCadastro() {
       .catch((error) => {
         console.error("erro criacao usuario", error);
       });
-
-    
   }
 
   const handleChange = (event) => {
