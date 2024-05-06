@@ -12,7 +12,7 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
 
   
   return (
-    <div className="relative group">
+    <div className="relative group h-fit">
       <Label.Root
 
         className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' group-focus-within:text-primary-green300 text-lg font-bold pl-[8%]'}`}

@@ -48,7 +48,7 @@ const SiteInstitucional = () => {
             <section className="w-full">
                 <div className="bg-white p-6 relative">
                     
-                    <nav className="flex justify-between items-center py-4 px-1 sm:px-4 mt-4">
+                    <nav className="flex justify-between items-center py-4 px-1 sm:px-14 mt-4">
                         <div className="flex items-center gap-4">
                             <img className="w-36 cursor-pointer" src={blackNormalSize} alt="Logo" />
                             <PersonSimpleCircle size={32} className="cursor-pointer"/>
@@ -199,11 +199,7 @@ const SiteInstitucional = () => {
                             <h1 className="text-lg font-semibold">Endereço</h1>
                             <h3>Rua Haddock Lobo, 595 - Cerqueira César, São Paulo - SP, 01414-001</h3>
                         </div>
-                        <div>
-                            <h1 className="text-lg font-semibold">Meios de contato</h1>
-                            <h3>contato.nhyira@gmail.com</h3>
-                            <h3>+55 (11) 9-8982-4422</h3>
-                        </div>
+
                     </div>
                     <div className="middleFooterContent flex flex-col items-center">
                         <img src={logoNormal} alt="" className="w-72" />
@@ -212,7 +208,6 @@ const SiteInstitucional = () => {
                     <div className="rightFooterContent">
                         <div>
                             <h1 className="text-lg font-semibold">Legal</h1>
-                            <h3>Informações Gerais</h3>
                             <h3>Políticas de privacidade</h3>
                             <h3>Termos de serviço</h3>
                         </div>
