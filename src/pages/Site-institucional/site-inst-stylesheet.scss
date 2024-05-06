@@ -246,12 +246,7 @@ body {
     display: flex;
     justify-content: end;
 
-    > img {
-      width: 50rem;
-      position: absolute;
-      left: 4rem;
-      top: 4rem;
-    }
+
 
     .beneficios {
       display: flex;
@@ -623,8 +618,7 @@ body {
   flex-direction: column;
   gap: 3rem;
   background-color: $black-color;
-  padding: $md-padding;
-  padding-block: $lg-padding + 5;
+
 
   > img {
     position: absolute;
@@ -634,7 +628,6 @@ body {
   }
 
   h1 {
-    font-size: $lg-font-size + 1; // Alterei o tamanho da fonte aqui
     font-weight: 700;
     color: $primary-color;
   }
@@ -642,14 +635,8 @@ body {
   div {
     display: flex;
     color: $white-color;
-    gap: 10rem;
-    height: 15rem;
 
-    h2 {
-      width: 55rem;
-      font-size: $md-font-size + 0.2; // Alterei o tamanho da fonte aqui
-      justify-self: start;
-    }
+
 
     button {
       border: none;

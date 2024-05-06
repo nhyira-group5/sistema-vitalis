@@ -9,7 +9,7 @@ export default {
       colors: {
         'primary-green100': '#daf1de',
         'primary-green200': '#91d49c',
-        'primary-green300': '#48b75a',
+        'primary-green300': '#48B75A',
         'primary-green400': '#2b6e36',
         'primary-green500': '#0e2512',
         'alt-purple100': '#e7ddee',

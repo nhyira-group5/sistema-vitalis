@@ -198,7 +198,7 @@ export function InstrutorFormCadastro() {
     api.post(``, userDto)
     .then(() => {
         console.log("usuario criado")
-        console.log("id: " user)
+        console.log("id: ", userDto.Id)
     })
   }
 
