@@ -105,7 +105,7 @@ const SiteInstitucional = () => {
                     <div className="projetoInfoContent flex flex-col md:flex-row items-center md:justify-end w-full relative">
                         <img src={celulaesrGenericos} alt="" className="w-2/4 absolute left-0 -top-28" />
 
-                        <div className="beneficios border-4 border-secondary rounded-lg md:ml-20 py-6 md:py-8 px-6 md:px-12 flex flex-col items-start md:items-end gap-8 md:gap-12 text-white">
+                        <div className="beneficios border-4 border-primary-green300 rounded-lg md:ml-20 py-6 md:py-8 px-6 md:px-12 flex flex-col items-start md:items-end gap-8 md:gap-12 text-white">
                             <div className="beneficio flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
                                 <div className="text-right md:text-left">
                                     <h1 className="font-semibold text-lg md:text-xl">Guia ao bem-estar</h1>

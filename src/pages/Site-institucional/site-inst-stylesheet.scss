@@ -237,7 +237,7 @@ body {
 
   > :nth-child(3) {
     position: absolute;
-    bottom: -5rem;
+    bottom: -4rem;
     left: 0;
     width: 100%;
   }
@@ -253,7 +253,6 @@ body {
       flex-direction: column;
       padding-inline: $lg-padding;
       padding-block: $md-padding;
-      border: $secundary-color 4px solid;
       border-radius: 1rem;
       color: $white-color;
       margin-right: 5rem;
