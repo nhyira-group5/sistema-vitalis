@@ -344,9 +344,7 @@ export function InstrutorFormCadastro() {
     <>
       <form
         onSubmit={handleFirstSubmit}
-        className={` grid-cols-2 grid-rows-5 gap-3 gap-x-16 h-full ${
-          formStep == 1 ? "grid" : "hidden"
-        }`}
+        className={`gap-x-16 gap-y-10 h-full overflow-auto  xl:grid-cols-2 lg:grid-rows-5  lg:flex lg:flex-col ${formStep == 1 ? "xl:grid" : "hidden"}`}
       >
         <Input
           labelContent={"Nome do usuário"}
