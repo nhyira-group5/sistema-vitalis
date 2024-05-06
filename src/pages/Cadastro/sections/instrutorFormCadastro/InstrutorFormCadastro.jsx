@@ -51,7 +51,7 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
     estado: userFormInfo.estado,
     cep: userFormInfo.cep,
     complemento: "",
-    fkPersonal: 0,
+    idPersonal: 0,
   };
 
   return enderecoAcademiaDto;
@@ -201,8 +201,7 @@ export function InstrutorFormCadastro() {
   function handleForm(userDto, enderecoAcademiaDto) {
 
     let idUsuario = 0;
-    api
-      .post(`/usuarios`, userDto)
+    api.post(`/usuarios`, userDto)
       .then((response) => {
         console.log("usuario criado");
         idUsuario = response.data.id;
@@ -212,10 +211,10 @@ export function InstrutorFormCadastro() {
 
         const enderecoAcademia = enderecoAcademiaDto;
         console.log("primeiro objeto:", enderecoAcademia);
-        enderecoAcademia.fkPersonal = idUsuario;
+        enderecoAcademia.idPersonal = idUsuario;
         console.log("segundo objeto:", enderecoAcademia);
         
-        api.post(`/endereco/adicionar`, enderecoAcademia)
+        api.post(`/endereco`, enderecoAcademia)
           .then((response) => {
             console.log("endereço da academia criado");
           })
