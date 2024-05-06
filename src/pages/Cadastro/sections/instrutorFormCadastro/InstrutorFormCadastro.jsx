@@ -344,7 +344,7 @@ export function InstrutorFormCadastro() {
     <>
       <form
         onSubmit={handleFirstSubmit}
-        className={`gap-x-16 gap-y-10 h-full overflow-auto  xl:grid-cols-2 lg:grid-rows-5  lg:flex lg:flex-col ${formStep == 1 ? "xl:grid" : "hidden"}`}
+        className={`gap-x-16 gap-y-28 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 1 ? "grid " : "hidden"}`}
       >
         <Input
           labelContent={"Nome do usuário"}
@@ -519,9 +519,7 @@ export function InstrutorFormCadastro() {
 
       <form
         onSubmit={handleSecondSubmit}
-        className={`grid-cols-2 grid-rows-5 gap-3 gap-x-16 h-full ${
-          formStep == 2 ? "grid" : "hidden"
-        }`}
+        className={`gap-y-28' gap-x-16 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 2 ? "grid" : "hidden"}`}
       >
         <Input
           labelContent={"CEP"}
