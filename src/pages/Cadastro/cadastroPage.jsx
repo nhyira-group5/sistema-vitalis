@@ -12,7 +12,7 @@ export function CadastroPage() {
     <>
       <div className="relative grid grid-cols-[0.30fr_0.70fr] grid-rows-1 w-screen h-screen bg-gray500 transition-all duration-500 ease-in-out">
         <SideCard
-          tittle={`${userType ? "É um instrutor?" : "É um aluno?"}`}
+          tittle={`${userType ? "É um aluno?" : "É um personal?"}`}
           contentText={`${
             userType
               ? "Bem-vindo à nossa plataforma! Se você é um personal trainer e deseja se cadastrar para acessar recursos exclusivos e trabalhar conosco, clique no botão abaixo para iniciar o processo de registro."
@@ -24,11 +24,7 @@ export function CadastroPage() {
               iconVisibility={false}
               content={userType ? "Sou um instrutor!" : "Sou um aluno!"}
               onClick={() => setUserType(!userType)}
-              style={`rounded-full font-bold px-5 py-4 transition-all flex items-center gap-1 text-gray100 ${
-                userType
-                  ? "bg-primary-green300 hover:bg-primary-green400"
-                  : "bg-alt-purple300 hover:bg-alt-purple400"
-              }`}
+              buttonStyle={`${userType ? 'bg-primary-green300 hover:bg-primary-green400' : 'bg-alt-purple300 hover:bg-alt-purple400'} rounded-full font-bold px-5 py-4 transition-all flex items-center gap-1 text-gray100 `}
             />
           }
         />
@@ -40,7 +36,7 @@ export function CadastroPage() {
                 userType ? "text-primary-green300" : "text-alt-purple300"
               } `}
             >
-              Realizando cadastro
+              Cadastro - {userType ? 'Aluno' : 'Personal'}
             </span>
 
             <div className="flex flex-col gap-5">

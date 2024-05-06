@@ -66,10 +66,10 @@ export function LoginPage() {
             Bem vindo(a) de volta!
           </h1>
           <div className="text-base flex flex-col gap-5 items-center font-extrabold ">
-            <p className="">
+            <p className="font-medium text-lg">
               Bem-vindo de volta! Estamos felizes em tê-lo conosco novamente.
             </p>
-            <p className="w-11/12 text-wrap">
+            <p className="w-11/12 text-wrap font-medium text-lg">
               Faça login para acessar sua conta e explorar todas as novidades
               que preparamos para você.
             </p>
@@ -95,7 +95,7 @@ export function LoginPage() {
               onChangeFunction={onSenhaInputChanged}
               inputType={"password"}
               inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 items-center"
+                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 "
               }
             ></Input>
           </form>
