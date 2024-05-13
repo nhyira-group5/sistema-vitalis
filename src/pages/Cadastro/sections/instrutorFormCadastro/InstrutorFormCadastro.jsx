@@ -27,6 +27,7 @@ import {
 } from "@phosphor-icons/react";
 import { api } from "../../../../apis/api";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function userCriacaoDto(userFormInfo) {
   const userDto = {
@@ -59,6 +60,11 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
 }
 
 export function InstrutorFormCadastro() {
+  const navigate = useNavigate();
+  const redirecionarLogin = () => {
+    navigate("/login");
+  };
+
   const [formStep, setFormStep] = useState(1);
 
   const [isNomeValid, setIsNomeValid] = useState(true);
@@ -216,10 +222,13 @@ export function InstrutorFormCadastro() {
         enderecoAcademia.idPersonal = idUsuario;
         console.log("segundo objeto:", enderecoAcademia);
         
+
         api.post(`/endereco`, enderecoAcademia)
           .then((response) => {
             toast.success("Endereço criado com sucesso!")
             console.log("endereço da academia criado");
+            redirecionarLogin();
+          
           })
           .catch((error) => {
             console.error("ele num qr n", error);
@@ -523,7 +532,7 @@ export function InstrutorFormCadastro() {
 
       <form
         onSubmit={handleSecondSubmit}
-        className={`gap-y-28' gap-x-16 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 2 ? "grid" : "hidden"}`}
+        className={`gap-y-28 gap-x-16 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 2 ? "grid" : "hidden"}`}
       >
         <Input
           labelContent={"CEP"}

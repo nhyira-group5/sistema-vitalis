@@ -10,10 +10,18 @@ import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { api } from "../../apis/api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "@react-oauth/google";
 // import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
+  const navigate = useNavigate();
+
+  const redirecionarHome = () => {
+    navigate("/home");
+  };
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -39,6 +47,7 @@ export function LoginPage() {
       senha: senhaForm,
       tipo: "USUARIO"
     };
+    
 
     // GET USUARIOS WHERE (USERNAME == ?? || EMAIL == ??) && SENHA == ???
     api.post(`/login/usuario`, userBody)
@@ -46,14 +55,19 @@ export function LoginPage() {
         console.log("usuario existe");
         console.log("get objeto usuario");
         console.log("redirecionando...");
+        toast.success("Logando...")
+
         if (1 == 1) {
           console.log("tela usuario")
         } else {
           console.log("tela personal")
         }
+
+        redirecionarHome();
       })
       .catch(() => {
         console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
+        toast.error("Nickname e/ou senha inválidos")
       });
   };
 
@@ -80,7 +94,7 @@ export function LoginPage() {
         <div className="flex flex-col gap-10">
           <form className="flex flex-col gap-6" id="myForm">
             <Input
-              labelContent={"E-mail ou Username:"}
+              labelContent={"Nickname:"}
               nome={"email"}
               icon={<User size={24} color="#000000" />}
               onChangeFunction={onEmailInputChanged}

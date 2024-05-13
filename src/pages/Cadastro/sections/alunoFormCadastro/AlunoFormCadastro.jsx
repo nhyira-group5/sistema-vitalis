@@ -2,7 +2,7 @@ import { Select } from "@components/Select/select";
 import Button from "@components/Button/button.jsx";
 import { Input } from "@components/Input/input";
 import { api } from "../../../../apis/api";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 import {
@@ -23,8 +23,14 @@ import {
   CalendarDots,
   Hash,
 } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 export function AlunoFormCadastro() {
+  const navigate = useNavigate();
+  const redirecionarLogin = () => {
+    navigate("/login");
+  };
+
   function createUserBody(userFormInfo) {
     const userBody = {
       tipo: userFormInfo.tipo,
@@ -37,15 +43,20 @@ export function AlunoFormCadastro() {
       senha: userFormInfo.senha,
     };
 
-    api.post(`/usuarios`, userBody)
-      .then(response => {
+    api
+      .post(`/usuarios`, userBody)
+      .then((response) => {
         console.log("ufaaaa");
         console.log(response.data);
-        toast.success("Usuário cadastrado com sucesso!")
+        toast.success("Usuário cadastrado com sucesso!");
+
+        redirecionarLogin();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("ele num quer nao", error);
-        toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
+        toast.error(
+          "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
+        );
       });
 
     return userBody;
