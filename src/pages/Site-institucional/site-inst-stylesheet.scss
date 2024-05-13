@@ -237,7 +237,7 @@ body {
 
   > :nth-child(3) {
     position: absolute;
-    bottom: -5rem;
+    bottom: -4rem;
     left: 0;
     width: 100%;
   }
@@ -246,19 +246,13 @@ body {
     display: flex;
     justify-content: end;
 
-    > img {
-      width: 50rem;
-      position: absolute;
-      left: 4rem;
-      top: 4rem;
-    }
+
 
     .beneficios {
       display: flex;
       flex-direction: column;
       padding-inline: $lg-padding;
       padding-block: $md-padding;
-      border: $secundary-color 4px solid;
       border-radius: 1rem;
       color: $white-color;
       margin-right: 5rem;
@@ -623,8 +617,7 @@ body {
   flex-direction: column;
   gap: 3rem;
   background-color: $black-color;
-  padding: $md-padding;
-  padding-block: $lg-padding + 5;
+
 
   > img {
     position: absolute;
@@ -635,6 +628,7 @@ body {
 
   h1 {
     font-size: $lg-font-size + 1; // Alterei o tamanho da fonte aqui
+
     font-weight: 700;
     color: $primary-color;
   }
@@ -642,8 +636,6 @@ body {
   div {
     display: flex;
     color: $white-color;
-    gap: 10rem;
-    height: 15rem;
 
     h2 {
       width: 55rem;

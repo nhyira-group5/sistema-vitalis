@@ -9,10 +9,19 @@ import {
 import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { api } from "../../apis/api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "@react-oauth/google";
 // import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
+  const navigate = useNavigate();
+
+  const redirecionarHome = () => {
+    navigate("/home");
+  };
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -34,26 +43,32 @@ export function LoginPage() {
     const senhaForm = dadosFormulario.get("senha");
 
     const userBody = {
-      email: emailForm,
+      login: emailForm,
       senha: senhaForm,
+      tipo: "USUARIO"
     };
+    
 
     // GET USUARIOS WHERE (USERNAME == ?? || EMAIL == ??) && SENHA == ???
-    // api
-    //   .get(`/usuarios`, userBody)
-    //   .then(() => {
-    //     console.log("usuario existe");
-    //     console.log("get objeto usuario");
-    //     console.log("redirecionando...");
-    //     if (usuario) {
-    //       tela usuario
-    //     } else {
-    //       tela personal
-    //     }
-    //   })
-    //   .catch(() => {
-    //     console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
-    //   });
+    api.post(`/login/usuario`, userBody)
+      .then(() => {
+        console.log("usuario existe");
+        console.log("get objeto usuario");
+        console.log("redirecionando...");
+        toast.success("Logando...")
+
+        if (1 == 1) {
+          console.log("tela usuario")
+        } else {
+          console.log("tela personal")
+        }
+
+        redirecionarHome();
+      })
+      .catch(() => {
+        console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
+        toast.error("Nickname e/ou senha inválidos")
+      });
   };
 
   return (
@@ -65,10 +80,10 @@ export function LoginPage() {
             Bem vindo(a) de volta!
           </h1>
           <div className="text-base flex flex-col gap-5 items-center font-extrabold ">
-            <p className="">
+            <p className="font-medium text-lg">
               Bem-vindo de volta! Estamos felizes em tê-lo conosco novamente.
             </p>
-            <p className="w-11/12 text-wrap">
+            <p className="w-11/12 text-wrap font-medium text-lg">
               Faça login para acessar sua conta e explorar todas as novidades
               que preparamos para você.
             </p>
@@ -79,7 +94,7 @@ export function LoginPage() {
         <div className="flex flex-col gap-10">
           <form className="flex flex-col gap-6" id="myForm">
             <Input
-              labelContent={"E-mail ou Username:"}
+              labelContent={"Nickname:"}
               nome={"email"}
               icon={<User size={24} color="#000000" />}
               onChangeFunction={onEmailInputChanged}
@@ -94,7 +109,7 @@ export function LoginPage() {
               onChangeFunction={onSenhaInputChanged}
               inputType={"password"}
               inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 items-center"
+                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 "
               }
             ></Input>
           </form>

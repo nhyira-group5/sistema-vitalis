@@ -2,6 +2,7 @@ import { Select } from "@components/Select/select";
 import Button from "@components/Button/button.jsx";
 import { Input } from "@components/Input/input";
 import { api } from "../../../../apis/api";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 import {
@@ -22,8 +23,14 @@ import {
   CalendarDots,
   Hash,
 } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 export function AlunoFormCadastro() {
+  const navigate = useNavigate();
+  const redirecionarLogin = () => {
+    navigate("/login");
+  };
+
   function createUserBody(userFormInfo) {
     const userBody = {
       tipo: userFormInfo.tipo,
@@ -31,17 +38,25 @@ export function AlunoFormCadastro() {
       username: userFormInfo.username,
       cpf: userFormInfo.CPF,
       dtNasc: userFormInfo.dtNasc,
-      genero: userFormInfo.sexo,
+      genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
       email: userFormInfo.email,
       senha: userFormInfo.senha,
     };
 
-    api.post(`/usuarios`, userBody)
-      .then(() => {
+    api
+      .post(`/usuarios`, userBody)
+      .then((response) => {
         console.log("ufaaaa");
+        console.log(response.data);
+        toast.success("Usuário cadastrado com sucesso!");
+
+        redirecionarLogin();
       })
-      .catch(() => {
-        console.log("ele num quer nao");
+      .catch((error) => {
+        console.error("ele num quer nao", error);
+        toast.error(
+          "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
+        );
       });
 
     return userBody;
@@ -203,7 +218,7 @@ export function AlunoFormCadastro() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 grid-rows-5 gap-3 gap-x-16 h-full "
+      className="gap-x-16 gap-y-28 h-full  grid grid-cols-2 grid-rows-5 overflow-auto"
     >
       <Input
         labelContent={"Nome do usuário"}
@@ -281,7 +296,7 @@ export function AlunoFormCadastro() {
         nome={"CPF"}
         value={formData.CPF}
         onChangeFunction={handleChange}
-        inputType={"number"}
+        inputType={"text"}
         valid={!isCPFValid}
         invalidMessage={CPFErrorList}
       />

@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import WebFont from "webfontloader";
 import "./index.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import {CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
 
@@ -11,7 +13,7 @@ WebFont.load({
   google: {
     families: [
       "Inter:100,200,300,400,500,600,700,800,900",
-      "Maven-pro:400,500,600,700,800,900",
+      "Maven Pro:400,500,600,700,800,900",
       "Megrim",
     ],
   },
@@ -39,6 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
       <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
         <RouterProvider router={router} />
+        <ToastContainer />
       </div>
   </React.StrictMode>
 );
