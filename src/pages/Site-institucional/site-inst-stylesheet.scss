@@ -627,6 +627,8 @@ body {
   }
 
   h1 {
+    font-size: $lg-font-size + 1; // Alterei o tamanho da fonte aqui
+
     font-weight: 700;
     color: $primary-color;
   }
@@ -635,7 +637,11 @@ body {
     display: flex;
     color: $white-color;
 
-
+    h2 {
+      width: 55rem;
+      font-size: $md-font-size + 0.2; // Alterei o tamanho da fonte aqui
+      justify-self: start;
+    }
 
     button {
       border: none;

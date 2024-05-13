@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // import "@shoelace-style/shoelace/dist/components/carousel/carousel.css";
 
 import blackNormalSize from "@assets/logos/greenNormalSizeBlackColor.svg";
+
 import vectorParalelepipedo from "@assets/vector-paralelepipedo.png"
 import vectorParalelepipedoInvertido from "@assets/vector-paralelepipedo-invertido.svg"
 import vectorCoracao from "@assets/vector-coracao.svg"
@@ -16,6 +17,7 @@ import vectorBottomRecursos from "@assets/vector-bottom-recursos.svg"
 import ProtoPersonaMarcelo from "@assets/proto-persona-marcelo.png"
 import ProtoPersonaTauane from "@assets/proto-persona-tauane.png"
 import logoNormal from "@assets/logos/greenNormalSize.svg";
+
 import celulaesrGenericos from "@assets/celulares-genericos.png";
 // import vai from "@assets/vai.png";
 // import volta from "@assets/volta.png";
@@ -126,6 +128,7 @@ const SiteInstitucional = () => {
                                 <div className="text-right md:text-left">
                                     <h1 className="font-semibold text-lg md:text-xl">Rotina organizada</h1>
                                     <h4 className="text-sm md:text-base">Transforme o caos em ordem e conquiste seus dias.</h4>
+
                                 </div>
                                 <img src={vectorCalendario} alt="" className="w-24" />
                             </div>
@@ -201,6 +204,7 @@ const SiteInstitucional = () => {
                         </div>
 
                     </div>
+
                     <div className="middleFooterContent flex flex-col items-center">
                         <img src={logoNormal} alt="" className="w-72" />
                         <h2 className="text-sm mt-4">© 2024 nhyira. All Rights reserved</h2>
