@@ -3,6 +3,7 @@ import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
 import { useRouteError } from "react-router-dom";
+import { Pagamento } from "@pages/Pagamento/pagamento";
 
 export function CadastroRoute() {
   return (
@@ -41,6 +42,16 @@ export function Root() {
   return (
     <>
       <SiteInstitucional />
+    </>
+  );
+}
+
+export function PagamentoRoute() {
+  return (
+    <>
+      {/* <GoogleOAuthProvider clientId="660667748113-750qm7ibstd5nn13ruah3ro9riqrm43u.apps.googleusercontent.com"> */}
+      <Pagamento />
+      {/* </GoogleOAuthProvider> */}
     </>
   );
 }
