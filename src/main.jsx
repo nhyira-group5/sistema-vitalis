@@ -5,9 +5,10 @@ import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import {CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
+import {PagamentoRoute, CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { Pagamento } from "./pages/Pagamento/pagamento";
 
 WebFont.load({
   google: {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
   {
     path: "cadastro",
     element: <CadastroRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "pagamento",
+    element: <PagamentoRoute />,
     errorElement: <ErrorPage />,
   }
 ]);
