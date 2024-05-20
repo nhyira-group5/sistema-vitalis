@@ -10,15 +10,16 @@ export function CadastroPage() {
 
   return (
     <>
-      <div className="relative grid grid-cols-[0.30fr_0.70fr] grid-rows-1 w-screen h-screen bg-gray500 transition-all duration-500 ease-in-out">
+      <div className={`relative flex w-screen h-screen bg-gray500 transition-all duration-500 ease-in-out`}>
         <SideCard
           tittle={`${userType ? "É um aluno?" : "É um personal?"}`}
           contentText={`${
             userType
-              ? "Bem-vindo à nossa plataforma! Se você é um personal trainer e deseja se cadastrar para acessar recursos exclusivos e trabalhar conosco, clique no botão abaixo para iniciar o processo de registro."
-              : "Bem-vindo à nossa plataforma! Se você está pronto para dar o primeiro passo em direção a uma vida mais saudável e ativa, você está no lugar certo. Clique no botão abaixo para iniciar sua jornada fitness conosco."
+              ? "Bem-vindo à nossa plataforma! Cadastra-se para acessar nossos recursos"
+              : "Bem-vindo à nossa plataforma! Cadastre-se para acessar recursos exclusivos e trabalhar conosco."
           }`}
           userType={userType}
+          style={`absolute transition-all duration-500 ease-in-out transform  ${userType ? '-translate-x-5' : 'translate-x-[70vw]'} z-50`}
           Button={
             <Button
               iconVisibility={false}
@@ -29,29 +30,11 @@ export function CadastroPage() {
           }
         />
 
-        <div className="flex flex-col gap-6 text-gray100 py-20 px-14 w-full">
-          <div className="flex flex-col gap-3 font-mavenPro text-start">
-            <span
-              className={`text-7xl font-bold ${
-                userType ? "text-primary-green300" : "text-alt-purple300"
-              } `}
-            >
-              Cadastro - {userType ? 'Aluno' : 'Personal'}
-            </span>
-
-            <div className="flex flex-col gap-5">
-              <span className="text-lg font-normal">
-                Quer acessar nossa aplicação? Vamos realizar seu cadastro!
-              </span>
-              <span className="text-lg font-normal">
-                Insira algumas informações sobre você para fazermos o cadastro
-                de sua conta!
-              </span>
-            </div>
-          </div>
-
-          {userType ? <AlunoFormCadastro /> : <InstrutorFormCadastro />}
+        <div className={`flex flex-col gap-6 text-gray100 py-10 px-14 w-2/3 h-full transition-all duration-500 ease-in-out absolute transform  ${userType ? 'translate-x-[33vw]' : 'translate-x-2'}`}>
+          {userType ? 
+          <AlunoFormCadastro /> : <InstrutorFormCadastro />}
         </div>
+
       </div>
     </>
   );

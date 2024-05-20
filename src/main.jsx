@@ -5,7 +5,7 @@ import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import {CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
+import {CadastroRoute, LoginRoute, Root, ErrorPage, CadastroParqRoute} from "@routes/routes" 
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
@@ -33,6 +33,11 @@ const router = createBrowserRouter([
   {
     path: "cadastro",
     element: <CadastroRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "cadastroParq",
+    element: <CadastroParqRoute />,
     errorElement: <ErrorPage />,
   }
 ]);

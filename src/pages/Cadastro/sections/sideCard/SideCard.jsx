@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export function SideCard ({tittle, contentText, userType, Button, style}){
     return(
-        <div className={`flex flex-col p-14 bg-gray100 text-gray500  items-center text-center w-full h-screen justify-between ${style}`}>
+        <div className={`flex flex-col p-14 bg-gray100 text-gray500  items-center text-center w-1/3 h-screen justify-around ${style}`}>
             <div className="flex flex-col items-center justify-center  gap-16">
                 {userType ? 
                 (<img className="w-4/5" src={LogoGreenBlackNormalSize} alt="Logo vitalis"/>) 

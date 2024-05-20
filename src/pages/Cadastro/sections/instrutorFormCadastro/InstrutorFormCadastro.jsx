@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Input } from "@components/Input/input";
+import { AltInput } from "@components/Input/input";
 import Button from "@components/Button/button.jsx";
 import { Select } from "@components/Select/select";
 
@@ -355,22 +355,53 @@ export function InstrutorFormCadastro() {
 
   return (
     <>
+         <div className={`${formStep == 1 ? "flex flex-col gap-3" : "hidden"}`}>
+            <span
+              className={`text-7xl font-bold text-alt-purple300`}
+            >
+              Cadastro Personal
+            </span>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-lg font-normal">
+                Quer acessar nossa aplicação? Vamos realizar seu cadastro!
+              </span>
+              <span className="text-lg font-normal">
+                Insira algumas informações sobre você para fazermos o cadastro
+                de sua conta!
+              </span>
+            </div>
+          </div>
+
+
+          <div className={`${formStep == 2 ? "flex flex-col gap-3" : "hidden"}`}>
+            <span
+              className={`text-7xl font-bold text-alt-purple300`}
+            >
+              Seu Endereço!
+            </span>
+
+            <div className="flex flex-col gap-1">
+              <span className="text-lg font-normal">
+                Muito bem! Você está quase lá! Só mais alguns passos...
+              </span>
+              <span className="text-lg font-normal">
+                Agora insira algumas informações sobre a localização da academia aonde você trabalha.
+              </span>
+            </div>
+          </div>
+
+
+
       <form
         onSubmit={handleFirstSubmit}
-        className={`gap-x-16 gap-y-28 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 1 ? "grid " : "hidden"}`}
+        className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 1 ? "lg:flex  xl:grid" : "hidden"}`}
       >
-        <Input
+        <AltInput
           labelContent={"Nome do usuário"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
-          icon={<PencilSimpleLine size={32} color="#000000" />}
+
+          icon={<PencilSimpleLine size={`28`} color="#000000" />}
           placeholder={"Cauê Augusto da Silva Paroquia"}
           nome={"nome"}
           value={formData.nome}
@@ -379,19 +410,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={nomeErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Nickname"}
-          icon={<User size={32} color="#000000" />}
+          icon={<User size={`28`} color="#000000" />}
           placeholder={"CaueBigForças"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"username"}
           value={formData.username}
           onChangeFunction={handleChange}
@@ -399,19 +421,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={usernameErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Email"}
-          icon={<EnvelopeSimple size={32} color="#000000" />}
+          icon={<EnvelopeSimple size={`28`} color="#000000" />}
           placeholder={"caue@gmail.com"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"email"}
           value={formData.email}
           onChangeFunction={handleChange}
@@ -419,19 +432,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={emailErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Data de nascimento"}
-          icon={<CalendarDots size={32} color="#000000" />}
+          icon={<CalendarDots size={`28`} color="#000000" />}
           placeholder={"25/01/2004"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"dtNasc"}
           value={formData.dtNasc}
           onChangeFunction={handleChange}
@@ -440,19 +444,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={idadeErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Senha"}
-          icon={<Lock size={32} color="#000000" />}
+          icon={<Lock size={`28`} color="#000000" />}
           placeholder={"◦◦◦◦◦◦"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"senha"}
           value={formData.senha}
           onChangeFunction={handleChange}
@@ -461,19 +456,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={senhaErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Confirmar senha"}
-          icon={<Lock size={32} color="#000000" />}
+          icon={<Lock size={`28`} color="#000000" />}
           placeholder={"◦◦◦◦◦◦"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"confSenha"}
           value={formData.confSenha}
           onChangeFunction={handleChange}
@@ -482,19 +468,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={confSenhaErroList}
         />
 
-        <Input
+        <AltInput
           labelContent={"CPF"}
-          icon={<Hash size={32} color="#000000" />}
+          icon={<Hash size={`28`} color="#000000" />}
           placeholder={"123.123.123-10"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"CPF"}
           value={formData.CPF}
           onChangeFunction={handleChange}
@@ -518,7 +495,7 @@ export function InstrutorFormCadastro() {
           valid={!isSexoSelecionado}
         />
 
-        <fieldset className="col-span-2 grid justify-center items-start">
+        <fieldset className="col-span-2 grid justify-center items-center">
           <Button
             content={"Continuar"}
             type={"submit"}
@@ -532,21 +509,14 @@ export function InstrutorFormCadastro() {
 
       <form
         onSubmit={handleSecondSubmit}
-        className={`gap-y-28 gap-x-16 h-full overflow-auto grid-cols-2 grid-rows-5 ${formStep == 2 ? "grid" : "hidden"}`}
+        className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 2 ? "lg:flex  xl:grid" : "hidden"}`}
       >
-        <Input
+
+        <AltInput
           labelContent={"CEP"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"0451845"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"cep"}
           value={formData.cep}
           onChangeFunction={handleChange}
@@ -556,76 +526,40 @@ export function InstrutorFormCadastro() {
           invalidMessage={CEPErrorList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Rua/Logradouro"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"Hadock Lobo"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"rua"}
           value={formData.rua}
           onChangeFunction={handleChange}
           disabled={true}
         />
 
-        <Input
+        <AltInput
           labelContent={"Estado"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"São Paulo"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"estado"}
           value={formData.estado}
           onChangeFunction={handleChange}
           disabled={true}
         />
 
-        <Input
+        <AltInput
           labelContent={"Bairro"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"Guaianases"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"bairro"}
           value={formData.bairro}
           onChangeFunction={handleChange}
           disabled={true}
         />
 
-        <Input
+        <AltInput
           labelContent={"Número"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"1313"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"numero"}
           value={formData.numero}
           onChangeFunction={handleChange}
@@ -633,19 +567,10 @@ export function InstrutorFormCadastro() {
           invalidMessage={numeroErrorList}
         />
 
-        <Input
+        <AltInput
           labelContent={"Cidade"}
-          icon={<MapPinArea size={32} color="#000000" />}
+          icon={<MapPinArea size={`28`} color="#000000" />}
           placeholder={"SP"}
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          inputStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
-          separatorStyle={
-            "group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]"
-          }
           nome={"cidade"}
           value={formData.cidade}
           onChangeFunction={handleChange}
@@ -673,6 +598,7 @@ export function InstrutorFormCadastro() {
           />
         </fieldset>
       </form>
+
     </>
   );
 }

@@ -12,8 +12,6 @@ import { useState } from "react";
 import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "@react-oauth/google";
-// import { jwtDecode } from "jwt-decode";
 
 export function LoginPage() {
   const navigate = useNavigate();

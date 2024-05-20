@@ -21,7 +21,7 @@ export function Select({
         className={`${
           labelStyle
             ? labelStyle
-            : " group-focus-within:text-primary-green300 text-lg font-bold pl-[8%]"
+            : " group-focus-within:text-primary-green300 text-lg font-bold pl-[5%]"
         } ${valid ? "text-errorRed" : ""}`}
         htmlFor={id}
       >
@@ -33,10 +33,10 @@ export function Select({
           selectStyle
             ? ` ${selectStyle}`
             : " group-focus-within:!ring-primary-green300"
-        } h-16 p-3 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}
+        } h-14 px-5 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500`}
       >
         <select
-          className="outline-none appearance-none w-full text-gray500 font-mavenPro text-lg"
+          className="outline-none  w-full text-gray500 font-mavenPro text-lg"
           name={nome}
           id={id}
           placeholder={placeholder}
@@ -53,7 +53,6 @@ export function Select({
             </option>
           ))}
         </select>
-        <CaretLineDown size={32} color="#000000" />
       </div>
     </div>
   );
