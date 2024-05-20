@@ -1,9 +1,10 @@
 import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx";
 import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
-import { LoginPage } from "@pages/Login/loginPage.jsx";
 import { useRouteError } from "react-router-dom";
+import { LoginPage } from "@pages/Login/loginPage.jsx";
 import { Pagamento } from "@pages/Pagamento/pagamento";
+import { RelatorioPage } from "../pages/Relatorio/RelatorioPage";
 
 export function CadastroRoute() {
   return (
@@ -49,9 +50,15 @@ export function Root() {
 export function PagamentoRoute() {
   return (
     <>
-      {/* <GoogleOAuthProvider clientId="660667748113-750qm7ibstd5nn13ruah3ro9riqrm43u.apps.googleusercontent.com"> */}
       <Pagamento />
-      {/* </GoogleOAuthProvider> */}
+    </>
+  );
+}
+
+export function RelatorioRoute() {
+  return (
+    <>
+      <RelatorioPage />
     </>
   );
 }
