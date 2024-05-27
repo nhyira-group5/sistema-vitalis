@@ -5,9 +5,12 @@ import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
+
 import {CadastroRoute, LoginRoute, Root, ErrorPage, CadastroParqRoute} from "@routes/routes" 
 
+
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { Pagamento } from "./pages/Pagamento/pagamento";
 
 WebFont.load({
   google: {
