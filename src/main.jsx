@@ -2,15 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import WebFont from "webfontloader";
 import "./index.css";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
+import {
+  RelatorioRoute,
+  PagamentoRoute,
+  CadastroRoute,
+  LoginRoute,
+  Root,
+  ErrorPage,
+  CadastroParqRoute,
+  HomePage
+} from "@routes/routes";
 
-import {CadastroRoute, LoginRoute, Root, ErrorPage, CadastroParqRoute} from "@routes/routes" 
-
-
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import { Pagamento } from "./pages/Pagamento/pagamento";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 WebFont.load({
   google: {
@@ -26,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
   {
     path: "login",
@@ -42,14 +48,24 @@ const router = createBrowserRouter([
     path: "cadastroParq",
     element: <CadastroParqRoute />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "relatorio",
+    element: <RelatorioRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "home",
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </div>
+    <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </div>
   </React.StrictMode>
 );
