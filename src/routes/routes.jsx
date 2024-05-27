@@ -4,8 +4,8 @@ import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
 import { useRouteError } from "react-router-dom";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
 import { Pagamento } from "@pages/Pagamento/pagamento";
-import { RelatorioPage } from "../pages/Relatorio/relatorioPage";
-import { HomePage } from "../pages/Home/homePage";
+import { RelatorioPage } from "@pages/Relatorio/relatorioPage";
+import { HomePage } from "@pages/Home/homePage";
 
 export function CadastroRoute() {
   return (
