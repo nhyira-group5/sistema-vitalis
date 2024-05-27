@@ -12,10 +12,11 @@ import {
   LoginRoute,
   Root,
   ErrorPage,
+  CadastroParqRoute,
+  HomePage
 } from "@routes/routes";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { HomePage } from "./pages/Home/homePage";
 
 WebFont.load({
   google: {
@@ -44,8 +45,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "pagamento",
-    element: <PagamentoRoute />,
+    path: "cadastroParq",
+    element: <CadastroParqRoute />,
     errorElement: <ErrorPage />,
   },
   {
