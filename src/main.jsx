@@ -15,6 +15,7 @@ import {
 } from "@routes/routes";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HomePage } from "./pages/Home/homePage";
 
 WebFont.load({
   google: {
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
     element: <RelatorioRoute />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "home",
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

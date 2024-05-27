@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        'inset-gold-8': 'inset 5px 0px #2B6E36',
+        'inset-green': 'inset 5px 0px #2B6E36',
       },
       colors: {
         'primary-green100': '#daf1de',
