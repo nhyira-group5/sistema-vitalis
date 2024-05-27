@@ -54,6 +54,7 @@ export function AlunoFormCadastro() {
       })
       .catch((error) => {
         console.error("ele num quer nao", error);
+        
         toast.error(
           "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
         );
@@ -216,13 +217,33 @@ export function AlunoFormCadastro() {
   };
 
   return (
+  <>
+    <div className="flex flex-col gap-3 font-mavenPro text-start">
+    <span
+      className={`text-7xl font-bold text-primary-green300`} 
+    >
+      Cadastro Aluno
+    </span>
+
+    <div className="flex flex-col gap-1">
+      <span className="text-lg font-normal">
+        Quer acessar nossa aplicação? Vamos realizar seu cadastro!
+      </span>
+      <span className="text-lg font-normal">
+        Insira algumas informações sobre você para fazermos o cadastro
+        de sua conta!
+      </span>
+    </div>
+  </div>
+
     <form
       onSubmit={handleSubmit}
-      className="gap-x-16 gap-y-28 h-full  grid grid-cols-2 grid-rows-5 overflow-auto"
+      className="lg:gap-y-10 lg:h-full lg:flex lg: flex-col lg:overflow-auto
+                 xl:gap-x-16 xl:gap-y-0 xl:h-full  xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto"
     >
       <Input
         labelContent={"Nome do usuário"}
-        icon={<PencilSimpleLine size={32} color="#000000" />}
+        icon={<PencilSimpleLine size={28} color="#000000" />}
         placeholder={"Cauê Augusto da Silva Paroquia"}
         nome={"nome"}
         value={formData.nome}
@@ -233,7 +254,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"Nickname"}
-        icon={<User size={32} color="#000000" />}
+        icon={<User size={28} color="#000000" />}
         placeholder={"CaueBigForças"}
         nome={"username"}
         value={formData.username}
@@ -244,7 +265,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"Email"}
-        icon={<EnvelopeSimple size={32} color="#000000" />}
+        icon={<EnvelopeSimple size={28} color="#000000" />}
         placeholder={"caue@gmail.com"}
         nome={"email"}
         value={formData.email}
@@ -255,7 +276,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"Data de nascimento"}
-        icon={<CalendarDots size={32} color="#000000" />}
+        icon={<CalendarDots size={28} color="#000000" />}
         placeholder={"25/01/2004"}
         nome={"dtNasc"}
         value={formData.dtNasc}
@@ -267,7 +288,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"Senha"}
-        icon={<Lock size={32} color="#000000" />}
+        icon={<Lock size={28} color="#000000" />}
         placeholder={"◦◦◦◦◦◦"}
         nome={"senha"}
         value={formData.senha}
@@ -279,7 +300,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"Confirmar senha"}
-        icon={<Lock size={32} color="#000000" />}
+        icon={<Lock size={28} color="#000000" />}
         placeholder={"◦◦◦◦◦◦"}
         nome={"confSenha"}
         value={formData.confSenha}
@@ -291,7 +312,7 @@ export function AlunoFormCadastro() {
 
       <Input
         labelContent={"CPF"}
-        icon={<Hash size={32} color="#000000" />}
+        icon={<Hash size={28} color="#000000" />}
         placeholder={"123.123.123-10"}
         nome={"CPF"}
         value={formData.CPF}
@@ -308,9 +329,10 @@ export function AlunoFormCadastro() {
         id="sexo"
         nome="sexo"
         valid={!isSexoSelecionado}
+        placeholder={"Selecione um sexo"}
       />
 
-      <fieldset className="col-span-2 grid justify-center items-start">
+      <fieldset className="col-span-2 grid justify-center items-center">
         <Button
           content={"Criar conta"}
           type={"submit"}
@@ -320,5 +342,6 @@ export function AlunoFormCadastro() {
         />
       </fieldset>
     </form>
+    </>
   );
 }

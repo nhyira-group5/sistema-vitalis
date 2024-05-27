@@ -5,7 +5,9 @@ import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import {PagamentoRoute, CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
+
+import {CadastroRoute, LoginRoute, Root, ErrorPage, CadastroParqRoute} from "@routes/routes" 
+
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { Pagamento } from "./pages/Pagamento/pagamento";
@@ -37,8 +39,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "pagamento",
-    element: <PagamentoRoute />,
+    path: "cadastroParq",
+    element: <CadastroParqRoute />,
     errorElement: <ErrorPage />,
   }
 ]);

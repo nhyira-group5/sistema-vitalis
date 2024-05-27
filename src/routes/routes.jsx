@@ -1,9 +1,9 @@
 import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx";
 import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
-// import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
 import { useRouteError } from "react-router-dom";
-import { Pagamento } from "@pages/Pagamento/pagamento";
+
+import {CadastroParqPage} from "@pages/CadastroParq/CadastroParqPage.jsx";
 
 export function CadastroRoute() {
   return (
@@ -34,6 +34,14 @@ export function LoginRoute() {
       {/* <GoogleOAuthProvider clientId="660667748113-750qm7ibstd5nn13ruah3ro9riqrm43u.apps.googleusercontent.com"> */}
       <LoginPage />
       {/* </GoogleOAuthProvider> */}
+    </>
+  );
+}
+
+export function CadastroParqRoute() {
+  return (
+    <>
+      <CadastroParqPage />
     </>
   );
 }
