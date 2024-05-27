@@ -1,22 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import WebFont from "webfontloader";
 import "./index.css";
+import React from "react";
+import WebFont from "webfontloader";
+import ReactDOM from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import {
   RelatorioRoute,
-  PagamentoRoute,
   CadastroRoute,
   LoginRoute,
   Root,
   ErrorPage,
   CadastroParqRoute,
-  HomePage
+  HomeRoute,
 } from "@routes/routes";
-
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 WebFont.load({
   google: {
@@ -56,9 +54,9 @@ const router = createBrowserRouter([
   },
   {
     path: "home",
-    element: <HomePage />,
+    element: <HomeRoute />,
     errorElement: <ErrorPage />,
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
