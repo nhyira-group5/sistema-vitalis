@@ -58,7 +58,10 @@ export default {
         slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         rotateAndInvert: 'rotateAndInvert 0.5s forwards'
       },
+
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 }

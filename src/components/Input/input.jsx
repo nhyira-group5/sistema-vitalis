@@ -202,3 +202,69 @@ export function AltInput({inputType, inputStyle, labelContent, labelStyle, separ
   );
 
 }
+
+
+export function DisplayInput({inputType, inputStyle, labelContent, labelStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, variant}) {
+  
+
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  return (
+    <div className="relative group h-fit">
+      <Label.Root
+
+        className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' text-gray500 text-md font-bold'}`}
+        for={id}
+      >
+        {labelContent}
+      </Label.Root>
+
+
+      <div className={`${valid ? '  !border-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : '  h-fit py-1 relative flex w-full border-b-[1px] border-gray500 outline-none '} `}>
+      
+
+        <input
+          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
+          disabled={disabled}
+          placeholder={placeholder}
+          onChange={onChangeFunction}
+          onBlur={onBlurFunction}
+          value={value}
+          id={id}
+          name={nome}
+          type={
+            inputType === "password"
+              ? passwordVisibility
+                ? "text"
+                : "password"
+              : inputType
+          }
+        />
+
+        {inputType === "password" ? (
+          passwordVisibility ? (
+            <button
+              type="button"
+              onClick={() => setPasswordVisibility(!passwordVisibility)}
+            >
+              <Eye color="#000000" size={24} />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setPasswordVisibility(!passwordVisibility)}
+            >
+              <EyeSlash color="#000000" size={24} />
+            </button>
+          )
+        ) : (
+          ""
+        )}
+
+
+      </div>
+    </div>
+  );
+
+}
+
+

@@ -45,7 +45,7 @@ export function Select({
           onBlur={() => setIsSelectOpen(false)}
         >
           <option value="" selected disabled>
-            Selecione um sexo
+            {placeholder}
           </option>
           {options.map((option) => (
             <option key={option} value={option}>

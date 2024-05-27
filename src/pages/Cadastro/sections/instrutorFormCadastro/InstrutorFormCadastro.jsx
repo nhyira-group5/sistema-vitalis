@@ -493,6 +493,7 @@ export function InstrutorFormCadastro() {
           id="sexo"
           nome="sexo"
           valid={!isSexoSelecionado}
+          placeholder={"Selecione um sexo"}
         />
 
         <fieldset className="col-span-2 grid justify-center items-center">
