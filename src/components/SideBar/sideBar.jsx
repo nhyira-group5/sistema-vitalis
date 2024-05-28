@@ -1,27 +1,63 @@
-import imgUsuario from "@assets/app/usuario.svg";
-import imgCaderno from "@assets/app/caderno.svg";
-import imgCalendario from "@assets/app/calendario.svg";
-import imgCasa from "@assets/app/casa.svg";
-import imgChat from "@assets/app/chat.svg";
-import imgHalter from "@assets/app/halter.svg";
-import imgPanela from "@assets/app/panela.svg";
-import imgUsuarios from "@assets/app/usuarios.svg";
-import imgQuadro from "@assets/app/quadro.svg";
-import { IconHome } from "../../components/SideBar/iconHome";
+import { SideBarItem } from "@components/SideBar/sideBarItem";
+import {
+  UserCircle,
+  HouseLine,
+  Barbell,
+  CookingPot,
+  Notepad,
+  Users,
+  Chat,
+  Images
+} from "@phosphor-icons/react";
+
+import * as Separator from '@radix-ui/react-separator';
+
 
 export function SideBar() {
   return (
-    <div className="w-fit h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col">
-      <IconHome img={imgUsuario} />
-      <hr />
-      <IconHome img={imgCasa} />
-      <IconHome img={imgHalter} />
-      <IconHome img={imgPanela} selected={true} />
-      <IconHome img={imgCaderno} />
-      <IconHome img={imgUsuarios} />
-      <IconHome img={imgCalendario} />
-      <IconHome img={imgChat} />
-      <IconHome img={imgQuadro} />
-    </div>
+    <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center ">
+          <SideBarItem 
+              URI={"/Perfil"} 
+              Icon={<UserCircle size={40}/>} 
+              />
+              
+          <div className="w-full px-2 my-3">
+            <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full " />
+          </div>
+          <SideBarItem 
+              URI={"/home"} 
+              Icon={<HouseLine size={28} />} 
+              />
+
+          <SideBarItem 
+              URI={"/rotinas"} 
+              Icon={<Barbell size={28} />} 
+              />
+
+          <SideBarItem 
+              URI={"/refeicoes"} 
+              Icon={<CookingPot size={28} />} 
+              />
+
+          <SideBarItem 
+              URI={"/relatorio"} 
+              Icon={<Notepad size={28} />} 
+              />
+          
+          <SideBarItem 
+              URI={"/acharPersonalAcademia"} 
+              Icon={<Users size={28} />} 
+              />
+
+          <SideBarItem 
+              URI={"/chat"} 
+              Icon={<Chat size={28} />} 
+              />
+
+          <SideBarItem 
+              URI={"/mural"} 
+              Icon={<Images size={28} />} 
+              />
+    </nav>
   );
 }

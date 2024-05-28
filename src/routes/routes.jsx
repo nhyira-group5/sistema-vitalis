@@ -1,12 +1,25 @@
 import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx";
 import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
-
-// import { GoogleOAuthProvider } from "@react-oauth/google";
+import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage.jsx";
 import { useRouteError } from "react-router-dom";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
+
 import { Pagamento } from "@pages/Pagamento/pagamento";
+
 import { RelatorioPage } from "@pages/Relatorio/relatorioPage";
+
 import { HomePage } from "@pages/Home/homePage";
+
+import {RotinasPage} from "@pages/Rotinas/RotinasPage";
+
+import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
+
+import {AcharPersonalAcademiaPage} from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
+
+import {ChatPage} from "@pages/Chat/ChatPage";
+
+import {MuralPage} from "@pages/Mural/MuralPage"
+
 
 export function CadastroRoute() {
   return (
@@ -34,9 +47,47 @@ export function ErrorPage() {
 export function LoginRoute() {
   return (
     <>
-      {/* <GoogleOAuthProvider clientId="660667748113-750qm7ibstd5nn13ruah3ro9riqrm43u.apps.googleusercontent.com"> */}
       <LoginPage />
-      {/* </GoogleOAuthProvider> */}
+    </>
+  );
+}
+
+export function AcharPersonalAcademiaRoute() {
+  return (
+    <>
+      <AcharPersonalAcademiaPage />
+    </>
+  );
+}
+
+export function ChatRoute() {
+  return (
+    <>
+      <ChatPage />
+    </>
+  );
+}
+
+export function MuralRoute() {
+  return (
+    <>
+      <MuralPage />
+    </>
+  );
+}
+
+export function RotinasRoute() {
+  return (
+    <>
+      <RotinasPage />
+    </>
+  );
+}
+
+export function RefeicoesRoute() {
+  return (
+    <>
+      <RefeicoesPage />
     </>
   );
 }
