@@ -14,6 +14,12 @@ import * as Separator from '@radix-ui/react-separator';
 
 
 export function SideBar() {
+  
+  // const location = useLocation();
+  // const path = location.pathname;
+  // if(path = "/home") {
+
+  // }
   return (
     <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center ">
           <SideBarItem 
