@@ -10,6 +10,12 @@ import imgQuadro from "@assets/app/quadro.svg";
 import { IconHome } from "../../components/SideBar/iconHome";
 
 export function SideBar() {
+  
+  // const location = useLocation();
+  // const path = location.pathname;
+  // if(path = "/home") {
+
+  // }
   return (
     <div className="w-fit h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col">
       <IconHome img={imgUsuario} />
