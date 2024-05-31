@@ -1,4 +1,3 @@
-import { useLocation } from "react-router";
 import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
 import { Message } from "../../components/Message/message";
@@ -18,147 +17,211 @@ export function HomePage() {
   const [activityName, setActivityName] = useState("");
   const [totalAmountExercises, setTotalAmountExercises] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
+  const [totalAmountDays, setTotalAmountDays] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
+  const [currentyAmountDays, setCurrentyAmountDays] = useState(0);
   const [activitySelected, setActivitySelected] = useState(false);
+  const [activitiesDay, setActivitiesDay] = useState([]);
 
-  useEffect (() => {
-    setNicknameUser(nickname)
-    
-    generateCurrentyAmountExercises()
-    generateCurrentyAmountMeals()
-    
-    generateTotalAmountExercises()
-    generateTotalAmountMeals()
-  }, [])
+  useEffect(() => {
+    setNicknameUser(nickname);
+
+    generateActivitiesDay();
+
+    console.log(activitiesDay)
+    generateCurrentyAmountExercises();
+    generateCurrentyAmountMeals();
+    generateCurrentyAmountDays();
+
+    generateTotalAmountExercises();
+    generateTotalAmountMeals();
+    generateTotalAmountDays();
+  }, []);
 
   function handleSelectActivity(e) {
     setActivityType(e.tipo);
     setActivityName(e.nome);
+
     setActivitySelected(true);
   }
 
+  // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
+
   function handleTotalAmount(activity) {
-    const response = listaObjeto.filter(element => element.tipo == activity)
-    console.log("Lista de atividades do tipo " + activity + ": " + response)
-    return response
+    const response = listaObjeto.filter((element) => element.tipo == activity);
+    console.log("Lista de atividades do tipo " + activity + ": " + response);
+    return response;
   }
 
   function generateTotalAmountExercises() {
-    const totalAmountExercises = handleTotalAmount("Exercício").length
-    console.log("Quantidade de exercícios: " + totalAmountExercises)
-    setTotalAmountExercises(totalAmountExercises)
+    const totalAmountExercises = handleTotalAmount("Exercício").length;
+    console.log("Quantidade de exercícios: " + totalAmountExercises);
+    setTotalAmountExercises(totalAmountExercises);
   }
 
   function generateTotalAmountMeals() {
-    const amountMealsTotal = handleTotalAmount("Refeição").length
-    console.log("Quantidade de refeições: " + amountMealsTotal)
-    setTotalAmountMeals(amountMealsTotal)
+    const amountMealsTotal = handleTotalAmount("Refeição").length;
+    console.log("Quantidade de refeições: " + amountMealsTotal);
+    setTotalAmountMeals(amountMealsTotal);
   }
+
+  function generateTotalAmountDays() {
+    const totalDays = listaSemanal.length;
+    setTotalAmountDays(totalDays);
+  }
+
+  // QUANTIDADES ATUAIS DE EXERCÍCIO, REFEIÇÕES E DIAS SEMANAIS
 
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
-    const response = array.filter(element => element.concluida == true)
-    console.log("Lista de atividades do tipo " + activity + " que foram concluidas: " + response)
-    return response
+    const response = array.filter((element) => element.concluido == true);
+    console.log(
+      "Lista de atividades do tipo " +
+        activity +
+        " que foram concluidos: " +
+        response
+    );
+    return response;
   }
 
   function generateCurrentyAmountExercises() {
-    const currentyAmountExercises = handleCurrentyAmount("Exercício").length
-    console.log("Quantidade de exercícios concluídos: " + currentyAmountExercises)
-    setCurrentyAmountExercises(currentyAmountExercises)
+    const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
+    console.log(
+      "Quantidade de exercícios concluídos: " + currentyAmountExercises
+    );
+    setCurrentyAmountExercises(currentyAmountExercises);
   }
 
   function generateCurrentyAmountMeals() {
-    const currentyAmountMeals = handleCurrentyAmount("Refeição").length
-    console.log("Quantidade de refeições concluídas: " + currentyAmountMeals)
-    setCurrentyAmountMeals(currentyAmountMeals)
+    const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
+    console.log("Quantidade de refeições concluídas: " + currentyAmountMeals);
+    setCurrentyAmountMeals(currentyAmountMeals);
   }
 
-  const nickname = "Squirte"
+  function generateCurrentyAmountDays() {
+    const currentyDays = listaSemanal.filter(
+      (element) => element.concluido == true
+    ).length;
+    setCurrentyAmountDays(currentyDays);
+  }
+
+  // GERAR ATIVIDADES DO DIA
+
+  function generateActivitiesDay() {
+    const activityDays = listaSemanal.find(
+      (element) => element.concluido == true
+    );
+
+    console.log(activityDays.atividades);
+    console.log(typeof activityDays.atividades);
+    console.log(listaObjeto);
+    console.log(typeof listaObjeto);
+    setActivitiesDay([...activitiesDay, activityDays.atividades]);
+  }
+
+  const nickname = "Squirte";
 
   const listaSemanal = [
     {
-      dia: "Segunda",
+      dia: "ROTINA UM",
       concluido: true,
       atividades: [
         {
           tipo: "Exercício",
           nome: "Crucifixo",
-          concluida: true
+          concluido: true,
+          description:
+            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
         },
         {
           tipo: "Refeição",
           nome: "Torta de frango",
-          concluida: false
+          concluido: false,
+          description:
+            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
         },
         {
           tipo: "Exercício",
           nome: "Supino",
-          concluida: false
+          concluido: false,
+          description:
+            "Id consequatur quasi id explicabo autem aut consequatur totam est eligendi rerum At corporis libero. Aut numquam doloremque qui consequatur quas aut quibusdam obcaecati At asperiores ipsam et quibusdam distinctio et ipsum voluptatem quo quia voluptatem. Ut tempora temporibus quo veniam sint est architecto fugit sed eius internos aut consequatur dolore. Aut repudiandae omnis hic expedita adipisci in accusantium rerum aut galisum labore non consectetur modi.",
         },
         {
           tipo: "Refeição",
           nome: "Torta de frango",
-          concluida: false
+          concluido: true,
+          description:
+            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
         },
         {
           tipo: "Refeição",
           nome: "Coxinha",
-          concluida: true
+          concluido: true,
+          description:
+            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
         },
       ],
-      dia: "Terça",
+    },
+    {
+      dia: "ROTINA DOIS",
       concluido: true,
       atividades: [
         {
           tipo: "Refeição",
           nome: "Torta de frango",
-          concluida: false
+          concluido: false,
+          description:
+            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
         },
         {
           tipo: "Refeição",
           nome: "Coxinha",
-          concluida: true
+          concluido: true,
+          description:
+            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
         },
       ],
-      dia: "Quarta",
-      concluido: true,
+    },
+    {
+      dia: "ROTINA TRÊS",
+      concluido: false,
       atividades: [
         {
           tipo: "Refeição",
           nome: "Coxinha",
-          concluida: true
+          concluido: true,
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 
   const listaObjeto = [
     {
       tipo: "Exercício",
-      nome: "Crucifixo",
-      concluida: true
+      nome: "SOCOROSO",
+      concluido: true,
     },
     {
       tipo: "Refeição",
       nome: "Torta de frango",
-      concluida: false
+      concluido: false,
     },
     {
       tipo: "Exercício",
       nome: "Supino",
-      concluida: false
+      concluido: false,
     },
     {
       tipo: "Refeição",
       nome: "Torta de frango",
-      concluida: false
+      concluido: false,
     },
     {
       tipo: "Refeição",
       nome: "Coxinha",
-      concluida: true
+      concluido: true,
     },
   ];
 
@@ -190,12 +253,15 @@ export function HomePage() {
                 <AtividadeCard
                   icon={<CalendarCheck size={28} />}
                   title="Meta de dia"
+                  currentAmount={currentyAmountDays}
+                  totalAmount={totalAmountDays}
                 />
               </div>
               <div className="w-full h-[55%] flex flex-col gap-5 overflow-hidden overflow-y-scroll">
-                {listaObjeto.map((objeto) => {
+                {listaObjeto.map((objeto, index) => {
                   return (
                     <AtividadeOption
+                      key={index}
                       icon={<Barbell size={28} color="#2B6E36" />}
                       activity={objeto.tipo}
                       nameActivity={objeto.nome}
@@ -212,7 +278,7 @@ export function HomePage() {
             </div>
             <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
               <h1 className="w-[60%] text-wrap ">
-                Observe o seu resultado do seu esforço com o seu 
+                Observe o seu resultado do seu esforço com o seu
                 <span className="font-bold"> mural de fotos!</span>
               </h1>
               <button className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
