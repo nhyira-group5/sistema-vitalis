@@ -1,38 +1,51 @@
-import { CaretRight } from "@phosphor-icons/react";
+import { Barbell, CaretRight, CookingPot } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
-export function AtividadeOption({ icon, activity, nameActivity, done, onClickFunction }) {
-  const [colorBg, setColorBg] = useState("[#2B6E36]");
-  const [colorText, setColorText] = useState("[#FFFFFF]");
+export function AtividadeOption({
+  activity,
+  nameActivity,
+  done,
+  onClickFunction,
+}) {
+  const [colorText, setColorText] = useState("");
+  const [colorIcon, setColorIcon] = useState("");
 
-  //   useEffect(() => {
-  //     console.log(`Done mudou para ${done}`);
-  //     changeColor()
-  //   }, [done]);
+  useEffect(() => {
+    changeColor();
+  }, [done]);
 
-  //   function changeColor() {
-  //     if (done) {
-  //         let temp = colorBg;
-  //         setColorBg(colorText);
-  //         setColorText(temp);
-  //       }
-  //   }
-
+  function changeColor() {
+    if (done) {
+      setColorIcon("#FFFFFF");
+      setColorText("[#FFFFFF]");
+    } else {
+      setColorIcon("#2B6E36");
+      setColorText("[#2B6E36]");
+    }
+  }
 
   return (
     <div
-      className={`h-20 w-full flex items-center justify-between pl-4 bg-[${colorText}] rounded-xl shadow-md cursor-pointer`}
+      className={`h-20 w-full flex items-center justify-between pl-4 bg-${
+        done ? "[#48B75A]" : "[#FFFFFF]"
+      } rounded-xl shadow-md cursor-pointer`}
       onClick={onClickFunction}
     >
       <div className="flex gap-2 py-4">
-        {icon}
-        <span className={`text-${colorBg} font-semibold`}>
-          {activity}:
+        {activity == "Exercício" ? (
+          <Barbell size={28} color={colorIcon} />
+        ) : (
+          <CookingPot size={28} color={colorIcon} />
+        )}
+        <span className={`text-${colorText} font-semibold`}>{activity}:</span>
+        <span
+          className={`font-medium text-${colorText} ${done && "line-through"}`}
+        >
+          {nameActivity}
         </span>
-        <span className="font-medium">{nameActivity}</span>
       </div>
       <div className="h-full flex items-center bg-[#91D49C] p-1 rounded-xl rounded-ss-none rounded-es-none">
-        <CaretRight size={20} color="white"/>
+        <CaretRight size={20} color="white" />
       </div>
     </div>
   );
