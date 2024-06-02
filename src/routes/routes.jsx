@@ -9,7 +9,6 @@ import { Pagamento } from "@pages/Pagamento/pagamento";
 import { RelatorioPage } from "@pages/Relatorio/relatorioPage";
 
 import { HomePage } from "@pages/Home/homePage";
-import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage";
 
 import {RotinasPage} from "@pages/Rotinas/RotinasPage";
 
