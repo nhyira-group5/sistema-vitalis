@@ -13,23 +13,25 @@ export function RefeicoesPage() {
 
     function getRefeicoes(){
         //blablablarequisicao
+        const refeicoesResponse =[
+          {id: 1,
+           nome: "Boquete tornado",
+           img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
+          },
+          {id: 2,
+           nome: "Garganta Profunda (Deep Throat)",
+           img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
+          },
+          {id: 3,
+           nome: "Boquete parafuso",
+           img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
+          }
+        ];
+
         setRefeicoes([...refeicoes,...refeicoesResponse]);
     }
     
-      const refeicoesResponse =[
-        {id: 1,
-         nome: "Boquete tornado",
-         img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
-        },
-        {id: 2,
-         nome: "Garganta Profunda (Deep Throat)",
-         img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
-        },
-        {id: 3,
-         nome: "Boquete parafuso",
-         img:"https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/980.png"
-        }
-      ];
+
     
       useEffect(()=>{
         getRefeicoes();

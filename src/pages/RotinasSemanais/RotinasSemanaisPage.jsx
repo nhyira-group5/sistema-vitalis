@@ -36,20 +36,24 @@ export function RotinasSemanaisPage() {
          treinos: [
             {id: 1,
              nome: 'Treino 1',
-             exerciciosFeitos: 2,
-             totalExercicios: 5
+             exerciciosFeitos: 5,
+             totalExercicios: 5,
+             concluido: true
             },
             {id: 2,
              nome: 'Treino 2',
-             exerciciosFeitos: 3,
-             totalExercicios: 8
+             exerciciosFeitos: 8,
+             totalExercicios: 8,
+             concluido: true
             },
             {id: 3,
              nome: 'Treino 3',
-             exerciciosFeitos: 1,
-             totalExercicios: 7
+             exerciciosFeitos: 7,
+             totalExercicios: 7,
+             concluido: true
             }
-         ]   
+         ],
+         concluido: true   
         },
         {id: 2,
             nome: 'Rotina semanal 2',
@@ -57,24 +61,29 @@ export function RotinasSemanaisPage() {
                {id: 4,
                 nome: 'Treino 4',
                 exerciciosFeitos: 0,
-                totalExercicios: 10
+                totalExercicios: 10,
+                concluido: false
                },
                {id: 5,
                 nome: 'Treino 5',
                 exerciciosFeitos: 0,
-                totalExercicios: 12
+                totalExercicios: 12,
+                concluido: false
                },
                {id: 6,
                 nome: 'Treino 6',
                 exerciciosFeitos: 0,
-                totalExercicios: 15
+                totalExercicios: 15,
+                concluido: false
                },
                {id: 7,
                 nome: 'Treino 7',
                 exerciciosFeitos: 0,
-                totalExercicios: 9
+                totalExercicios: 9,
+                concluido: false
                }
-            ]   
+            ],
+            concluido: false
            }
       ];
 
@@ -89,19 +98,19 @@ export function RotinasSemanaisPage() {
                     <div className="flex flex-col gap-3 p-5">
                         <span className="text-[#2B6E36] font-semibold text-2xl">Rotinas semanais</span>
                     </div>
-                    <div className="flex h-full">
-                        <div className="w-1/2 h-full flex flex-col gap-5 p-5 ">
-
+                    <div className="flex h-full overflow-hidden">
+                        <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
                             {rotinas.map(rotina => (
                                 <RotinaCard key={rotina.id}
                                             rotina={rotina}
                                             onClickFunction={() => {handleClick(rotina.id)}}
-                                            rotinaSelecionada={rotinaSelecionada}/>
+                                            rotinaSelecionada={rotinaSelecionada}
+                                           />
                             ))}
 
                         </div>
 
-                        <div className={`relative w-1/2 flex flex-col gap-5 p-5 rounded-xl overflow-hidden`}>
+                        <div className={`relative w-1/2 h-full overflow-auto flex flex-col gap-5 p-5 rounded-xl`}>
                         {!rotinaSelecionada && (
                             <div className="h-full w-full flex items-center justify-center">
                                 <span>Selecione uma rotina!</span>

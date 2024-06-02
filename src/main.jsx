@@ -70,7 +70,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-  path: "rotinas/treino/:treinoId",
+  path: "rotinas/treino/:idTreino",
   element: <TreinoRoute />,
   errorElement: <ErrorPage />,
   },
