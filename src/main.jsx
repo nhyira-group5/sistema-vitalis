@@ -14,11 +14,13 @@ import {
   ErrorPage,
   CadastroParqRoute,
   HomeRoute,
-  RotinasRoute,
+  RotinasSemanaisRoute,
+  TreinoRoute,
   RefeicoesRoute,
   AcharPersonalAcademiaRoute,
   ChatRoute,
-  MuralRoute
+  MuralRoute,
+  RefeicaoRoute
 } from "@routes/routes";
 
 WebFont.load({
@@ -63,9 +65,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "Rotinas",
-    element: <RotinasRoute />,
+    path: "rotinas",
+    element: <RotinasSemanaisRoute />,
     errorElement: <ErrorPage />,
+  },
+  {
+  path: "rotinas/treino/:treinoId",
+  element: <TreinoRoute />,
+  errorElement: <ErrorPage />,
   },
   {
     path: "refeicoes",
@@ -73,7 +80,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "acharPersonalAcademia",
+    path: "refeicoes/:refeicaoId",
+    element: <RefeicaoRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "achar_personal_academia",
     element: <AcharPersonalAcademiaRoute />,
     errorElement: <ErrorPage />,
   },

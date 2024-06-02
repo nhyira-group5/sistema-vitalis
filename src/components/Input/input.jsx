@@ -5,7 +5,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Label from "@radix-ui/react-label";
 import { useState } from "react";
 
-export function Input({inputType, inputStyle, labelContent, labelStyle, separatorStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, variant}) {
+export function Input({inputType, inputStyle, labelContent, labelStyle, separatorStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, contentStyle}) {
   
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -32,7 +32,7 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
         </div>
 
         <input
-          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
+          className={` ${valid ? '  !text-errorRed ' : ''} ${contentStyle ? ` ${contentStyle}` : 'appearance-none font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500 '}`}
           
           disabled={disabled}
           placeholder={placeholder}

@@ -21,7 +21,7 @@ export function SideBar() {
 
   // }
   return (
-    <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center ">
+    <nav className="h-fit rounded-xl border-1 bg-primary-green300 flex flex-col w-fit items-center justify-center ">
           <SideBarItem 
               URI={"/Perfil"} 
               Icon={<UserCircle size={40}/>} 
