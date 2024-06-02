@@ -13,7 +13,7 @@ import {AcharPersonalAcademiaPage} from "@pages/AcharPersonalAcademia/AcharPerso
 import {ChatPage} from "@pages/Chat/ChatPage";
 import {MuralPage} from "@pages/Mural/MuralPage"
 import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";
-
+import {ExercicioPage} from "@pages/Exercicio/ExercicioPage";
 
 
 export function CadastroRoute() {
@@ -83,6 +83,14 @@ export function TreinoRoute() {
   return (
     <>
       <TreinoPage />
+    </>
+  );
+}
+
+export function ExercicioRoute() {
+  return (
+    <>
+      <ExercicioPage />
     </>
   );
 }

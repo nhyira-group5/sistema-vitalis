@@ -8,7 +8,7 @@ import { X, Plus, Check } from "@phosphor-icons/react";
   const variant2 = {buttonStyle: "text-gray100 bg-errorRed rounded-full font-bold px-5 py-4 hover:bg-errorRed/75 transition-all flex items-center gap-1",
                     icon: <X/>};
                     
-  const variant3 = {buttonStyle: "text-gray100 bg-successBlue rounded-full font-bold px-5 py-4 hover:bg-successBlue/50 transition-all flex items-center gap-1",
+  const variant3 = {buttonStyle: "text-gray100 bg-successBlue rounded-full font-bold px-5 py-4 hover:bg-successBlue/90 transition-all flex items-center gap-1",
                     icon: <Check/>};
 
   const selectedVariant = variant === "create" ? variant1 : variant === "decline" ? variant2 : variant === "accept" ? variant3 : variant1;

@@ -20,7 +20,8 @@ import {
   AcharPersonalAcademiaRoute,
   ChatRoute,
   MuralRoute,
-  RefeicaoRoute
+  RefeicaoRoute,
+  ExercicioRoute
 } from "@routes/routes";
 
 WebFont.load({
@@ -74,6 +75,11 @@ const router = createBrowserRouter([
   element: <TreinoRoute />,
   errorElement: <ErrorPage />,
   },
+  {
+    path: "rotinas/treino/:idTreino/exercicio/:idExercicio",
+    element: <ExercicioRoute />,
+    errorElement: <ErrorPage />,
+    },
   {
     path: "refeicoes",
     element: <RefeicoesRoute />,

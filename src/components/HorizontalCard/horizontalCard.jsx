@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 import {
     CaretRight,
     Barbell,
-    Check
+    Check,
+    Info
   } from "@phosphor-icons/react";
 
 export function RotinaCard({rotina, onClickFunction, rotinaSelecionada}){
@@ -45,3 +47,33 @@ export function TreinoCard({treino}){
     </Link>
   )
 }
+
+export function InfoCard({infoMessage, titulo, content}){
+  return(
+      <div className="bg-white rounded-xl p-2 flex flex-col items-start gap-4 justify-end w-1/3 relative h-full">
+        <Tooltip.Provider delayDuration={100} >
+            <Tooltip.Root>
+            <Tooltip.Trigger side="top" className="absolute right-1 top-1">
+                <Info size={25}/>
+            </Tooltip.Trigger>
+
+
+            <Tooltip.Portal>  
+                <Tooltip.Content
+                    side={"top"}
+                    className={`data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-gray100 px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]`}
+                    sideOffset={5}
+                >
+                    <span>{infoMessage}</span>
+                </Tooltip.Content>
+                </Tooltip.Portal>
+
+            </Tooltip.Root>
+        </Tooltip.Provider>
+
+        <span className="text-lg text-primary-green300 font-semibold">{titulo}</span>
+        <span className="text-xl font-semibold">{content}</span>
+      </div>
+  )
+}
+
