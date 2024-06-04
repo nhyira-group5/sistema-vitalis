@@ -19,15 +19,18 @@ export function SideBar() {
 
   // }
   return (
+
     <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center ">
       <SideBarItem URI={"/perfil"} Icon={<UserCircle size={40} />} />
 
       <div className="w-full px-2 my-3">
         <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full " />
       </div>
+
       <SideBarItem URI={"/home"} Icon={<HouseLine size={28} />} />
 
       <SideBarItem URI={"/rotinas"} Icon={<Barbell size={28} />} />
+
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />
 

@@ -14,13 +14,16 @@ import {
   ErrorPage,
   CadastroParqRoute,
   HomeRoute,
-  RotinasRoute,
+  RotinasSemanaisRoute,
+  TreinoRoute,
   RefeicoesRoute,
   ChatRoute,
   MuralRoute,
+  RefeicaoRoute,
+  ExercicioRoute,
   PerfilRoute,
+  BuscarPersonalRoute
 } from "@routes/routes";
-import { BuscarPersonalRoute } from "./routes/routes";
 
 WebFont.load({
   google: {
@@ -65,12 +68,22 @@ const router = createBrowserRouter([
   },
   {
     path: "rotinas",
-    element: <RotinasRoute />,
+    element: <RotinasSemanaisRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "refeicoes",
-    element: <RefeicoesRoute />,
+  path: "rotinas/treino/:idTreino",
+  element: <TreinoRoute />,
+  errorElement: <ErrorPage />,
+  },
+  {
+    path: "rotinas/treino/:idTreino/exercicio/:idExercicio",
+    element: <ExercicioRoute />,
+    errorElement: <ErrorPage />,
+    },
+  {
+    path: "refeicoes/:refeicaoId",
+    element: <RefeicaoRoute />,
     errorElement: <ErrorPage />,
   },
   {
