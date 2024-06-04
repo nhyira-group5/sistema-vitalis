@@ -9,24 +9,43 @@ import {
   CookingPot,
 } from "@phosphor-icons/react";
 import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { key } from "localforage";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
+  
+  const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
+  const [activityDescription, setActivityDescription] = useState("");
+  const [activityMedia, setActivityMedia] = useState("");
+  const [activityDuration, setActivityDuration] = useState("");
+  const [activityRepetitions, setActivityRepetitions] = useState("");
+  const [activitySeries, setActivitySeries] = useState("");
+  const [activitySelected, setActivitySelected] = useState(false);
+  const [activityInformation, setActivityInformation] = useState({});
+  
   const [totalAmountExercises, setTotalAmountExercises] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
   const [totalAmountDays, setTotalAmountDays] = useState(0);
+  
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountDays, setCurrentyAmountDays] = useState(0);
-  const [activitySelected, setActivitySelected] = useState(false);
-  const [activitiesDay, setActivitiesDay] = useState([]);
+  
+  const [reminders, setReminders] = useState([]);
+  const lastInputRef = useRef(null);
 
   useEffect(() => {
     setNicknameUser(nickname);
     generateActivitiesDay();
+
+  }, [], [activityInformation]);
+
+  useEffect(() => {
+
     generateCurrentyAmountExercises();
     generateCurrentyAmountMeals();
     generateCurrentyAmountDays();
@@ -34,13 +53,28 @@ export function HomePage() {
     generateTotalAmountExercises();
     generateTotalAmountMeals();
     generateTotalAmountDays();
-  }, []);
+  }, [activitiesDay]);
+
+  useEffect(() => {
+    generateActivitiesDay();
+
+    generateCurrentyAmountExercises();
+    generateCurrentyAmountMeals();
+    generateCurrentyAmountDays();
+  }, [activitySelected], [activityInformation]);
 
 
 
   function handleSelectActivity(e) {
-    setActivityType(e.tipo);
-    setActivityName(e.nome);
+    setActivityType(e.type);
+    setActivityName(e.name);
+    setActivityDescription(e.description);
+    setActivityMedia(e.midia);
+    setActivityDuration(e.duration);
+    setActivityRepetitions(e.repetitions);
+    setActivitySeries(e.series);
+    setActivityInformation(e);
+    console.log(e);
 
     setActivitySelected(true);
   }
@@ -48,20 +82,20 @@ export function HomePage() {
   // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
 
   function handleTotalAmount(activity) {
-    const response = listaObjeto.filter((element) => element.tipo == activity);
-    console.log("Lista de atividades do tipo " + activity + ": " + response);
+    const response = activitiesDay.filter((element) => element.type == activity);
+    console.log("Lista de " + activity + ": " + response);
     return response;
   }
 
   function generateTotalAmountExercises() {
     const totalAmountExercises = handleTotalAmount("Exercício").length;
-    console.log("Quantidade de exercícios: " + totalAmountExercises);
+    console.log("Total de exercícios: " + totalAmountExercises);
     setTotalAmountExercises(totalAmountExercises);
   }
 
   function generateTotalAmountMeals() {
     const amountMealsTotal = handleTotalAmount("Refeição").length;
-    console.log("Quantidade de refeições: " + amountMealsTotal);
+    console.log("Total de refeições: " + amountMealsTotal);
     setTotalAmountMeals(amountMealsTotal);
   }
 
@@ -75,26 +109,21 @@ export function HomePage() {
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
-    console.log(
-      "Lista de atividades do tipo " +
-        activity +
-        " que foram concluidos: " +
-        response
-    );
+    console.log("Lista de " + activity + " concluídos: " + response)
     return response;
   }
 
   function generateCurrentyAmountExercises() {
     const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
     console.log(
-      "Quantidade de exercícios concluídos: " + currentyAmountExercises
+      "Exercícios concluídos: " + currentyAmountExercises
     );
     setCurrentyAmountExercises(currentyAmountExercises);
   }
 
   function generateCurrentyAmountMeals() {
     const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
-    console.log("Quantidade de refeições concluídas: " + currentyAmountMeals);
+    console.log("Refeições concluídas: " + currentyAmountMeals);
     setCurrentyAmountMeals(currentyAmountMeals);
   }
 
@@ -108,13 +137,31 @@ export function HomePage() {
 
   function generateActivitiesDay() {
 
+    const activityDays = listaSemanal.find((element) => !element.concluido);
 
-    const attsDay = listaSemanal.find(
-      (element) => element.concluido == true
-    );
+    if (activityDays) {
+      setActivitiesDay(activityDays.atividades);
+    } else {
+      console.log('Não há itens com concluido == false.');
+    }
+  }
 
-    setActivitiesDay([...activitiesDay,...attsDay.atividades]);
+  // MARCAR ATIVIDADE COMO CONCLUÍDA
+  function completedActivity() {
+    console.log(activityInformation);
+    if (!activityInformation.concluido) {
+      setActivityInformation(activityInformation.concluido = true);
+    } else {
+      toast.error("Atividade já concluída!");
+    }
+  }
 
+  // CRIAR LEMBRETE
+  function createReminder() {
+    setReminders([...reminders, <Message />]);
+    if (lastInputRef.current) {
+      lastInputRef.current.focus();
+    }
 
   }
 
@@ -126,36 +173,38 @@ export function HomePage() {
       concluido: true,
       atividades: [
         {
-          tipo: "Exercício",
-          nome: "Crucifixo",
+          type: "Exercício",
+          name: "Crucifixo funciona 1",
           concluido: true,
           description:
             "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
+          midia: "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
         },
         {
-          tipo: "Refeição",
-          nome: "Torta de frango",
-          concluido: false,
+          type: "Refeição",
+          name: "Torta de frango 321",
+          concluido: true,
           description:
             "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
+          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
         },
         {
-          tipo: "Exercício",
-          nome: "Supino",
+          type: "Exercício",
+          name: "Supino",
           concluido: false,
           description:
             "Id consequatur quasi id explicabo autem aut consequatur totam est eligendi rerum At corporis libero. Aut numquam doloremque qui consequatur quas aut quibusdam obcaecati At asperiores ipsam et quibusdam distinctio et ipsum voluptatem quo quia voluptatem. Ut tempora temporibus quo veniam sint est architecto fugit sed eius internos aut consequatur dolore. Aut repudiandae omnis hic expedita adipisci in accusantium rerum aut galisum labore non consectetur modi.",
         },
         {
-          tipo: "Refeição",
-          nome: "Torta de frango",
+          type: "Refeição",
+          name: "Torta de frango",
           concluido: true,
           description:
             "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
         },
         {
-          tipo: "Refeição",
-          nome: "Coxinha",
+          type: "Refeição",
+          name: "Coxinha",
           concluido: true,
           description:
             "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
@@ -167,15 +216,15 @@ export function HomePage() {
       concluido: true,
       atividades: [
         {
-          tipo: "Refeição",
-          nome: "Torta de frango",
+          type: "Refeição",
+          name: "Torta de frango",
           concluido: false,
           description:
             "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
         },
         {
-          tipo: "Refeição",
-          nome: "Coxinha",
+          type: "Refeição",
+          name: "Coxinha",
           concluido: true,
           description:
             "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
@@ -187,39 +236,39 @@ export function HomePage() {
       concluido: false,
       atividades: [
         {
-          tipo: "Refeição",
-          nome: "Coxinha",
+          type: "Refeição",
+          name: "Coxinha",
+          concluido: false,
+          description:
+            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis isteandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiu",
+            midia: "https://www.designi.com.br/images/preview/10138011.jpg",
+            duration: "10:30",
+          repetitions: "5",
+          series: "10",
+        },
+        {
+          type: "Refeição",
+          name: "Habibs",
+          concluido: false,
+          description:
+            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
+          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
+          duration: "05:30",
+          repetitions: "30",
+          series: "500",
+        },
+        {
+          type: "Exercício",
+          name: "Crucifixo funciona 1",
           concluido: true,
+          description:
+            "CUSCUZ PAULISTA",
+          midia: "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
+          duration: "00:30",
+          repetitions: "9",
+          series: "999",
         },
       ],
-    },
-  ];
-
-  const listaObjeto = [
-    {
-      tipo: "Exercício",
-      nome: "SOCOROSO",
-      concluido: true,
-    },
-    {
-      tipo: "Refeição",
-      nome: "Torta de frango",
-      concluido: false,
-    },
-    {
-      tipo: "Exercício",
-      nome: "Supino",
-      concluido: false,
-    },
-    {
-      tipo: "Refeição",
-      nome: "Torta de frango",
-      concluido: false,
-    },
-    {
-      tipo: "Refeição",
-      nome: "Coxinha",
-      concluido: true,
     },
   ];
 
@@ -255,32 +304,95 @@ export function HomePage() {
                 totalAmount={totalAmountDays}
               />
             </div>
-            <div className="w-full h-[55%] flex flex-col gap-5 overflow-hidden overflow-y-scroll">
-              {listaObjeto.map((objeto, index) => {
-                return (
-                  <AtividadeOption
-                    key={index}
-                    icon={<Barbell size={28} color="#2B6E36" />}
-                    activity={objeto.tipo}
-                    nameActivity={objeto.nome}
-                    onClickFunction={() => handleSelectActivity(objeto)}
-                  />
-                );
-              })}
-              <div className="h-20 w-full flex items-center gap-2 p-4 bg-[#48B75A] rounded-xl shadow-md">
-                <Barbell size={28} color="white" />
-                <span className="text-white font-semibold">Exercicio:</span>
-                <span className="font-medium text-white">Crucifixo</span>
+
+            <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
+              <h2 className="w-full font-semibold">Atividades de hoje</h2>
+              <div className="w-full h-[31%] bg-black flex justify-between items-center rounded-3xl p-4">
+                <AtividadeCard
+                  icon={<BowlSteam size={28} />}
+                  title="Refeições"
+                  currentAmount={currentyAmountMeals}
+                  totalAmount={totalAmountMeals}
+                />
+                <AtividadeCard
+                  icon={<Barbell size={28} />}
+                  title="Exercícios"
+                  currentAmount={currentyAmountExercises}
+                  totalAmount={totalAmountExercises}
+                />
+                <AtividadeCard
+                  icon={<CalendarCheck size={28} />}
+                  title="Meta semanal"
+                  currentAmount={currentyAmountDays}
+                  totalAmount={totalAmountDays}
+                />
+              </div>
+              <div className="w-full h-[55%] flex flex-col gap-5 overflow-hidden overflow-y-scroll">
+                {activitiesDay.map((objeto, index) => {
+                  return (
+                    <AtividadeOption
+                      key={index}
+                      activity={objeto.type}
+                      nameActivity={objeto.name}
+                      onClickFunction={() => handleSelectActivity(objeto)}
+                      done={objeto.concluido}
+                    />
+                  );
+                })}
               </div>
             </div>
+            <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
+              <h1 className="w-[60%] text-wrap ">
+                Observe o seu resultado do seu esforço com o seu
+                <span className="font-bold"> mural de fotos!</span>
+              </h1>
+              <button className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
+                Ver mural!
+              </button>
+            </div>
+          </div>
+          <div className="w-[40%] h-full bg-white flex flex-col justify-center items-center rounded-xl shadow-lg p-4">
+            {!activitySelected ? (
+              <span className="h-full w-full flex justify-center items-center font-medium text-xl">
+                Escolha uma atividade
+              </span>
+            ) : (
+              <ExercicioBoard
+                activitySelected
+                type={activityType}
+                name={activityName}
+                description={activityDescription}
+                media={activityMedia}
+                duration={activityDuration}
+                repetitions={activityRepetitions}
+                series={activitySeries}
+                concluido={activityInformation.concluido}
+                onClickFunction={() => completedActivity()}
+              />
+            )}
+
           </div>
           <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
             <h1 className="w-[60%] text-wrap ">
               Observe o seu resultado do seu esforço com o seu
               <span className="font-bold"> mural de fotos!</span>
             </h1>
-            <button className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
-              Ver mural!
+            <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
+              {reminders.length > 0 ? (
+                reminders.map((reminder, index) => {
+                  return reminder;
+                })
+              ) : (
+                <div className="w-full h-full flex justify-center items-center text-white text-sm font-small ">
+                  Nenhum lembrete adicionado.
+                </div>
+              )  
+              }
+
+            </div>
+            <button className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A]" onClick={createReminder}>
+              Adicionar lembrete
+
             </button>
           </div>
         </div>
