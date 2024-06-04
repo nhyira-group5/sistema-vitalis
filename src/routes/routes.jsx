@@ -10,15 +10,17 @@ import { RelatorioPage } from "@pages/Relatorio/relatorioPage";
 
 import { HomePage } from "@pages/Home/homePage";
 
-import {RotinasPage} from "@pages/Rotinas/RotinasPage";
+import { RotinasPage } from "@pages/Rotinas/RotinasPage";
 
-import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
+import { RefeicoesPage } from "@pages/Refeicoes/RefeicoesPage";
 
-import {AcharPersonalAcademiaPage} from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
+import { AcharPersonalAcademiaPage } from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
 
-import {ChatPage} from "@pages/Chat/ChatPage";
+import { ChatPage } from "@pages/Chat/ChatPage";
 
-import {MuralPage} from "@pages/Mural/MuralPage"
+import { MuralPage } from "@pages/Mural/MuralPage"
+
+import { PerfilPage } from "../pages/Perfil/perfilPage";
 
 
 export function CadastroRoute() {
@@ -128,6 +130,14 @@ export function HomeRoute() {
   return (
     <>
       <HomePage />
+    </>
+  );
+}
+
+export function PerfilRoute() {
+  return (
+    <>
+      <PerfilPage />
     </>
   );
 }

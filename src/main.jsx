@@ -18,7 +18,8 @@ import {
   RefeicoesRoute,
   AcharPersonalAcademiaRoute,
   ChatRoute,
-  MuralRoute
+  MuralRoute,
+  PerfilRoute
 } from "@routes/routes";
 
 WebFont.load({
@@ -85,6 +86,11 @@ const router = createBrowserRouter([
   {
     path: "Mural",
     element: <MuralRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "perfil",
+    element: <PerfilRoute />,
     errorElement: <ErrorPage />,
   },
 ]);

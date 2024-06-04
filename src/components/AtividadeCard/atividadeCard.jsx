@@ -5,7 +5,7 @@ export function AtividadeCard({icon, title, currentAmount, totalAmount}) {
         {icon}
         <span className="font-semibold">{currentAmount}/{totalAmount}</span>
       </div>
-      <h2 className="text-sm">{title}</h2>
+      <h2 className="w-full text-sm text-center">{title}</h2>
     </div>
   );
 }
