@@ -1,24 +1,25 @@
 import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx";
 import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
-import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage.jsx";
 import { useRouteError } from "react-router-dom";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
-
 import { Pagamento } from "@pages/Pagamento/pagamento";
-
-import { RelatorioPage } from "@pages/Relatorio/relatorioPage";
-
+import { RelatorioPage } from "@pages/Relatorio/RelatorioPage";
 import { HomePage } from "@pages/Home/homePage";
+
+import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage";
+import {RotinasSemanaisPage} from "@pages/RotinasSemanais/RotinasSemanaisPage";
+import {TreinoPage} from "@pages/Treino/TreinoPage";
+
 
 import {RotinasPage} from "@pages/Rotinas/RotinasPage";
 
+
 import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
-
 import {AcharPersonalAcademiaPage} from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
-
 import {ChatPage} from "@pages/Chat/ChatPage";
-
 import {MuralPage} from "@pages/Mural/MuralPage"
+import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";
+import {ExercicioPage} from "@pages/Exercicio/ExercicioPage";
 
 
 export function CadastroRoute() {
@@ -76,10 +77,26 @@ export function MuralRoute() {
   );
 }
 
-export function RotinasRoute() {
+export function RotinasSemanaisRoute() {
   return (
     <>
-      <RotinasPage />
+      <RotinasSemanaisPage />
+    </>
+  );
+}
+
+export function TreinoRoute() {
+  return (
+    <>
+      <TreinoPage />
+    </>
+  );
+}
+
+export function ExercicioRoute() {
+  return (
+    <>
+      <ExercicioPage />
     </>
   );
 }
@@ -91,6 +108,15 @@ export function RefeicoesRoute() {
     </>
   );
 }
+
+export function RefeicaoRoute() {
+  return (
+    <>
+      <RefeicaoPage />
+    </>
+  );
+}
+
 
 export function CadastroParqRoute() {
   return (
