@@ -9,14 +9,7 @@ import { HomePage } from "@pages/Home/homePage";
 import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage";
 import {RotinasSemanaisPage} from "@pages/RotinasSemanais/RotinasSemanaisPage";
 import {TreinoPage} from "@pages/Treino/TreinoPage";
-
-
-import { RotinasPage } from "@pages/Rotinas/RotinasPage";
-
-
-
 import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
-import {AcharPersonalAcademiaPage} from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
 import {ChatPage} from "@pages/Chat/ChatPage";
 import {MuralPage} from "@pages/Mural/MuralPage"
 import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";

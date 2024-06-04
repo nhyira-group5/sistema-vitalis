@@ -7,7 +7,7 @@ import {
     Check,
     X
   } from "@phosphor-icons/react";
-  import ReactPlayer from 'react-player'
+//   import ReactPlayer from 'react-player'
 
   import { InfoCard } from "@components/HorizontalCard/horizontalCard";
 
