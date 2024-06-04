@@ -11,7 +11,8 @@ import {RotinasSemanaisPage} from "@pages/RotinasSemanais/RotinasSemanaisPage";
 import {TreinoPage} from "@pages/Treino/TreinoPage";
 
 
-import {RotinasPage} from "@pages/Rotinas/RotinasPage";
+import { RotinasPage } from "@pages/Rotinas/RotinasPage";
+
 
 
 import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
@@ -21,6 +22,9 @@ import {MuralPage} from "@pages/Mural/MuralPage"
 import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";
 import {ExercicioPage} from "@pages/Exercicio/ExercicioPage";
 
+
+import { PerfilPage } from "../pages/Perfil/perfilPage";
+import { BuscarPersonalPage } from "../pages/BuscarPersonal/buscarPersonalPage";
 
 export function CadastroRoute() {
   return (
@@ -53,10 +57,10 @@ export function LoginRoute() {
   );
 }
 
-export function AcharPersonalAcademiaRoute() {
+export function BuscarPersonalRoute() {
   return (
     <>
-      <AcharPersonalAcademiaPage />
+      <BuscarPersonalPage />
     </>
   );
 }
@@ -154,6 +158,14 @@ export function HomeRoute() {
   return (
     <>
       <HomePage />
+    </>
+  );
+}
+
+export function PerfilRoute() {
+  return (
+    <>
+      <PerfilPage />
     </>
   );
 }

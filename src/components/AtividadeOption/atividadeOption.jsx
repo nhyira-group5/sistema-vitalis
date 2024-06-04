@@ -6,6 +6,7 @@ export function AtividadeOption({
   nameActivity,
   done,
   onClickFunction,
+  option
 }) {
   const [colorText, setColorText] = useState("");
   const [colorIcon, setColorIcon] = useState("");
@@ -44,9 +45,11 @@ export function AtividadeOption({
           {nameActivity}
         </span>
       </div>
+      {option && 
       <div className="h-full flex items-center bg-[#91D49C] p-1 rounded-xl rounded-ss-none rounded-es-none">
         <CaretRight size={20} color="white" />
       </div>
+      }
     </div>
   );
 }
