@@ -17,11 +17,12 @@ import {
   RotinasSemanaisRoute,
   TreinoRoute,
   RefeicoesRoute,
-  AcharPersonalAcademiaRoute,
   ChatRoute,
   MuralRoute,
   RefeicaoRoute,
-  ExercicioRoute
+  ExercicioRoute,
+  PerfilRoute,
+  BuscarPersonalRoute
 } from "@routes/routes";
 
 WebFont.load({
@@ -81,28 +82,28 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     },
   {
-    path: "refeicoes",
-    element: <RefeicoesRoute />,
-    errorElement: <ErrorPage />,
-  },
-  {
     path: "refeicoes/:refeicaoId",
     element: <RefeicaoRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "achar_personal_academia",
-    element: <AcharPersonalAcademiaRoute />,
+    path: "buscar-personal",
+    element: <BuscarPersonalRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "Chat",
+    path: "chat",
     element: <ChatRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "Mural",
+    path: "mural",
     element: <MuralRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "perfil",
+    element: <PerfilRoute />,
     errorElement: <ErrorPage />,
   },
 ]);

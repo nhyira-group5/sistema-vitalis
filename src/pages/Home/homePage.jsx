@@ -15,7 +15,7 @@ import { key } from "localforage";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
-  
+
   const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
@@ -26,23 +26,27 @@ export function HomePage() {
   const [activitySeries, setActivitySeries] = useState("");
   const [activitySelected, setActivitySelected] = useState(false);
   const [activityInformation, setActivityInformation] = useState({});
-  
+
   const [totalAmountExercises, setTotalAmountExercises] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
   const [totalAmountDays, setTotalAmountDays] = useState(0);
-  
+
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountDays, setCurrentyAmountDays] = useState(0);
-  
+
   const [reminders, setReminders] = useState([]);
   const lastInputRef = useRef(null);
 
-  useEffect(() => {
-    setNicknameUser(nickname);
-    generateActivitiesDay();
+  useEffect(
+    () => {
+      setNicknameUser(nickname);
 
-  }, [], [activityInformation]);
+      generateActivitiesDay();
+    },
+    [],
+    [activityInformation]
+  );
 
   useEffect(() => {
 
@@ -55,13 +59,17 @@ export function HomePage() {
     generateTotalAmountDays();
   }, [activitiesDay]);
 
-  useEffect(() => {
-    generateActivitiesDay();
+  useEffect(
+    () => {
+      generateActivitiesDay();
 
-    generateCurrentyAmountExercises();
-    generateCurrentyAmountMeals();
-    generateCurrentyAmountDays();
-  }, [activitySelected], [activityInformation]);
+      generateCurrentyAmountExercises();
+      generateCurrentyAmountMeals();
+      generateCurrentyAmountDays();
+    },
+    [activitySelected],
+    [activityInformation]
+  );
 
 
 
@@ -82,7 +90,9 @@ export function HomePage() {
   // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
 
   function handleTotalAmount(activity) {
-    const response = activitiesDay.filter((element) => element.type == activity);
+    const response = activitiesDay.filter(
+      (element) => element.type == activity
+    );
     console.log("Lista de " + activity + ": " + response);
     return response;
   }
@@ -109,15 +119,13 @@ export function HomePage() {
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
-    console.log("Lista de " + activity + " concluídos: " + response)
+    console.log("Lista de " + activity + " concluídos: " + response);
     return response;
   }
 
   function generateCurrentyAmountExercises() {
     const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
-    console.log(
-      "Exercícios concluídos: " + currentyAmountExercises
-    );
+    console.log("Exercícios concluídos: " + currentyAmountExercises);
     setCurrentyAmountExercises(currentyAmountExercises);
   }
 
@@ -142,7 +150,7 @@ export function HomePage() {
     if (activityDays) {
       setActivitiesDay(activityDays.atividades);
     } else {
-      console.log('Não há itens com concluido == false.');
+      console.log("Não há itens com concluido == false.");
     }
   }
 
@@ -150,7 +158,7 @@ export function HomePage() {
   function completedActivity() {
     console.log(activityInformation);
     if (!activityInformation.concluido) {
-      setActivityInformation(activityInformation.concluido = true);
+      setActivityInformation((activityInformation.concluido = true));
     } else {
       toast.error("Atividade já concluída!");
     }
@@ -178,7 +186,8 @@ export function HomePage() {
           concluido: true,
           description:
             "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-          midia: "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
+          midia:
+            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
         },
         {
           type: "Refeição",
@@ -241,8 +250,8 @@ export function HomePage() {
           concluido: false,
           description:
             "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis isteandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiu",
-            midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-            duration: "10:30",
+          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
+          duration: "10:30",
           repetitions: "5",
           series: "10",
         },
@@ -261,9 +270,9 @@ export function HomePage() {
           type: "Exercício",
           name: "Crucifixo funciona 1",
           concluido: true,
-          description:
-            "CUSCUZ PAULISTA",
-          midia: "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
+          description: "CUSCUZ PAULISTA",
+          midia:
+            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
           duration: "00:30",
           repetitions: "9",
           series: "999",
@@ -336,6 +345,7 @@ export function HomePage() {
                       nameActivity={objeto.name}
                       onClickFunction={() => handleSelectActivity(objeto)}
                       done={objeto.concluido}
+                      option
                     />
                   );
                 })}
@@ -386,11 +396,12 @@ export function HomePage() {
                 <div className="w-full h-full flex justify-center items-center text-white text-sm font-small ">
                   Nenhum lembrete adicionado.
                 </div>
-              )  
-              }
-
+              )}
             </div>
-            <button className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A]" onClick={createReminder}>
+            <button
+              className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A]"
+              onClick={createReminder}
+            >
               Adicionar lembrete
 
             </button>
