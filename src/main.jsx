@@ -16,11 +16,11 @@ import {
   HomeRoute,
   RotinasRoute,
   RefeicoesRoute,
-  AcharPersonalAcademiaRoute,
   ChatRoute,
   MuralRoute,
-  PerfilRoute
+  PerfilRoute,
 } from "@routes/routes";
+import { BuscarPersonalRoute } from "./routes/routes";
 
 WebFont.load({
   google: {
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "Rotinas",
+    path: "rotinas",
     element: <RotinasRoute />,
     errorElement: <ErrorPage />,
   },
@@ -74,17 +74,17 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "acharPersonalAcademia",
-    element: <AcharPersonalAcademiaRoute />,
+    path: "buscar-personal",
+    element: <BuscarPersonalRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "Chat",
+    path: "chat",
     element: <ChatRoute />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "Mural",
+    path: "mural",
     element: <MuralRoute />,
     errorElement: <ErrorPage />,
   },

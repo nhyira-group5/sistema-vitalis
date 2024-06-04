@@ -4,7 +4,7 @@ import { SideBar } from "../../components/SideBar/sideBar";
 import { DotsThree, MagnifyingGlass } from "@phosphor-icons/react";
 import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
 
-export function AcharPersonalAcademiaPage() {
+export function BuscarPersonalPage() {
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBar />

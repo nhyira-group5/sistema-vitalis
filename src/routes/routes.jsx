@@ -14,14 +14,12 @@ import { RotinasPage } from "@pages/Rotinas/RotinasPage";
 
 import { RefeicoesPage } from "@pages/Refeicoes/RefeicoesPage";
 
-import { AcharPersonalAcademiaPage } from "@pages/AcharPersonalAcademia/AcharPersonalAcademiaPage";
-
 import { ChatPage } from "@pages/Chat/ChatPage";
 
-import { MuralPage } from "@pages/Mural/MuralPage"
+import { MuralPage } from "@pages/Mural/MuralPage";
 
 import { PerfilPage } from "../pages/Perfil/perfilPage";
-
+import { BuscarPersonalPage } from "../pages/BuscarPersonal/buscarPersonalPage";
 
 export function CadastroRoute() {
   return (
@@ -54,10 +52,10 @@ export function LoginRoute() {
   );
 }
 
-export function AcharPersonalAcademiaRoute() {
+export function BuscarPersonalRoute() {
   return (
     <>
-      <AcharPersonalAcademiaPage />
+      <BuscarPersonalPage />
     </>
   );
 }
