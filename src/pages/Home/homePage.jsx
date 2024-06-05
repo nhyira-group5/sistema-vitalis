@@ -1,39 +1,38 @@
-import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
-import { Message } from "../../components/Message/message";
+import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
+import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
+import { Reminder } from "../../components/Reminder/reminder";
 import { SideBar } from "../../components/SideBar/sideBar";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import {
   BowlSteam,
   Barbell,
   CalendarCheck,
   CookingPot,
 } from "@phosphor-icons/react";
-import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { key } from "localforage";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
-  const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
-  const [activityDescription, setActivityDescription] = useState("");
+  const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityMedia, setActivityMedia] = useState("");
-  const [activityDuration, setActivityDuration] = useState("");
-  const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activitySeries, setActivitySeries] = useState("");
+  const [activityDuration, setActivityDuration] = useState("");
   const [activitySelected, setActivitySelected] = useState(false);
+  const [activityDescription, setActivityDescription] = useState("");
+  const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activityInformation, setActivityInformation] = useState({});
 
-  const [totalAmountExercises, setTotalAmountExercises] = useState(0);
-  const [totalAmountMeals, setTotalAmountMeals] = useState(0);
   const [totalAmountDays, setTotalAmountDays] = useState(0);
+  const [totalAmountMeals, setTotalAmountMeals] = useState(0);
+  const [totalAmountExercises, setTotalAmountExercises] = useState(0);
 
-  const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
-  const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountDays, setCurrentyAmountDays] = useState(0);
+  const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
+  const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
   const [reminders, setReminders] = useState([]);
   const lastInputRef = useRef(null);
@@ -162,7 +161,7 @@ export function HomePage() {
 
   // CRIAR LEMBRETE
   function createReminder() {
-    setReminders([...reminders, <Message />]);
+    setReminders([...reminders, <Reminder />]);
     if (lastInputRef.current) {
       lastInputRef.current.focus();
     }

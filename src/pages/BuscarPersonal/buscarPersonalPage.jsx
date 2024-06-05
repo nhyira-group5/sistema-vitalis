@@ -69,6 +69,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -76,6 +78,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -83,6 +87,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -90,6 +96,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -97,6 +105,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             
           </div>
