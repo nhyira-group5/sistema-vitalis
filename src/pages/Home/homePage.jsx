@@ -1,39 +1,38 @@
-import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
-import { Message } from "../../components/Message/message";
+import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
+import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
+import { Reminder } from "../../components/Reminder/reminder";
 import { SideBar } from "../../components/SideBar/sideBar";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import {
   BowlSteam,
   Barbell,
   CalendarCheck,
   CookingPot,
 } from "@phosphor-icons/react";
-import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { key } from "localforage";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
-  const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
-  const [activityDescription, setActivityDescription] = useState("");
+  const [activitiesDay, setActivitiesDay] = useState([]);
   const [activityMedia, setActivityMedia] = useState("");
-  const [activityDuration, setActivityDuration] = useState("");
-  const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activitySeries, setActivitySeries] = useState("");
+  const [activityDuration, setActivityDuration] = useState("");
   const [activitySelected, setActivitySelected] = useState(false);
+  const [activityDescription, setActivityDescription] = useState("");
+  const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activityInformation, setActivityInformation] = useState({});
 
-  const [totalAmountExercises, setTotalAmountExercises] = useState(0);
-  const [totalAmountMeals, setTotalAmountMeals] = useState(0);
   const [totalAmountDays, setTotalAmountDays] = useState(0);
+  const [totalAmountMeals, setTotalAmountMeals] = useState(0);
+  const [totalAmountExercises, setTotalAmountExercises] = useState(0);
 
-  const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
-  const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountDays, setCurrentyAmountDays] = useState(0);
+  const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
+  const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
   const [reminders, setReminders] = useState([]);
   const lastInputRef = useRef(null);
@@ -49,7 +48,6 @@ export function HomePage() {
   );
 
   useEffect(() => {
-
     generateCurrentyAmountExercises();
     generateCurrentyAmountMeals();
     generateCurrentyAmountDays();
@@ -70,8 +68,6 @@ export function HomePage() {
     [activitySelected],
     [activityInformation]
   );
-
-
 
   function handleSelectActivity(e) {
     setActivityType(e.type);
@@ -142,9 +138,8 @@ export function HomePage() {
     setCurrentyAmountDays(currentyDays);
   }
 
-
+  // GERAR ATIVIDADES DO DIA
   function generateActivitiesDay() {
-
     const activityDays = listaSemanal.find((element) => !element.concluido);
 
     if (activityDays) {
@@ -166,11 +161,10 @@ export function HomePage() {
 
   // CRIAR LEMBRETE
   function createReminder() {
-    setReminders([...reminders, <Message />]);
+    setReminders([...reminders, <Reminder />]);
     if (lastInputRef.current) {
       lastInputRef.current.focus();
     }
-
   }
 
   const nickname = "Squirte";
@@ -283,37 +277,14 @@ export function HomePage() {
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
-    <SideBar />
-    <div className="w-[88%] h-[90%] flex flex-col justify-between">
-      <h1 className="text-[#2B6E36] font-semibold text-2xl">Home</h1>
-      <div className="w-full h-[93%] flex justify-between items-center">
-        <div className="w-[34%] h-full flex flex-col justify-between">
-          <div className="w-full h-[5%] font-semibold text-xl flex justify-center items-center rounded-xl">
-            <h1>Bem-vindo(a), {nicknameUser}</h1>
-          </div>
-          <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
-            <h2 className="w-full font-semibold">Atividades de hoje</h2>
-            <div className="w-full h-[31%] bg-black flex justify-between items-center rounded-3xl p-4">
-              <AtividadeCard
-                icon={<BowlSteam size={28} />}
-                title="Refeições"
-                currentAmount={currentyAmountMeals}
-                totalAmount={totalAmountMeals}
-              />
-              <AtividadeCard
-                icon={<Barbell size={28} />}
-                title="Exercícios"
-                currentAmount={currentyAmountExercises}
-                totalAmount={totalAmountExercises}
-              />
-              <AtividadeCard
-                icon={<CalendarCheck size={28} />}
-                title="Meta de dia"
-                currentAmount={currentyAmountDays}
-                totalAmount={totalAmountDays}
-              />
+      <SideBar />
+      <div className="w-[88%] h-[90%] flex flex-col justify-between">
+        <h1 className="text-[#2B6E36] font-semibold text-2xl">Home</h1>
+        <div className="w-full h-[93%] flex justify-between items-center">
+          <div className="w-[34%] h-full flex flex-col justify-between">
+            <div className="w-full h-[5%] font-semibold text-xl flex justify-center items-center rounded-xl">
+              <h1>Bem-vindo(a), {nicknameUser}</h1>
             </div>
-
             <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
               <h2 className="w-full font-semibold">Atividades de hoje</h2>
               <div className="w-full h-[31%] bg-black flex justify-between items-center rounded-3xl p-4">
@@ -380,12 +351,10 @@ export function HomePage() {
                 onClickFunction={() => completedActivity()}
               />
             )}
-
           </div>
-          <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
-            <h1 className="w-[60%] text-wrap ">
-              Observe o seu resultado do seu esforço com o seu
-              <span className="font-bold"> mural de fotos!</span>
+          <div className="w-[20%] h-full bg-[#1A1A1A] flex flex-col justify-between items-center rounded-xl shadow-lg p-4">
+            <h1 className="w-full text-white text-xl font-semibold flex items-center justify-center">
+              Lembretes
             </h1>
             <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
               {reminders.length > 0 ? (
@@ -403,44 +372,10 @@ export function HomePage() {
               onClick={createReminder}
             >
               Adicionar lembrete
-
             </button>
           </div>
         </div>
-        <div className="w-[40%] h-full bg-white flex flex-col justify-center items-center rounded-xl shadow-lg p-4">
-          {!activitySelected ? (
-            <span className="h-full w-full flex justify-center items-center font-medium text-xl">
-              Escolha uma atividade
-            </span>
-          ) : (
-            <ExercicioBoard
-              activitySelected
-              type={activityType}
-              name={activityName}
-              description="Esta refeição oferece uma combinação equilibrada de nutrientes e benefícios que favorecem a perda de peso. A quinoa e os legumes grelhados são baixos em calorias e ricos em fibras, proporcionando saciedade e controlando o apetite. Além disso, são fontes de nutrientes essenciais, como proteínas, vitaminas e minerais, importantes para manter a saúde durante o processo de perda de peso. Ao ser preparadbusca emagrecer."
-            />
-          )}
-        </div>
-        <div className="w-[20%] h-full bg-[#1A1A1A] flex flex-col justify-between items-center rounded-xl shadow-lg p-4">
-          <h1 className="w-full text-white text-xl font-semibold flex items-center justify-center">
-            Lembretes
-          </h1>
-          <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
-            <Message
-              text="Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy
-              text ever since the 1500s, when an unknown printer took a galley
-              of type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged."
-            />
-          </div>
-          <button className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A]">
-            Adicionar lembrete
-          </button>
-        </div>
       </div>
     </div>
-  </div>
   );
 }

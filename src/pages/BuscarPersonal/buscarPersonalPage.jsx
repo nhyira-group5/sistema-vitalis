@@ -62,13 +62,15 @@ export function BuscarPersonalPage() {
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre um personal
           </h1>
-          <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-scroll">
+          <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-scroll items-center">
             <CardPersonal
             name={"User0101"}
             specialty={"Emagrecimento"}
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -76,6 +78,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -83,6 +87,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -90,6 +96,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             <CardPersonal
             name={"User0101"}
@@ -97,6 +105,8 @@ export function BuscarPersonalPage() {
             city={"Itaquera"}
             state={"SP"}
             media={"https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"}
+            haveDots
+            haveShadow
             />
             
           </div>
