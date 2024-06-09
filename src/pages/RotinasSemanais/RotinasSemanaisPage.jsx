@@ -2,10 +2,7 @@ import { SideBar } from "@components/SideBar/sideBar";
 
 import { useEffect, useState } from "react";
 import { RotinaCard, TreinoCard } from "@components/HorizontalCard/horizontalCard";
-import {
-    CaretRight,
-    Barbell
-  } from "@phosphor-icons/react";
+
 
 export function RotinasSemanaisPage() {
     const [rotinas, setRotinas] = useState([]);
