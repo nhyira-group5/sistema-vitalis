@@ -1,22 +1,29 @@
 import { DotsThree } from "@phosphor-icons/react";
+import { twMerge } from "tailwind-merge";
 
 export function CardPersonal({
   name,
   specialty,
   city,
   state,
+  size,
   media,
   haveDots,
   haveShadow,
 }) {
   return (
     <div
-      className={
-      `w-full h-[20%] bg-white rounded-2xl  p-4 flex gap-4 justify-between`
-    }
+      className={`w-[98%] h-[20%] bg-white rounded-2xl drop-shadow-lg p-4 flex gap-4 justify-between`}
     >
       <div className="flex gap-5">
-        <img className="size-16 rounded-full object-cover" src={media} alt="" />
+        <img
+          className={twMerge(
+            "size-10 rounded-full object-cover self-center",
+            size
+          )}
+          src={media}
+          alt=""
+        />
         <div className="h-full flex flex-col justify-between self-center ">
           <h2 className="font-semibold text-[#2B6E36]">{name}</h2>
           <span className="text-sm">

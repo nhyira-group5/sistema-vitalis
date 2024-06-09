@@ -1,6 +1,7 @@
 import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
+import { Message } from "../../components/Message/message";
 import { SideBar } from "../../components/SideBar/sideBar";
-import { Siren } from "@phosphor-icons/react";
+import { CalendarSlash, PaperPlaneRight, Paperclip, Siren } from "@phosphor-icons/react";
 
 export function ChatPage() {
   return (
@@ -8,7 +9,7 @@ export function ChatPage() {
       <SideBar />
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <div className="w-full flex justify-between items-center ">
-          <h1 className="text-[#2B6E36] font-semibold text-2xl">CHAT</h1>
+          <h1 className="text-[#2B6E36] font-semibold text-2xl">Chat</h1>
           <button className="p-1.5 bg-[#CA1B1B] rounded-md">
             <Siren size={20} color="white" />
           </button>
@@ -83,19 +84,66 @@ export function ChatPage() {
             </div>
           </div>
 
-          <div className="w-[70%] h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-center">
-                <CardPersonal
+          <div className="w-[70%] h-full  flex flex-col justify-between">
+            <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between bg-white rounded-2xl shadow-lg">
+              <CardPersonal
                 name={"User0101"}
                 specialty={"Emagrecimento"}
+                size={"size-14"}
                 media={
-                    "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
+                  "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
                 }
+              />
+              <hr className="w-full border border-black" />
+              <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-scroll">
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
+                <Message
+                  user={"recipient"}
+                  message={"Oi xuxu, tudo bem?"}
+                  time={"00:00"}
                 />
-                <hr className="border border-black" />
-                <div className="w-full h-full bg-pink-400">
-                    
-                </div>
-            <h1>quadro da conversa</h1>
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
+                <Message
+                  user={"recipient"}
+                  message={"Oi xuxu, tudo bem?"}
+                  time={"00:00"}
+                />
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
+                <Message
+                  user={"recipient"}
+                  message={"Oi xuxu, tudo bem?"}
+                  time={"00:00"}
+                />
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
+                <Message
+                  user={"recipient"}
+                  message={"Oi xuxu, tudo bem?"}
+                  time={"00:00"}
+                />
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
+                <Message
+                  user={"recipient"}
+                  message={"Oi xuxu, tudo bem?"}
+                  time={"00:00"}
+                />
+              </div>
+            </div>
+            <div className="w-full h-1/6 flex items-center justify-between py-6">
+              <button className="p-2 h-fit rounded-lg bg-white drop-shadow-lg">
+                <CalendarSlash size={20} />
+              </button>
+              <button className="p-2 h-fit rounded-lg bg-white drop-shadow-lg">
+                <Paperclip size={20} />
+              </button>
+              <input
+                className="w-[75%] border-[1.5px] border-black rounded-lg rounded-es-none rounded-se-none px-3 py-1.5 text-base"
+                type="text"
+                placeholder="Mensagem para Gustavinho"
+              />
+              <button className="px-5 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
+                Enviar
+              </button>
+            </div>
           </div>
         </div>
       </div>
