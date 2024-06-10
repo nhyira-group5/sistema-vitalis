@@ -15,5 +15,26 @@ export default defineConfig({
       '@routes': path.resolve(__dirname, 'src/routes'),
       '@utils': path.resolve(__dirname, 'src/utils'),
     }
-  }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://viacep.com.br',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      cors: false
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      cors: false
+    },
+  },
 })

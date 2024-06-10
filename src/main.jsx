@@ -22,7 +22,8 @@ import {
   RefeicaoRoute,
   ExercicioRoute,
   PerfilRoute,
-  BuscarPersonalRoute
+  BuscarPersonalRoute,
+  PlanosRoute
 } from "@routes/routes";
 
 WebFont.load({
@@ -104,6 +105,11 @@ const router = createBrowserRouter([
   {
     path: "perfil",
     element: <PerfilRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "planos",
+    element: <PlanosRoute />,
     errorElement: <ErrorPage />,
   },
 ]);

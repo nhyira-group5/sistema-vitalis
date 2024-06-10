@@ -206,12 +206,12 @@ export function InstrutorFormCadastro() {
   };
 
   function handleForm(userDto, enderecoAcademiaDto) {
-
     let idUsuario = 0;
-    api.post(`/usuarios`, userDto)
+    api
+      .post(`/usuarios`, userDto)
       .then((response) => {
         console.log("usuario criado");
-        toast.success("Usuário criado com sucesso!")
+        toast.success("Usuário criado com sucesso!");
         idUsuario = response.data.id;
         console.log("id: " + idUsuario);
 
@@ -221,23 +221,26 @@ export function InstrutorFormCadastro() {
         console.log("primeiro objeto:", enderecoAcademia);
         enderecoAcademia.idPersonal = idUsuario;
         console.log("segundo objeto:", enderecoAcademia);
-        
 
-        api.post(`/endereco`, enderecoAcademia)
+        api
+          .post(`/endereco`, enderecoAcademia)
           .then((response) => {
-            toast.success("Endereço criado com sucesso!")
+            toast.success("Endereço criado com sucesso!");
             console.log("endereço da academia criado");
             redirecionarLogin();
-          
           })
           .catch((error) => {
             console.error("ele num qr n", error);
-            toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
+            toast.error(
+              "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
+            );
           });
       })
       .catch((error) => {
         console.error("erro criacao usuario", error);
-        toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
+        toast.error(
+          "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
+        );
       });
   }
 
@@ -355,52 +358,47 @@ export function InstrutorFormCadastro() {
 
   return (
     <>
-         <div className={`${formStep == 1 ? "flex flex-col gap-3" : "hidden"}`}>
-            <span
-              className={`text-7xl font-bold text-alt-purple300`}
-            >
-              Cadastro Personal
-            </span>
+      <div className={`${formStep == 1 ? "flex flex-col gap-3" : "hidden"}`}>
+        <span className={`text-7xl font-bold text-alt-purple300`}>
+          Cadastro Personal
+        </span>
 
-            <div className="flex flex-col gap-1">
-              <span className="text-lg font-normal">
-                Quer acessar nossa aplicação? Vamos realizar seu cadastro!
-              </span>
-              <span className="text-lg font-normal">
-                Insira algumas informações sobre você para fazermos o cadastro
-                de sua conta!
-              </span>
-            </div>
-          </div>
+        <div className="flex flex-col gap-1">
+          <span className="text-lg font-normal">
+            Quer acessar nossa aplicação? Vamos realizar seu cadastro!
+          </span>
+          <span className="text-lg font-normal">
+            Insira algumas informações sobre você para fazermos o cadastro de
+            sua conta!
+          </span>
+        </div>
+      </div>
 
+      <div className={`${formStep == 2 ? "flex flex-col gap-3" : "hidden"}`}>
+        <span className={`text-7xl font-bold text-alt-purple300`}>
+          Seu Endereço!
+        </span>
 
-          <div className={`${formStep == 2 ? "flex flex-col gap-3" : "hidden"}`}>
-            <span
-              className={`text-7xl font-bold text-alt-purple300`}
-            >
-              Seu Endereço!
-            </span>
-
-            <div className="flex flex-col gap-1">
-              <span className="text-lg font-normal">
-                Muito bem! Você está quase lá! Só mais alguns passos...
-              </span>
-              <span className="text-lg font-normal">
-                Agora insira algumas informações sobre a localização da academia aonde você trabalha.
-              </span>
-            </div>
-          </div>
-
-
+        <div className="flex flex-col gap-1">
+          <span className="text-lg font-normal">
+            Muito bem! Você está quase lá! Só mais alguns passos...
+          </span>
+          <span className="text-lg font-normal">
+            Agora insira algumas informações sobre a localização da academia
+            aonde você trabalha.
+          </span>
+        </div>
+      </div>
 
       <form
         onSubmit={handleFirstSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
-        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 1 ? "lg:flex  xl:grid" : "hidden"}`}
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${
+          formStep == 1 ? "lg:flex  xl:grid" : "hidden"
+        }`}
       >
         <AltInput
           labelContent={"Nome do usuário"}
-
           icon={<PencilSimpleLine size={`28`} color="#000000" />}
           placeholder={"Cauê Augusto da Silva Paroquia"}
           nome={"nome"}
@@ -511,9 +509,10 @@ export function InstrutorFormCadastro() {
       <form
         onSubmit={handleSecondSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
-        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 2 ? "lg:flex  xl:grid" : "hidden"}`}
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${
+          formStep == 2 ? "lg:flex  xl:grid" : "hidden"
+        }`}
       >
-
         <AltInput
           labelContent={"CEP"}
           icon={<MapPinArea size={`28`} color="#000000" />}
@@ -599,7 +598,6 @@ export function InstrutorFormCadastro() {
           />
         </fieldset>
       </form>
-
     </>
   );
 }
