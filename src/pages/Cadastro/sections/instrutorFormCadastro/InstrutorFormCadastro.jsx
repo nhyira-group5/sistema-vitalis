@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AltInput } from "@components/Input/input";
 import Button from "@components/Button/button.jsx";
-import { Select } from "@components/Select/select";
+import { AltSelect } from "@components/Select/select";
 
 import {
   validateNome,
@@ -33,10 +33,10 @@ function userCriacaoDto(userFormInfo) {
   const userDto = {
     tipo: userFormInfo.tipo,
     nome: userFormInfo.nome,
-    username: userFormInfo.username,
+    nickname: userFormInfo.username,
     cpf: userFormInfo.CPF,
     dtNasc: userFormInfo.dtNasc,
-    genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
+    sexo: userFormInfo.sexo,
     email: userFormInfo.email,
     senha: userFormInfo.senha,
   };
@@ -53,10 +53,18 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
     estado: userFormInfo.estado,
     cep: userFormInfo.cep,
     complemento: "",
-    idPersonal: 0,
+    personalId: null,
   };
 
   return enderecoAcademiaDto;
+}
+
+function usuarioEspecialidadeCriacaoDto(userFormInfo) {
+  const usuarioEspecialidadeDto = {
+    personalId: null,
+    especialidadeId: userFormInfo.especialidadeId
+  };
+  return usuarioEspecialidadeDto;
 }
 
 export function InstrutorFormCadastro() {
@@ -64,6 +72,29 @@ export function InstrutorFormCadastro() {
   const redirecionarLogin = () => {
     navigate("/login");
   };
+
+  function getEspecialidades(){
+      api.get(`/especialidades`)
+      .then((response) =>{
+        console.log(response.data);  
+        setEspecialidades([...especialidades,...response.data])
+      })      
+      .catch((error) => {
+        error.response.data.errors.forEach((erroMsg) => {
+          toast.error(
+            erroMsg.defaultMessage
+          );
+        })
+      });
+  }
+
+  useEffect(()=>{
+    getEspecialidades();
+  },[])
+
+
+
+  const [especialidades, setEspecialidades] = useState([])
 
   const [formStep, setFormStep] = useState(1);
 
@@ -75,12 +106,22 @@ export function InstrutorFormCadastro() {
   const [isCPFValid, setIsCPFValid] = useState(true);
   const [isIdadeValid, setIsIdadeValid] = useState(true);
   const [isSexoSelecionado, setIsSexoSelecionado] = useState(true);
+  const [isEspecialidadeSelecionado, setIsEspecialidadeSelecionado] = useState(true);
 
   const [isCepValid, setIsCepValid] = useState(true);
   const [isNumeroValid, setIsNumeroValid] = useState(true);
 
+  const [isLogradouroValid, setIsLogradouroValid] = useState(true);
+  const [isBairroValid, setIsBairroValid] = useState(true);
+  const [isEstadoValid, setIsEstadoValid] = useState(true);
+  const [isCidadeValid, setIsCidadeValid] = useState(true);
+  
+
+
   const [isFormValid, setIsFormValid] = useState(true);
   const [isForm2Valid, setIsForm2Valid] = useState(true);
+
+
 
   const [formData, setFormData] = useState({
     tipo: "PERSONAL",
@@ -92,6 +133,7 @@ export function InstrutorFormCadastro() {
     confSenha: "",
     dtNasc: "",
     sexo: "",
+    especialidadeId: "",
 
     cep: "",
     rua: "",
@@ -100,6 +142,11 @@ export function InstrutorFormCadastro() {
     numero: "",
     cidade: "",
   });
+
+  useEffect(() => {
+    console.log(formData);
+}, [formData]);
+
 
   function formNextStep() {
     setFormStep((prevStep) => prevStep + 1);
@@ -121,7 +168,6 @@ export function InstrutorFormCadastro() {
       axios
         .get(`https://viacep.com.br/ws/${cepValue}/json/`)
         .then((response) => {
-          console.log(response);
 
           setFormData((prevState) => ({
             ...prevState,
@@ -134,6 +180,12 @@ export function InstrutorFormCadastro() {
         });
     }
 
+    setIsNumeroValid(true);
+    setIsLogradouroValid(true);
+    setIsEstadoValid(true);
+    setIsBairroValid(true);
+    setIsCidadeValid(true);
+        
     setFormData((prevState) => ({
       ...prevState,
       rua: "",
@@ -157,6 +209,10 @@ export function InstrutorFormCadastro() {
     const isIdadeValid = validateIdade(formData.dtNasc);
     const isCPFValid = validateCPF(formData.CPF);
     const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== "";
+    const isEspecialidadeSelecionado = formData.especialidadeId && formData.especialidadeId.trim() !== "";
+
+
+
 
     setIsNomeValid(isNomeValid);
     setIsSenhaValid(isSenhaValid);
@@ -166,6 +222,7 @@ export function InstrutorFormCadastro() {
     setIsIdadeValid(isIdadeValid);
     setIsCPFValid(isCPFValid);
     setIsSexoSelecionado(isSexoSelecionado);
+    setIsEspecialidadeSelecionado(isEspecialidadeSelecionado);
 
     const isFormValid =
       isSexoSelecionado &&
@@ -175,71 +232,82 @@ export function InstrutorFormCadastro() {
       isConfSenhaValid &&
       isEmailValid &&
       isIdadeValid &&
-      isCPFValid;
+      isCPFValid &&
+      isEspecialidadeSelecionado;
     setIsFormValid(isFormValid);
 
     if (isFormValid) {
-      console.log(formData);
       formNextStep();
     }
   };
 
-  const handleSecondSubmit = (event) => {
+  const handleSecondSubmit = async (event) => {
     event.preventDefault();
 
     const isCepValid = validateCEP(formData.cep);
     const isNumeroValid = formData.numero && formData.numero.trim != "";
+    const isLogradouroValid = formData.rua && formData.rua.trim != "";
+    const isBairroValid = formData.bairro && formData.bairro.trim != "";
+    const isEstadoValid = formData.estado && formData.estado.trim != "";
+    const isCidadeValid = formData.cidade && formData.cidade.trim != "";
+
 
     setIsCepValid(isCepValid);
     setIsNumeroValid(isNumeroValid);
+    setIsLogradouroValid(isLogradouroValid);
+    setIsBairroValid(isBairroValid);
+    setIsEstadoValid(isEstadoValid);
+    setIsCidadeValid(isCidadeValid);
 
-    const isForm2Valid = isCepValid && isNumeroValid;
+    const isForm2Valid = 
+    isCepValid && 
+    isNumeroValid &&
+    isLogradouroValid &&
+    isBairroValid &&
+    isEstadoValid &&
+    isCidadeValid;
+
     setIsForm2Valid(isForm2Valid);
 
     if (isForm2Valid) {
-      const userDto = userCriacaoDto(formData);
-      const enderecoAcademiaDto = enderecoAcademiaCriacaoDto(formData);
-      console.log(userDto);
-      console.log(enderecoAcademiaDto);
-      handleForm(userDto, enderecoAcademiaDto);
+
+      try {
+        const userDto = userCriacaoDto(formData);
+        const enderecoAcademiaDto = enderecoAcademiaCriacaoDto(formData);
+        const usuarioEspecialidadeDto = usuarioEspecialidadeCriacaoDto(formData);
+
+        console.log(userDto);
+
+        const responseUser = await api.post(`/usuarios`, userDto);
+        const userId = responseUser.data.id; 
+
+  
+
+        enderecoAcademiaDto.personalId = userId;
+        usuarioEspecialidadeDto.personalId = userId;
+
+        console.log(enderecoAcademiaDto);
+        console.log(usuarioEspecialidadeDto);
+
+        await api.post(`/enderecos`, enderecoAcademiaDto);
+        await api.post(`/especialidadesPersonais`, usuarioEspecialidadeDto);
+
+
+        redirecionarLogin();
+
+        } catch (error) {
+          error.response.data.errors.forEach((erroMsg) => {
+            toast.error(
+              erroMsg.defaultMessage
+            );
+          })
+  }
+
+
     }
   };
 
-  function handleForm(userDto, enderecoAcademiaDto) {
 
-    let idUsuario = 0;
-    api.post(`/usuarios`, userDto)
-      .then((response) => {
-        console.log("usuario criado");
-        toast.success("Usuário criado com sucesso!")
-        idUsuario = response.data.id;
-        console.log("id: " + idUsuario);
-
-        console.log("iniciando criação de endereço da academia");
-
-        const enderecoAcademia = enderecoAcademiaDto;
-        console.log("primeiro objeto:", enderecoAcademia);
-        enderecoAcademia.idPersonal = idUsuario;
-        console.log("segundo objeto:", enderecoAcademia);
-        
-
-        api.post(`/endereco`, enderecoAcademia)
-          .then((response) => {
-            toast.success("Endereço criado com sucesso!")
-            console.log("endereço da academia criado");
-            redirecionarLogin();
-          
-          })
-          .catch((error) => {
-            console.error("ele num qr n", error);
-            toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
-          });
-      })
-      .catch((error) => {
-        console.error("erro criacao usuario", error);
-        toast.error("Ocorreu um erro ao salvar os dados, por favor, tente novamente.")
-      });
-  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -275,6 +343,21 @@ export function InstrutorFormCadastro() {
       case "numero":
         setIsNumeroValid(true);
         break;
+      case "rua":
+        setIsLogradouroValid(true);
+        break;
+      case "estado":
+        setIsEstadoValid(true);
+        break;
+      case "bairro":
+        setIsBairroValid(true);
+        break;
+      case "cidade":
+        setIsCidadeValid(true);
+        break;
+      case "especialidade":
+        setIsEspecialidadeSelecionado(true);
+        break;
 
       default:
         break;
@@ -284,7 +367,17 @@ export function InstrutorFormCadastro() {
       ...prevState,
       [name]: value,
     }));
+
+
   };
+
+  
+  const sexos = [
+    {nome: 'Masculino',
+     id: 'M'},
+    {nome: 'Feminino',
+     id: 'F'}
+  ]
 
   const nomeErroList = () => {
     return (
@@ -348,10 +441,40 @@ export function InstrutorFormCadastro() {
   const numeroErrorList = () => {
     return (
       <ul>
-        <li>Insira um número.</li>
+        <li>Insira um número válido.</li>
       </ul>
     );
   };
+  const bairroErrorList = () => {
+    return (
+      <ul>
+        <li>Insira um bairro válido.</li>
+      </ul>
+    );
+  };
+  const estadoErrorList = () => {
+    return (
+      <ul>
+        <li>Insira um estado válido.</li>
+      </ul>
+    );
+  };
+  const cidadeErrorList = () => {
+    return (
+      <ul>
+        <li>Insira uma cidade válida.</li>
+      </ul>
+    );
+  };
+  const logradouroErrorList = () => {
+    return (
+      <ul>
+        <li>Insira um logradouro válido.</li>
+      </ul>
+    );
+  };
+
+
 
   return (
     <>
@@ -396,7 +519,7 @@ export function InstrutorFormCadastro() {
       <form
         onSubmit={handleFirstSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
-        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 1 ? "lg:flex  xl:grid" : "hidden"}`}
+        xl:gap-x-16 xl:gap-y-5 xl:h-full xl:grid-cols-2 xl:overflow-auto ${formStep == 1 ? "lg:flex  xl:grid" : "hidden"}`}
       >
         <AltInput
           labelContent={"Nome do usuário"}
@@ -480,21 +603,31 @@ export function InstrutorFormCadastro() {
           invalidMessage={CPFErrorList}
         />
 
-        <Select
-          options={["Masculino", "Feminino"]}
+        <AltSelect
+          options={sexos}
           labelContent="Sexo"
-          labelStyle={
-            "group-focus-within:text-alt-purple300 text-lg font-bold pl-[8%]"
-          }
-          selectStyle={
-            "group-focus-within:!ring-alt-purple300  h-16 p-3  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
-          }
           onChangeFunction={handleChange}
           id="sexo"
           nome="sexo"
           valid={!isSexoSelecionado}
           placeholder={"Selecione um sexo"}
         />
+
+
+
+
+        <fieldset className="col-span-2 grid justify-center items-center">
+        <AltSelect
+          options={especialidades}
+          labelContent="Especialidade"
+          onChangeFunction={handleChange}
+          id="especialidade"
+          nome="especialidadeId"
+          valid={!isEspecialidadeSelecionado}
+          placeholder={"Selecione uma especialidade"}
+        />
+        </fieldset>
+
 
         <fieldset className="col-span-2 grid justify-center items-center">
           <Button
@@ -534,7 +667,8 @@ export function InstrutorFormCadastro() {
           nome={"rua"}
           value={formData.rua}
           onChangeFunction={handleChange}
-          disabled={true}
+          valid={!isLogradouroValid}
+          invalidMessage={logradouroErrorList}
         />
 
         <AltInput
@@ -544,7 +678,8 @@ export function InstrutorFormCadastro() {
           nome={"estado"}
           value={formData.estado}
           onChangeFunction={handleChange}
-          disabled={true}
+          valid={!isEstadoValid}
+          invalidMessage={estadoErrorList}
         />
 
         <AltInput
@@ -554,7 +689,8 @@ export function InstrutorFormCadastro() {
           nome={"bairro"}
           value={formData.bairro}
           onChangeFunction={handleChange}
-          disabled={true}
+          valid={!isBairroValid}
+          invalidMessage={bairroErrorList}
         />
 
         <AltInput
@@ -575,6 +711,8 @@ export function InstrutorFormCadastro() {
           nome={"cidade"}
           value={formData.cidade}
           onChangeFunction={handleChange}
+          valid={!isCidadeValid}
+          invalidMessage={cidadeErrorList}
         />
 
         <fieldset className=" grid justify-end items-start">
