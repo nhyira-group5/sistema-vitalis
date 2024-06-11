@@ -167,7 +167,7 @@ export function HomePage() {
     }
   }
 
-  const nickname = "Squirte";
+  const nickname = "Squirtle";
 
   const listaSemanal = [
     {
