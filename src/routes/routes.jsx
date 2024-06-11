@@ -2,23 +2,24 @@ import SiteInstitucional from "@pages/Site-institucional/site-institucional.jsx"
 import { CadastroPage } from "@pages/Cadastro/cadastroPage.jsx";
 import { useRouteError } from "react-router-dom";
 import { LoginPage } from "@pages/Login/loginPage.jsx";
-import { Pagamento } from "@pages/Pagamento/pagamento";
 import { RelatorioPage } from "@pages/Relatorio/RelatorioPage";
 import { HomePage } from "@pages/Home/homePage";
 
 import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage";
-import {RotinasSemanaisPage} from "@pages/RotinasSemanais/RotinasSemanaisPage";
-import {TreinoPage} from "@pages/Treino/TreinoPage";
 
-import {RefeicoesPage} from "@pages/Refeicoes/RefeicoesPage";
-import {ChatPage} from "@pages/Chat/ChatPage";
-import {MuralPage} from "@pages/Mural/MuralPage"
+import { RotinasSemanaisPage } from "@pages/RotinasSemanais/RotinasSemanaisPage";
+import { TreinoPage } from "@pages/Treino/TreinoPage";
+import { RefeicoesPage } from "@pages/Refeicoes/RefeicoesPage";
+import { ChatPage } from "@pages/Chat/ChatPage";
+import { MuralPage } from "@pages/Mural/MuralPage"
+
 import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";
-import {ExercicioPage} from "@pages/Exercicio/ExercicioPage";
+import { ExercicioPage } from "@pages/Exercicio/ExercicioPage";
 
 
 import { PerfilPage } from "../pages/Perfil/perfilPage";
 import { BuscarPersonalPage } from "../pages/BuscarPersonal/buscarPersonalPage";
+import { PlanosPage } from "../pages/Planos/planosPage";
 
 export function CadastroRoute() {
   return (
@@ -132,10 +133,10 @@ export function Root() {
   );
 }
 
-export function PagamentoRoute() {
+export function PlanosRoute() {
   return (
     <>
-      <Pagamento />
+      <PlanosPage />
     </>
   );
 }
