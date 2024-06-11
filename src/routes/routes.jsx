@@ -6,11 +6,13 @@ import { RelatorioPage } from "@pages/Relatorio/RelatorioPage";
 import { HomePage } from "@pages/Home/homePage";
 
 import { CadastroParqPage } from "@pages/CadastroParq/CadastroParqPage";
+
 import { RotinasSemanaisPage } from "@pages/RotinasSemanais/RotinasSemanaisPage";
 import { TreinoPage } from "@pages/Treino/TreinoPage";
 import { RefeicoesPage } from "@pages/Refeicoes/RefeicoesPage";
 import { ChatPage } from "@pages/Chat/ChatPage";
 import { MuralPage } from "@pages/Mural/MuralPage"
+
 import { RefeicaoPage } from "@pages/Refeicao/RefeicaoPage";
 import { ExercicioPage } from "@pages/Exercicio/ExercicioPage";
 
