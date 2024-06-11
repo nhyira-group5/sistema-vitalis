@@ -32,33 +32,17 @@ export function AlunoFormCadastro() {
   };
 
   function createUserBody(userFormInfo) {
+
     const userBody = {
       tipo: userFormInfo.tipo,
       nome: userFormInfo.nome,
-      username: userFormInfo.username,
-      cpf: userFormInfo.CPF,
+      nickname: userFormInfo.username,
+      cpf: userFormInfo.CPF.replace(/[^\d]+/g, ''),
       dtNasc: userFormInfo.dtNasc,
       genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
       email: userFormInfo.email,
       senha: userFormInfo.senha,
     };
-
-    api
-      .post(`/usuarios`, userBody)
-      .then((response) => {
-        console.log("ufaaaa");
-        console.log(response.data);
-        toast.success("Usuário cadastrado com sucesso!");
-
-        redirecionarLogin();
-      })
-      .catch((error) => {
-        console.error("ele num quer nao", error);
-        
-        toast.error(
-          "Ocorreu um erro ao salvar os dados, por favor, tente novamente."
-        );
-      });
 
     return userBody;
   }
@@ -84,7 +68,7 @@ export function AlunoFormCadastro() {
     sexo: "",
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const isNomeValid = validateNome(formData.nome);
@@ -120,10 +104,44 @@ export function AlunoFormCadastro() {
     setIsFormValid(isFormValid);
 
     if (isFormValid) {
-      const userBody = createUserBody(formData);
-      console.log(userBody);
+      try {
+        const userBody = createUserBody(formData);
+
+        const response = await api.post(`/usuarios`, userBody);
+        console.log(response);
+        toast.success("Usuário cadastrado com sucesso!");
+        redirecionarLogin();
+      } catch (error) {
+        console.log(error)
+
+        if (error.response && error.response.data) {
+            if (error.response.data.errors) {
+                error.response.data.errors.forEach((erroMsg) => {
+                  toast.error(erroMsg.defaultMessage);
+              });
+            } else {  
+                toast.error("Erro ao efetuar cadastro.");
+            }
+            
+            if (error.response.data.message) {
+               toast.error(error.response.data.message);
+            } else {  
+                toast.error("Erro ao efetuar cadastro.");
+            }
+        } else {
+            toast.error("Erro ao efetuar cadastro.");
+        }
+    }
+
     }
   };
+
+  const sexos = [
+    {nome: 'Masculino',
+     id: 'M'},
+    {nome: 'Feminino',
+     id: 'F'}
+  ]
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -323,7 +341,7 @@ export function AlunoFormCadastro() {
       />
 
       <Select
-        options={["Masculino", "Feminino"]}
+        options={sexos}
         labelContent="Sexo"
         onChangeFunction={handleChange}
         id="sexo"

@@ -4,7 +4,7 @@ import { SideBar } from "@components/SideBar/sideBar";
 import { Link, useParams } from "react-router-dom";
 import Button from "@components/Button/button";
 import { useEffect, useState } from "react";
-//   import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player'
 
 
 export function ExercicioPage() {
