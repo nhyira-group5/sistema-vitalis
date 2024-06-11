@@ -10,7 +10,7 @@ import {
 
 export function RotinaCard({rotina, onClickFunction, rotinaSelecionada}){
     return(
-        <div onClick={onClickFunction} key={rotina.id} className={`${rotinaSelecionada === rotina.id ?  'w-[100%]' : 'w-[90%]'} ${rotina.concluido ? 'bg-primary-green200' : 'bg-white'} justify-between transition-all duration-300 ease-in-out  overflow-hidden group cursor-pointer relative flex items-center p-3 bg-white rounded-xl shadow-sombra-padrao min-h-28`}>
+        <div onClick={onClickFunction} key={rotina.id} className={`${rotinaSelecionada === rotina.id ?  'w-[100%]' : 'w-[90%]'} ${rotina.concluido ? 'bg-primary-green200' : 'bg-white'} justify-between transition-all duration-300 ease-in-out  overflow-hidden group cursor-pointer relative flex items-center p-3  rounded-xl shadow-sombra-padrao min-h-28`}>
              <div className={`${rotinaSelecionada === rotina.id ? 'w-[100%]' : 'group-hover:w-[35%]'} w-[0%]  absolute left-0 h-full transition-all duration-300 ease-in-out bg-primary-green300 `}></div>
         
             <div className="flex gap-5">

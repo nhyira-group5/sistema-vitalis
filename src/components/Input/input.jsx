@@ -20,7 +20,7 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
       </Label.Root>
 
 
-      <div className={`${valid ? '  !ring-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : ' group-focus-within:!ring-primary-green300 h-14 px-5 relative flex w-full bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500'} `}>
+      <div className={`${valid ? '  !ring-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : ' group-focus-within:!ring-primary-green300 h-14 px-5 relative flex w-full bg-white border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500'} `}>
       
         <div className="flex items-center py-3">
               {icon}

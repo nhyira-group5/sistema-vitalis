@@ -88,6 +88,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "refeicoes",
+    element: <RefeicoesRoute/>,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "buscar-personal",
     element: <BuscarPersonalRoute />,
     errorElement: <ErrorPage />,
