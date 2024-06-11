@@ -34,7 +34,7 @@ function userCriacaoDto(userFormInfo) {
     tipo: userFormInfo.tipo,
     nome: userFormInfo.nome,
     nickname: userFormInfo.username,
-    cpf: userFormInfo.CPF,
+    cpf: userFormInfo.CPF.replace(/[^\d]+/g, ''),
     dtNasc: userFormInfo.dtNasc,
     sexo: userFormInfo.sexo,
     email: userFormInfo.email,

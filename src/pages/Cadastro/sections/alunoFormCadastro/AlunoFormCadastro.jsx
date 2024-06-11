@@ -32,11 +32,12 @@ export function AlunoFormCadastro() {
   };
 
   function createUserBody(userFormInfo) {
+
     const userBody = {
       tipo: userFormInfo.tipo,
       nome: userFormInfo.nome,
       nickname: userFormInfo.username,
-      cpf: userFormInfo.CPF,
+      cpf: userFormInfo.CPF.replace(/[^\d]+/g, ''),
       dtNasc: userFormInfo.dtNasc,
       genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
       email: userFormInfo.email,
@@ -111,16 +112,26 @@ export function AlunoFormCadastro() {
         toast.success("Usuário cadastrado com sucesso!");
         redirecionarLogin();
       } catch (error) {
-        console.error("Erro ao cadastrar usuário:", error);
-        
-        if (error.response && error.response.data && error.response.data.errors) {
-          error.response.data.errors.forEach((erroMsg) => {
-            toast.error(erroMsg.defaultMessage);
-          });
+        console.log(error)
+
+        if (error.response && error.response.data) {
+            if (error.response.data.errors) {
+                error.response.data.errors.forEach((erroMsg) => {
+                  toast.error(erroMsg.defaultMessage);
+              });
+            } else {  
+                toast.error("Erro ao efetuar cadastro.");
+            }
+            
+            if (error.response.data.message) {
+               toast.error(error.response.data.message);
+            } else {  
+                toast.error("Erro ao efetuar cadastro.");
+            }
         } else {
-          toast.error("Erro ao cadastrar usuário.");
-                };
-    } 
+            toast.error("Erro ao efetuar cadastro.");
+        }
+    }
 
     }
   };
