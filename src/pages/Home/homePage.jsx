@@ -12,6 +12,7 @@ import {
   CookingPot,
 } from "@phosphor-icons/react";
 
+
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 

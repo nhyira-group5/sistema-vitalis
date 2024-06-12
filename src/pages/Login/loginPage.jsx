@@ -12,6 +12,7 @@ import { useState } from "react";
 import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import {getFicha} from "@utils/globalFunc"
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -48,13 +49,30 @@ export function LoginPage() {
 
     const userLoginDto = userDtoCriacao(dadosFormulario);
 
-    try {
-        const response = await api.post(`/login/usuario`, userLoginDto);
 
-        toast.success("Logando...");
+
+
+
+    try {
+        //const response = await api.post(`/login/usuario`, userLoginDto);
+        const loginResponse = {
+          id: 1,
+          nome: 'Cauã Gostavo',
+          email: 'cauaempr@gmail.com',
+          nickname: 'Oriundo',
+          token: "tokendeacessokkkkkk",
+          tipo: "USUARIO"
+        };
+            
+        sessionStorage.setItem('loginResponse', JSON.stringify(loginResponse));
+
+
         
-        sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
+        getFicha(navigate);  
         redirecionarHome();
+        
+        toast.success("Logando...");
+
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
           error.response.data.errors.forEach((erroMsg) => {
