@@ -12,6 +12,7 @@ import {
   CookingPot,
 } from "@phosphor-icons/react";
 
+
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
@@ -78,7 +79,7 @@ export function HomePage() {
     setActivityRepetitions(e.repetitions);
     setActivitySeries(e.series);
     setActivityInformation(e);
-    console.log(e);
+
 
     setActivitySelected(true);
   }

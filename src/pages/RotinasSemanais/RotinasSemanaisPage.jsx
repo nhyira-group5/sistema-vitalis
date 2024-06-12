@@ -3,14 +3,22 @@ import { SideBar } from "@components/SideBar/sideBar";
 import { useEffect, useState } from "react";
 import { RotinaCard, TreinoCard } from "@components/HorizontalCard/horizontalCard";
 
+import {validateLogin} from "@utils/globalFunc"
+
+import { useNavigate } from "react-router-dom";
 
 export function RotinasSemanaisPage() {
     const [rotinas, setRotinas] = useState([]);
-
     const [treinosRotina, setTreinosRotina] = useState([]);
     const [rotinaSelecionada, setRotinaSelecionada] = useState(null); 
 
+    const navigate = useNavigate();
+
+
     useEffect(()=>{
+        validateLogin(navigate);
+        
+
         getRotinas();
     }, [])
 

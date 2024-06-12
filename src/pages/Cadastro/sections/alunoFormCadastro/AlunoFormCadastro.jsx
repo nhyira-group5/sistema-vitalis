@@ -1,7 +1,7 @@
 import { Select } from "@components/Select/select";
 import Button from "@components/Button/button.jsx";
 import { Input } from "@components/Input/input";
-import { api } from "../../../../apis/api";
+import { api } from "@apis/api";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 
 export function AlunoFormCadastro() {
   const navigate = useNavigate();
+  
   const redirecionarLogin = () => {
     navigate("/login");
   };

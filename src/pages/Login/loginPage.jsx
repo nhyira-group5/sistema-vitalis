@@ -13,6 +13,7 @@ import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+
 export function LoginPage() {
   const navigate = useNavigate();
 
@@ -47,22 +48,34 @@ export function LoginPage() {
     const dadosFormulario = new FormData(myForm);
 
     const userLoginDto = userDtoCriacao(dadosFormulario);
+  
+
+
+
 
     try {
         const response = await api.post(`/login/usuario`, userLoginDto);
-
-        toast.success("Logando...");
         
         sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
+
+        const fichaResponse = await api.get(`/fichas/${response.data.id}`)
+            
         redirecionarHome();
+        toast.success("Logando...");
+
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          error.response.data.errors.forEach((erroMsg) => {
-            toast.error(erroMsg.defaultMessage);
-          });
-        } else {
-          toast.error("Erro ao efetuar login.");
-        };
+
+      switch(error.response.data.status){
+        case 404:
+          navigate("/cadastroParq")
+        break;
+        case 401:
+          toast.error("Nickname e/ou senha inválidos!");
+        break;
+      }
+
+
+
     }
   };
 
@@ -93,9 +106,7 @@ export function LoginPage() {
               nome={"nickname"}
               icon={<User size={24} color="#000000" />}
               onChangeFunction={onNicknameInputChanged}
-              inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500"
-              }
+
             />
             <Input
               labelContent={"Senha:"}
@@ -103,9 +114,7 @@ export function LoginPage() {
               icon={<Lock size={24} color="#000000" />}
               onChangeFunction={onSenhaInputChanged}
               inputType={"password"}
-              inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 "
-              }
+
             ></Input>
           </form>
 
