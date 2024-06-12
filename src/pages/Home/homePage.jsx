@@ -79,7 +79,7 @@ export function HomePage() {
     setActivityRepetitions(e.repetitions);
     setActivitySeries(e.series);
     setActivityInformation(e);
-    console.log(e);
+
 
     setActivitySelected(true);
   }

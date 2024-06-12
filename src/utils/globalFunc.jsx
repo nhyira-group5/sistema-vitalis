@@ -10,20 +10,6 @@ export function getLoginResponse(){
 
 
 
-export  function getFicha(navigate){
-    const usuarioLogado = getLoginResponse();
-
-    try{
-        const fichaResponse =   api.get(`/fichas/${usuarioLogado.id}`);
-        
-        return(fichaResponse);
-    }catch(error) {
-        if(error.response.data.status == 404){
-            navigate("/cadastroParq");
-        }
-        
-    }
-};
 
 export function validateLogin(navigate) {
     const usuarioLogado = getLoginResponse();
