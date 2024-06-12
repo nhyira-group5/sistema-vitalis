@@ -1,10 +1,10 @@
-import { SideBar } from "@components/SideBar/sideBar";
-import { useEffect, useState } from "react";
-import {Input} from "@components/Input/input";
-import {MuralItem} from "@components/MuralItem/muralItem";
-import Button from "@components/Button/button";
 import { ImageDropzone } from "@components/Dropzone/dropzone";
+import {MuralItem} from "@components/MuralItem/muralItem";
+import { SideBar } from "@components/SideBar/sideBar";
 import * as Dialog from '@radix-ui/react-dialog';
+import Button from "@components/Button/button";
+import {Input} from "@components/Input/input";
+import { useEffect, useState } from "react";
 
 
 import {

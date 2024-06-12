@@ -10,10 +10,14 @@ export function CardPersonal({
   media,
   haveDots,
   haveShadow,
+  isUser,
 }) {
   return (
     <div
-      className={`w-[98%] h-[20%] bg-white rounded-2xl drop-shadow-lg p-4 flex gap-4 justify-between`}
+      className={twMerge(
+        "w-[98%] h-[20%] bg-white rounded-2xl p-4 flex gap-4 justify-between",
+        haveShadow ? "drop-shadow-lg" : ""
+      )}
     >
       <div className="flex gap-5">
         <img
@@ -25,9 +29,16 @@ export function CardPersonal({
           alt=""
         />
         <div className="h-full flex flex-col justify-between self-center ">
-          <h2 className="font-semibold text-[#2B6E36]">{name}</h2>
+          <h2
+            className={twMerge(
+              "font-semibold text-[#2B6E36]",
+              !isUser ? "text-[#2B6E36]" : "text-[#503465]"
+            )}
+          >
+            {name}
+          </h2>
           <span className="text-sm">
-            Especialista em
+            {!isUser ? "Especialista em" : "Meta em"}
             <span className="font-semibold"> {specialty}</span>
           </span>
           {city != null && state != null ? (
