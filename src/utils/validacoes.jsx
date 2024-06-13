@@ -65,6 +65,30 @@ export const validateCPF = (cpf) =>{
     return true;
 }
 
-export const validateCEP = (CEP) =>{
-    return CEP.length == 8;
-}
+export const validateCEP = (CEP) => {
+    const cepRegex = /^\d{8}$/;
+    return cepRegex.test(CEP);
+};
+
+export const validatePeso = (peso) => {
+    const pesoRegex = /^\d+$/;
+    return peso > 0 && pesoRegex.test(peso.toString());
+};
+
+export const validateAltura = (altura) => {
+    const alturaRegex = /^\d+$/;
+    return altura > 20 && alturaRegex.test(altura.toString());
+};
+
+export const validateFormDate = (dataFornecida) => {
+    const dataAtual = new Date();
+    const data = new Date(dataFornecida);
+    let diferencaAnos = dataAtual.getFullYear() - data.getFullYear();
+
+    if (data.getMonth() > dataAtual.getMonth() ||
+        data.getMonth() + 12 < dataAtual.getMonth()){
+        diferencaAnos--;
+    }
+
+    return diferencaAnos > 0;
+};

@@ -12,8 +12,7 @@ import { useState } from "react";
 import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "@react-oauth/google";
-// import { jwtDecode } from "jwt-decode";
+
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -22,53 +21,62 @@ export function LoginPage() {
     navigate("/home");
   };
 
-  const [email, setEmail] = useState("");
+  const [nicknname, setNicknname] = useState("");
   const [senha, setSenha] = useState("");
 
-  function onEmailInputChanged(event) {
-    setEmail(event.target.value);
+  function onNicknameInputChanged(event) {
+    setNicknname(event.target.value);
   }
 
   function onSenhaInputChanged(event) {
     setSenha(event.target.value);
   }
 
-  const handleSubmit = (event) => {
+  function userDtoCriacao(dadosFormulario){
+    const userLoginDto = {
+      login: dadosFormulario.get("nickname"),
+      senha: dadosFormulario.get("senha"),
+    };
+
+    return userLoginDto;
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const myForm = document.getElementById("myForm");
     const dadosFormulario = new FormData(myForm);
 
-    const emailForm = dadosFormulario.get("email");
-    const senhaForm = dadosFormulario.get("senha");
+    const userLoginDto = userDtoCriacao(dadosFormulario);
+  
 
-    const userBody = {
-      login: emailForm,
-      senha: senhaForm,
-      tipo: "USUARIO"
-    };
-    
 
-    // GET USUARIOS WHERE (USERNAME == ?? || EMAIL == ??) && SENHA == ???
-    api.post(`/login/usuario`, userBody)
-      .then(() => {
-        console.log("usuario existe");
-        console.log("get objeto usuario");
-        console.log("redirecionando...");
-        toast.success("Logando...")
 
-        if (1 == 1) {
-          console.log("tela usuario")
-        } else {
-          console.log("tela personal")
-        }
 
+    try {
+        const response = await api.post(`/login/usuario`, userLoginDto);
+        
+        sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
+
+        const fichaResponse = await api.get(`/fichas/${response.data.id}`)
+            
         redirecionarHome();
-      })
-      .catch(() => {
-        console.log("legend em baixo da input com texto vermelho 'usuário ou senha inválidos'");
-        toast.error("Nickname e/ou senha inválidos")
-      });
+        toast.success("Logando...");
+
+    } catch (error) {
+
+      switch(error.response.data.status){
+        case 404:
+          navigate("/cadastroParq")
+        break;
+        case 401:
+          toast.error("Nickname e/ou senha inválidos!");
+        break;
+      }
+
+
+
+    }
   };
 
   return (
@@ -95,12 +103,10 @@ export function LoginPage() {
           <form className="flex flex-col gap-6" id="myForm">
             <Input
               labelContent={"Nickname:"}
-              nome={"email"}
+              nome={"nickname"}
               icon={<User size={24} color="#000000" />}
-              onChangeFunction={onEmailInputChanged}
-              inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500"
-              }
+              onChangeFunction={onNicknameInputChanged}
+
             />
             <Input
               labelContent={"Senha:"}
@@ -108,13 +114,10 @@ export function LoginPage() {
               icon={<Lock size={24} color="#000000" />}
               onChangeFunction={onSenhaInputChanged}
               inputType={"password"}
-              inputStyle={
-                "group-focus-within:!ring-primary-green300 h-12 p-3 relative flex w-full bg-gray100 border-gray100 border rounded-full outline-none ring-1 ring-gray500 "
-              }
+
             ></Input>
           </form>
 
-          {/* CHECKBOX CONECTADO E ESQUECEU A SENHA */}
           <div className="w-full flex justify-center">
             <div>
               <span>Ainda não tem uma conta? </span>
@@ -125,17 +128,8 @@ export function LoginPage() {
           </div>
         </div>
 
-        {/* BOTÕES GOOGLE E ENTRAR */}
         <div className="flex justify-around">
-          {/* <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            const decoded = jwtDecode(credentialResponse.credential);
-            console.log(decoded);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        /> */}
+  
           <button
             className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]"
             type="submit"
@@ -146,7 +140,6 @@ export function LoginPage() {
           </button>
         </div>
 
-        {/* RODAPÉ */}
         <span className="w-full text-center text-xs">
           © 2024 nhyira. All Rights reserved
         </span>

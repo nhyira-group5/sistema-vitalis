@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'inset-green': 'inset 5px 0px #2B6E36',
+        'sombra-padrao': '0px 0px 5px 0px rgba(0,0,0,0.50)'
+
+      },
       colors: {
         'primary-green100': '#daf1de',
         'primary-green200': '#91d49c',
@@ -58,7 +63,25 @@ export default {
         slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         rotateAndInvert: 'rotateAndInvert 0.5s forwards'
       },
+
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+    
+    function({ addUtilities }) {
+      addUtilities({
+        '.truncate-multiline': {
+          display: '-webkit-box',
+          '-webkit-line-clamp': '2',
+          '-webkit-box-orient': 'vertical',
+          overflow: 'hidden',
+          'text-overflow': 'ellipsis',
+          'max-height': '3em', // Ajuste conforme a altura da linha
+          'line-height': '1.5em', // Ajuste conforme a altura da linha
+        },
+      })
+    }
+  ],
+  
 }

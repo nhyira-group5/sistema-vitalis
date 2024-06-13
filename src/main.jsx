@@ -1,13 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import WebFont from "webfontloader";
 import "./index.css";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import React from "react";
+import WebFont from "webfontloader";
+import ReactDOM from "react-dom/client";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import {CadastroRoute, LoginRoute, Root, ErrorPage} from "@routes/routes" 
-
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {
+  RelatorioRoute,
+  CadastroRoute,
+  LoginRoute,
+  Root,
+  ErrorPage,
+  CadastroParqRoute,
+  HomeRoute,
+  RotinasSemanaisRoute,
+  TreinoRoute,
+  RefeicoesRoute,
+  ChatRoute,
+  MuralRoute,
+  RefeicaoRoute,
+  ExercicioRoute,
+  PerfilRoute,
+  BuscarPersonalRoute,
+  PlanosRoute
+} from "@routes/routes";
+import { ChatPersonalRoute, HomePersonalRoute } from "./routes/routes";
+import { PerfilPersonalPage } from "./pages/PerfilPersonal/perfilPersonalPage";
 
 WebFont.load({
   google: {
@@ -23,7 +42,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
   {
     path: "login",
@@ -34,14 +53,94 @@ const router = createBrowserRouter([
     path: "cadastro",
     element: <CadastroRoute />,
     errorElement: <ErrorPage />,
-  }
+  },
+  {
+    path: "cadastroParq",
+    element: <CadastroParqRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "relatorio",
+    element: <RelatorioRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "home",
+    element: <HomeRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "rotinas",
+    element: <RotinasSemanaisRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+  path: "rotinas/treino/:idTreino",
+  element: <TreinoRoute />,
+  errorElement: <ErrorPage />,
+  },
+  {
+    path: "rotinas/treino/:idTreino/exercicio/:idExercicio",
+    element: <ExercicioRoute />,
+    errorElement: <ErrorPage />,
+    },
+  {
+    path: "refeicoes/:refeicaoId",
+    element: <RefeicaoRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "refeicoes",
+    element: <RefeicoesRoute/>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "buscar-personal",
+    element: <BuscarPersonalRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "chat",
+    element: <ChatRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "mural",
+    element: <MuralRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "perfil",
+    element: <PerfilRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "planos",
+    element: <PlanosRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "home-personal",
+    element: <HomePersonalRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "perfil-personal",
+    element: <PerfilPersonalPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "chat-personal",
+    element: <ChatPersonalRoute />,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </div>
+    <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </div>
   </React.StrictMode>
 );
