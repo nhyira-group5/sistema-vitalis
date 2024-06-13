@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
 import { Message } from "../../components/Message/message";
-import { SideBar } from "../../components/SideBar/sideBar";
-import {
-  CalendarSlash,
-  PaperPlaneRight,
-  Paperclip,
-  Siren,
-} from "@phosphor-icons/react";
+import { SideBarPersonal } from "../../components/SideBar/sideBar";
+import { FinnTheHuman, Siren } from "@phosphor-icons/react";
 
-export function ChatPage() {
+export function ChatPersonalPage() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -26,7 +21,7 @@ export function ChatPage() {
         user={"sender"}
         message={inputValue}
         time={"00:00"}
-        typeUser="usuario"
+        typeUser="personal"
       />,
     ]);
     setInputValue("");
@@ -34,18 +29,18 @@ export function ChatPage() {
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
-      <SideBar />
+      <SideBarPersonal />
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <div className="w-full flex justify-between items-center ">
-          <h1 className="text-[#2B6E36] font-semibold text-2xl">Chat</h1>
+          <h1 className="text-[#503465] font-semibold text-2xl">Chat</h1>
           <button className="p-1.5 bg-[#CA1B1B] rounded-md">
             <Siren size={20} color="white" />
           </button>
         </div>
         <div className="w-full h-[90%] flex justify-between items-center">
-          <div className="w-1/4 h-full bg-[#48B75A] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
+          <div className="w-1/4 h-full bg-[#8656A9] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
             <h1 className="text-white text-base font-medium">
-              Personal afiliado
+              Alunos afiliados
             </h1>
 
             <div className="w-full h-[20%] bg-white rounded-2xl shadow-xl p-4 flex gap-4 justify-between">
@@ -116,32 +111,23 @@ export function ChatPage() {
             <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">
               <CardPersonal
                 name={"User0101"}
-                specialty={"Emagrecimento"}
+                specialty={"ficar fortinho"}
                 size={"size-14"}
                 media={
                   "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
                 }
+                isUser
               />
               <hr className="w-full border border-black" />
               <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-auto scrollbar-thin">
-                {/* <Message
-                  user={"sender"}
-                  message={"Oi amor"}
-                  time={"00:00"}
-                  typeUser="usuario"
-                />
+                {/* <Message user={"sender"} message={"Oi amor"} time={"00:00"} />
                 <Message
                   user={"recipient"}
                   message={"Oi xuxu, tudo bem?"}
                   time={"00:00"}
-                  typeUser="personal"
-                />
-                <Message
-                  user={"sender"}
-                  message={"Oi amor"}
-                  time={"00:00"}
                   typeUser="usuario"
-                /> */}
+                />
+                <Message user={"sender"} message={"Oi amor"} time={"00:00"} /> */}
                 {messages.length > 0 ? (
                   messages.map((m, index) => {
                     return m;
@@ -168,7 +154,7 @@ export function ChatPage() {
                 onChange={handleChangeInput}
               />
               <button
-                className="px-5 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]"
+                className="px-5 py-2 rounded-2xl shadow-lg text-white bg-[#8656A9]"
                 onClick={sendMessage}
               >
                 Enviar

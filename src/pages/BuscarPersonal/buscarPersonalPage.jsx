@@ -6,6 +6,7 @@ import { SideBar } from "../../components/SideBar/sideBar";
 import { Mapa } from "../../components/Mapa/mapa";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
@@ -26,7 +27,7 @@ export function BuscarPersonalPage() {
   }
 
   function handleClickSearch() {
-    setInfoEndereco(null)
+    setInfoEndereco(null);
     setCarregando(true);
     const url = `https://viacep.com.br/ws/${cep}/json/`;
     axios
@@ -85,19 +86,20 @@ export function BuscarPersonalPage() {
             </button>
           </div>
 
-          <div className="w-full h-[55%] bg-green-600 flex items-center justify-center">
+          <div className="w-full h-[55%] bg-gray-500/20 flex items-center justify-center">
             {carregando && <span>Carregando...</span>}
-            <Mapa infoEndereco={infoEndereco} setAcademias={setAcademias} setCarregando={setCarregando} />
+            <Mapa
+              infoEndereco={infoEndereco}
+              setAcademias={setAcademias}
+              setCarregando={setCarregando}
+            />
           </div>
 
           <div className="h-[22%] flex justify-between">
             {!academias ? (
-              <CardAcad
-                title="Procurando..."
-                rating="Procurando..."
-                address="Procurando.."
-                cep={cep}
-              />
+              <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
+                <QuestionMark size={30} color="black" />
+              </div>
             ) : (
               <CardAcad
                 title={academias[0].nome}
@@ -110,12 +112,9 @@ export function BuscarPersonalPage() {
               />
             )}
             {!academias ? (
-              <CardAcad
-                title="Procurando..."
-                rating="Procurando..."
-                address="Procurando.."
-                cep={cep}
-              />
+              <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
+                <QuestionMark size={30} color="black" />
+              </div>
             ) : (
               <CardAcad
                 title={academias[1].nome}

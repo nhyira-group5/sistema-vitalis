@@ -1,6 +1,7 @@
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 export function Mapa({ infoEndereco, setAcademias, setCarregando}) {
   const [dados, setDados] = useState(null);
 
