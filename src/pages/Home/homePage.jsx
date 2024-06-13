@@ -304,6 +304,7 @@ export function HomePage() {
       if (activitiesWeek !== null && activitiesWeek !== undefined) {
         const element = activitiesWeek[i];
         console.log(element);
+        
         setActivitiesDay(element);
         return;
         if (activitiesWeek[i] !== null && activitiesWeek[i] !== undefined) {
