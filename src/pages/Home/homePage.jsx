@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
@@ -234,7 +235,7 @@ export function HomePage() {
     setActivityRepetitions(e.repeticao);
     setActivitySeries(e.serie);
     setActivityInformation(e);
-    console.log(e);
+
 
     setActivitySelected(true);
   }

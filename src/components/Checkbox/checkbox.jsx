@@ -1,7 +1,7 @@
 import React from "react";
 import * as Label from "@radix-ui/react-label";
 
-    export function Checkbox({labelcontent, Id, name, disabled = false, labelStyle}) {
+    export function Checkbox({labelcontent, Id, name, disabled = false, labelStyle, onChangeFunction, checked }) {
       return (
             <div className="inline-flex items-center">
               <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor={Id}>
@@ -10,7 +10,10 @@ import * as Label from "@radix-ui/react-label";
                   className={`${disabled ? 'cursor-default' : 'cursor-pointer'} before:content[''] peer relative h-7 w-7 border-primary-green300 appearance-none rounded-lg border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary-green300 checked:bg-primary-green300 checked:before:bg-primary-green300 hover:before:opacity-10`}
                   id={Id} 
                   name={name}
-                  disabled={disabled}/>
+                  onChange={(e)=> onChangeFunction(e)}
+                  disabled={disabled}
+                  checked={checked ?? null}/>
+                  
 
                 <span
                   className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">

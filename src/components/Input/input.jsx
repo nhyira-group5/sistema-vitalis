@@ -14,7 +14,7 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
       <Label.Root
 
         className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' group-focus-within:text-primary-green300 text-lg font-bold pl-[5%]'}`}
-        for={id}
+        htmlFor={id}
       >
         {labelContent}
       </Label.Root>
@@ -113,7 +113,7 @@ export function AltInput({inputType, inputStyle, labelContent, labelStyle, separ
       <Label.Root
 
         className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : 'group-focus-within:text-alt-purple300 text-lg font-bold pl-[5%]'}`}
-        for={id}
+        htmlFor={id}
       >
         {labelContent}
       </Label.Root>

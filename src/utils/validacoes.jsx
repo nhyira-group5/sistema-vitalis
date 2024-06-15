@@ -79,3 +79,16 @@ export const validateAltura = (altura) => {
     const alturaRegex = /^\d+$/;
     return altura > 20 && alturaRegex.test(altura.toString());
 };
+
+export const validateFormDate = (dataFornecida) => {
+    const dataAtual = new Date();
+    const data = new Date(dataFornecida);
+    let diferencaAnos = dataAtual.getFullYear() - data.getFullYear();
+
+    if (data.getMonth() > dataAtual.getMonth() ||
+        data.getMonth() + 12 < dataAtual.getMonth()){
+        diferencaAnos--;
+    }
+
+    return diferencaAnos > 0;
+};
