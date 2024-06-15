@@ -78,7 +78,7 @@ const router = createBrowserRouter([
   errorElement: <ErrorPage />,
   },
   {
-    path: "rotinas_semanais/diaria/:idRotinaDiaria/exercicio/:idExercicio",
+    path: "rotinas_semanais/diaria/:idRotinaDiaria/exercicio/:idTreino",
     element: <ExercicioRoute />,
     errorElement: <ErrorPage />,
     },

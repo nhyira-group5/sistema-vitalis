@@ -27,29 +27,7 @@ export function RotinaCard({rotina, onClickFunction, rotinaSelecionada}){
     )
 }
 
-export function TreinoCard({rotinaDiaria}){
-  const [exerciciosFeitos, setExerciciosFeitos] = useState(0);
-  const [exercicios, setExercicios] = useState([]);
-
-
-
-  useEffect(() => {
-  
-    const buscarDetalhesDaRotinaDiaria = async () => {
-      try {
-        const response = await api.get(`/rotinaDiarias/buscarIdDiario/${rotinaDiaria.idRotinaDiaria}`);
-        const exerciciosDaRotina = response.data.treinoDto; 
-        setExercicios(exerciciosDaRotina);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    setExercicios([]);
-    buscarDetalhesDaRotinaDiaria();
-  }, [rotinaDiaria]); 
-
-
+export function RotinaDiariaCard({rotinaDiaria}){
 
   return(
     <Link key={rotinaDiaria.idRotinaDiaria} to={`/rotinas_semanais/diaria/${rotinaDiaria.idRotinaDiaria}`}>
@@ -61,7 +39,7 @@ export function TreinoCard({rotinaDiaria}){
 
                 <div className="flex justify-center items-center gap-2 ">
                   <Barbell size={25} color={`${rotinaDiaria.concluido == 1 ? '#ffffff' : '#000000'}`}/>
-                  <span className={`${rotinaDiaria.concluido ? 'text-white' : 'text-black'} font-semibold`}>{exerciciosFeitos}/{exercicios.length}</span>
+                  <span className={`${rotinaDiaria.concluido ? 'text-white' : 'text-black'} font-semibold`}>{rotinaDiaria.totalExerciciosConcluidos}/{rotinaDiaria.totalExercicios}</span>
                   {rotinaDiaria.concluido == 1 && (
                      <Check size={25} color={`${rotinaDiaria.concluido ? '#ffffff' : '#000000'}`} className="z-10"/>
                   )}

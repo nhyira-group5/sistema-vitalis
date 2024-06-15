@@ -9,26 +9,27 @@ import { useParams  } from "react-router-dom";
 import { api } from "@apis/api";
 
 export function TreinoPage(){
-    const [rotinaDiaria, setRotinaDiaria] = useState([]);
+    const [treinosRotinaDiaria, setTreinosRotinaDiaria] = useState([]);
    
+    const [isTreinosRotinaDiariaLoading, setIsTreinosRotinaDiariaLoading] = useState(false);
+
     const { idRotinaDiaria } = useParams();
 
-    function getRotinaDiaria(){
-        try{
-            api.get(`/treinos/por-dia/${idRotinaDiaria}`)
-            .then((response)=>{
-                setRotinaDiaria([...rotinaDiaria,...response.data]);
-            })
-        } catch (error){
-            console.log(error)
-        }
-
-
-    }
 
 
     useEffect(()=>{
-        getExercicios();
+        setIsTreinosRotinaDiariaLoading(true)
+        try{
+            api.get(`/treinos/por-dia/${idRotinaDiaria}`)
+            .then((response)=>{
+                setTreinosRotinaDiaria([...treinosRotinaDiaria,...response.data]);
+                setIsTreinosRotinaDiariaLoading(false)
+            })
+        } catch (error){
+            console.log(error)
+            setIsTreinosRotinaDiariaLoading(false)
+        }
+        
     },[]);
 
     return(
@@ -42,12 +43,26 @@ export function TreinoPage(){
             </div>
 
             <div className="flex gap-5 items-center h-full w-full overflow-auto p-5">
-                    {exercicios.map(exercicio => (
-                            <ExercicioImageCard 
-                            key={exercicio.key} 
-                            exercicio={exercicio}
-                            URI={`/rotinas/treino/${rotinaDiaria.fkTreino}/exercicio/${rotinaDiaria.id}`}/>
-                    ))}
+                    
+                    {isTreinosRotinaDiariaLoading ? (
+                        <div className="flex h-full w-full gap-2 items-center justify-center">
+                            <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
+                            <p className="text-gray-700 ">Carregando...</p>
+                        </div>
+                    ):(
+                        treinosRotinaDiaria && treinosRotinaDiaria.length > 0 ? (
+                            treinosRotinaDiaria.map(treino => (
+                                <ExercicioImageCard 
+                                key={treino.key} 
+                                exercicio={treino}
+                                URI={`/rotinas_semanais/diaria/${idRotinaDiaria}/exercicio/${treino.idExercicio}`}/>
+                            ))
+                        ) :(
+                            <div className="h-full w-full flex items-center justify-center">
+                                <span>Parece que não há nenhum treino aqui :( Tente outra rotina diaria!</span>
+                            </div>
+                        )
+                    )} 
 
 
             </div>
