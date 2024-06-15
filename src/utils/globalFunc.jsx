@@ -1,13 +1,9 @@
-import { api } from "@apis/api";
 
 export function getLoginResponse(){
     const storedResponse = JSON.parse(sessionStorage.getItem('loginResponse'));
     
-
     return storedResponse;
 }
-
-
 
 
 

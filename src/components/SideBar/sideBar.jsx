@@ -29,7 +29,7 @@ export function SideBar() {
 
       <SideBarItem URI={"/home"} Icon={<HouseLine size={28} />} />
 
-      <SideBarItem URI={"/rotinas"} Icon={<Barbell size={28} />} />
+      <SideBarItem URI={"/rotinas_semanais"} Icon={<Barbell size={28} />} />
 
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />

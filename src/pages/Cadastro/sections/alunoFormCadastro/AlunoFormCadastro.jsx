@@ -3,7 +3,7 @@ import Button from "@components/Button/button.jsx";
 import { Input } from "@components/Input/input";
 import { api } from "@apis/api";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   validateNome,
@@ -40,7 +40,7 @@ export function AlunoFormCadastro() {
       nickname: userFormInfo.username,
       cpf: userFormInfo.CPF.replace(/[^\d]+/g, ''),
       dtNasc: userFormInfo.dtNasc,
-      genero: userFormInfo.sexo == "Feminino" ? "F" : "M",
+      sexo: userFormInfo.sexo,
       email: userFormInfo.email,
       senha: userFormInfo.senha,
     };
@@ -109,7 +109,7 @@ export function AlunoFormCadastro() {
         const userBody = createUserBody(formData);
 
         const response = await api.post(`/usuarios`, userBody);
-        console.log(response);
+       
         toast.success("Usuário cadastrado com sucesso!");
         redirecionarLogin();
       } catch (error) {
@@ -117,18 +117,13 @@ export function AlunoFormCadastro() {
 
         if (error.response && error.response.data) {
             if (error.response.data.errors) {
-                error.response.data.errors.forEach((erroMsg) => {
-                  toast.error(erroMsg.defaultMessage);
-              });
+              error.response.data.errors.forEach((erroMsg) => {
+                toast.error(erroMsg.defaultMessage);
+            });
             } else {  
                 toast.error("Erro ao efetuar cadastro.");
             }
-            
-            if (error.response.data.message) {
-               toast.error(error.response.data.message);
-            } else {  
-                toast.error("Erro ao efetuar cadastro.");
-            }
+
         } else {
             toast.error("Erro ao efetuar cadastro.");
         }
@@ -181,6 +176,10 @@ export function AlunoFormCadastro() {
         break;
     }
   };
+
+  useEffect(()=>{
+    console.log(formData)
+  },[formData])
 
   const nomeErroList = () => {
     return (
