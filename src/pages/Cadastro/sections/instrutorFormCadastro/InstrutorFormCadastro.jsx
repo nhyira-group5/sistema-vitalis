@@ -39,6 +39,7 @@ function userCriacaoDto(userFormInfo) {
     sexo: userFormInfo.sexo,
     email: userFormInfo.email,
     senha: userFormInfo.senha,
+    academiaId: null
   };
 
   return userDto;
@@ -53,7 +54,6 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
     estado: userFormInfo.estado,
     cep: userFormInfo.cep,
     complemento: "",
-    personalId: null,
   };
 
   return enderecoAcademiaDto;
@@ -276,24 +276,18 @@ export function InstrutorFormCadastro() {
         const enderecoAcademiaDto = enderecoAcademiaCriacaoDto(formData);
         const usuarioEspecialidadeDto = usuarioEspecialidadeCriacaoDto(formData);
 
-        console.log(userDto);
+
+        
+        const academiaResponse = await api.post(`/enderecos`, enderecoAcademiaDto);
+        const academiaId = academiaResponse.data.id; 
+
+        userDto.enderecoId = academiaId;
 
         const responseUser = await api.post(`/usuarios`, userDto);
         const userId = responseUser.data.id; 
         
-        
-        
-        
-        
-  
-
-        enderecoAcademiaDto.personalId = userId;
         usuarioEspecialidadeDto.personalId = userId;
-
-        console.log(enderecoAcademiaDto);
-        console.log(usuarioEspecialidadeDto);
-
-        await api.post(`/enderecos`, enderecoAcademiaDto);
+        
         await api.post(`/especialidadesPersonais`, usuarioEspecialidadeDto);
 
 

@@ -24,6 +24,8 @@ export function LoginPage() {
   const [nicknname, setNicknname] = useState("");
   const [senha, setSenha] = useState("");
 
+  const [loginSplash, setLoginSplash] = useState(false);
+
   function onNicknameInputChanged(event) {
     setNicknname(event.target.value);
   }
@@ -44,38 +46,38 @@ export function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setLoginSplash(true);
+
     const myForm = document.getElementById("myForm");
     const dadosFormulario = new FormData(myForm);
-
     const userLoginDto = userDtoCriacao(dadosFormulario);
   
 
 
 
-
     try {
         const response = await api.post(`/login/usuario`, userLoginDto);
-        
         sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
 
-        const fichaResponse = await api.get(`/fichas/${response.data.id}`)
-            
+        await api.get(`/fichas/${response.data.id}`)
+
         redirecionarHome();
-        toast.success("Logando...");
-
+        toast.success(`Bem-vindo ${response.data.nome}`);
     } catch (error) {
-
       switch(error.response.data.status){
         case 404:
+          toast.success("Conclua seu cadastro!");
           navigate("/cadastroParq")
         break;
         case 401:
           toast.error("Nickname e/ou senha inválidos!");
         break;
+        case 400:
+          toast.error("Nickname e/ou senha inválidos!");
+        break;
       }
-
-
-
+    } finally {
+      setLoginSplash(false)
     }
   };
 
@@ -131,12 +133,23 @@ export function LoginPage() {
         <div className="flex justify-around">
   
           <button
-            className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]"
+            className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A] *:h-8 *:flex *:items-center"
             type="submit"
             id="btnForm"
             onClick={handleSubmit}
           >
-            Entrar
+                  {
+                                   loginSplash? (
+                                      <div>
+                                        <div className="animate-pulse rounded-full w-5 h-5 bg-white"></div>
+                                      </div>
+                                    ) : (
+                                      <div>
+                                        <span>Entrar</span>
+                                      </div>
+                                    )
+                    }
+
           </button>
         </div>
 

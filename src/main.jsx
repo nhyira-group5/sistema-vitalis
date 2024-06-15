@@ -70,22 +70,22 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "rotinas",
+    path: "rotinas_semanais",
     element: <RotinasSemanaisRoute />,
     errorElement: <ErrorPage />,
   },
   {
-  path: "rotinas/treino/:idTreino",
+  path: "rotinas_semanais/diaria/:idRotinaDiaria",
   element: <TreinoRoute />,
   errorElement: <ErrorPage />,
   },
   {
-    path: "rotinas/treino/:idTreino/exercicio/:idExercicio",
+    path: "rotinas_semanais/diaria/:idRotinaDiaria/exercicio/:idTreino",
     element: <ExercicioRoute />,
     errorElement: <ErrorPage />,
     },
   {
-    path: "refeicoes/:refeicaoId",
+    path: "refeicoes/:idRefeicao",
     element: <RefeicaoRoute />,
     errorElement: <ErrorPage />,
   },
