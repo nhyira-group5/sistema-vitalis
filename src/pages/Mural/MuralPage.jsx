@@ -1,8 +1,10 @@
+
 import { SideBar } from "@components/SideBar/sideBar";
 import { useEffect, useState } from "react";
 import {Input} from "@components/Input/input";
 import {MuralItem} from "@components/MuralItem/muralItem";
 import {CloudinaryButton} from "@components/Button/button";
+
 
 import { toast } from "react-toastify";
 import {api} from "@apis/api"; 

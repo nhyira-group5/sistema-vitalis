@@ -25,6 +25,8 @@ import {
   BuscarPersonalRoute,
   PlanosRoute
 } from "@routes/routes";
+import { ChatPersonalRoute, HomePersonalRoute } from "./routes/routes";
+import { PerfilPersonalPage } from "./pages/PerfilPersonal/perfilPersonalPage";
 
 WebFont.load({
   google: {
@@ -115,6 +117,21 @@ const router = createBrowserRouter([
   {
     path: "planos",
     element: <PlanosRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "home-personal",
+    element: <HomePersonalRoute />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "perfil-personal",
+    element: <PerfilPersonalPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "chat-personal",
+    element: <ChatPersonalRoute />,
     errorElement: <ErrorPage />,
   },
 ]);

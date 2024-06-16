@@ -71,7 +71,7 @@ export function CardAcad({ title, rating, address, cep, lat, lon, onClickFunctio
       <div className="w-full flex justify-between">
         <h2 className="text-[#48B75A] font-semibold ">{title}</h2>
         <div className="flex items-center gap-1">
-          <span className="text-[#F6D920] font-semibold">{rating}</span>
+          <span className="text-[#F6D920] font-semibold">{rating.toFixed(1)}</span>
           <Star color="#F6D920" weight="fill" />
         </div>
       </div>

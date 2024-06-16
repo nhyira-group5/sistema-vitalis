@@ -25,6 +25,7 @@
     "@vis.gl/react-google-maps": "^1.0.2",
     "axios": "^1.6.8",
     "cloudinary": "^2.2.0",
+    "date-fns": "^3.6.0",
     "jwt-decode": "^4.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

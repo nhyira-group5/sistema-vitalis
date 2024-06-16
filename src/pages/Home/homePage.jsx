@@ -11,6 +11,8 @@ import {
   CalendarCheck,
   CookingPot,
 } from "@phosphor-icons/react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 export function HomePage() {
@@ -27,6 +29,9 @@ export function HomePage() {
   const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activityInformation, setActivityInformation] = useState({});
 
+  const [activitiesWeek, setActivitiesWeek] = useState(null);
+  const [allDataActivities, setAllDataActivities] = useState(false);
+
   const [totalAmountDays, setTotalAmountDays] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
   const [totalAmountExercises, setTotalAmountExercises] = useState(0);
@@ -38,15 +43,165 @@ export function HomePage() {
   const [reminders, setReminders] = useState([]);
   const lastInputRef = useRef(null);
 
-  useEffect(
-    () => {
-      setNicknameUser(nickname);
+  useEffect(() => {
+    const url = "http://localhost:8080/refeicoes/por-semana/1";
+    axios
+      .get(url)
+      .then((response) => {
+        const listaRefeicoesDaSemana = response.data;
 
-      generateActivitiesDay();
-    },
-    [],
-    [activityInformation]
-  );
+        const agrupadosPelaRefeicaoDiaria = listaRefeicoesDaSemana.reduce(
+          (acc, curr) => {
+            if (!acc[curr.rotinaDiaria.id]) {
+              acc[curr.rotinaDiaria.id] = [];
+            }
+            acc[curr.rotinaDiaria.id].push({
+              ...curr,
+              type: "Refeição",
+            });
+            return acc;
+          },
+          {}
+        );
+
+        console.log(`LISTA REFEIÇÕES:`);
+        console.log(agrupadosPelaRefeicaoDiaria);
+        setActivitiesWeek(agrupadosPelaRefeicaoDiaria);
+
+        const url = "http://localhost:8080/treinos/por-semana/1";
+        axios
+          .get(url)
+          .then((response) => {
+            const listaExerciciosDaSemana = response.data;
+
+            const agrupadosPorExercicioDiario = listaExerciciosDaSemana.reduce(
+              (acc, curr) => {
+                if (!acc[curr.rotinaDiaria.id]) {
+                  acc[curr.rotinaDiaria.id] = [];
+                }
+                acc[curr.rotinaDiaria.id].push({
+                  ...curr,
+                  type: "Exercício",
+                });
+                return acc;
+              },
+              {}
+            );
+
+            // setActivitiesWeek(agrupadosPorRotinaDiaria);
+            console.log(`LISTA EXERCICIO:`);
+            console.log(agrupadosPorExercicioDiario);
+
+            // console.log(
+            //   agrupadosPelaRefeicaoDiaria[1].concat(
+            //     agrupadosPorExercicioDiario[1]
+            //   )
+            // );
+
+            //SOSCORO
+            let vetorAux = [];
+            for (let i = 1; i <= 3; i++) {
+              console.log("JUNTANDO O DIA: " + i);
+
+              const aux = agrupadosPelaRefeicaoDiaria[i].concat(
+                agrupadosPorExercicioDiario[i]
+              );
+              console.log(aux);
+              vetorAux.push(aux);
+            }
+            console.log("O VETOR AUXILIAR FICOU ASSIM:");
+            console.log(vetorAux);
+            setActivitiesWeek((prev) => ({
+              ...prev,
+              1: vetorAux[0],
+            }));
+            setActivitiesWeek((prev) => ({
+              ...prev,
+              2: vetorAux[1],
+            }));
+            setActivitiesWeek((prev) => ({
+              ...prev,
+              3: vetorAux[2],
+            }));
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   const url = "http://localhost:8080/treinos/por-semana/1";
+  //   axios
+  //     .get(url)
+  //     .then((response) => {
+  //       const listaExerciciosDaSemana = response.data;
+
+  //       const agrupadosPorRotinaDiaria = listaExerciciosDaSemana.reduce(
+  //         (acc, curr) => {
+  //           if (!acc[curr.rotinaDiaria.id]) {
+  //             acc[curr.rotinaDiaria.id] = [];
+  //           }
+  //           acc[curr.rotinaDiaria.id].push({
+  //             ...curr,
+  //             type: "Exercício",
+  //           });
+  //           return acc;
+  //         },
+  //         {}
+  //       );
+
+  //       console.log(agrupadosPorRotinaDiaria);
+  //       // setActivitiesWeek(agrupadosPorRotinaDiaria);
+
+  //       let vetorSocorro = [];
+  //       for (let i = 1; i <= 3; i++) {
+  //         if (activitiesWeek !== null) {
+  //           const element = activitiesWeek[i];
+
+  //           if (element !== null) {
+  //             console.log(activitiesWeek[i]);
+  //             const aux = activitiesWeek[i].concat(agrupadosPorRotinaDiaria[i]);
+  //             // setActivitiesWeek(activitiesWeek[i] = aux)
+  //             vetorSocorro.push(aux);
+  //             console.log(aux);
+
+  //             console.log(vetorSocorro);
+  //           }
+  //         }
+  //       }
+  //       setActivitiesWeek((prev) => ({
+  //         ...prev,
+  //         1: vetorSocorro[0],
+  //       }));
+  //       setActivitiesWeek((prev) => ({
+  //         ...prev,
+  //         2: vetorSocorro[1],
+  //       }));
+  //       setActivitiesWeek((prev) => ({
+  //         ...prev,
+  //         3: vetorSocorro[2],
+  //       }));
+  //       setAllDataActivities(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [allData]);
+
+  useEffect(() => {
+    const url = "http://localhost:8080/usuarios/1";
+    axios.get(url).then((response) => {
+      setNicknameUser(response.data.nickname);
+    });
+  }, []);
+
+  useEffect(() => {
+    generateActivitiesDay();
+  }, [activitiesWeek]);
 
   useEffect(() => {
     generateCurrentyAmountExercises();
@@ -58,26 +213,27 @@ export function HomePage() {
     generateTotalAmountDays();
   }, [activitiesDay]);
 
-  useEffect(
-    () => {
-      generateActivitiesDay();
+  // useEffect(
+  //   () => {
+  //     console.log("AQUELE LA ")
+  //     generateCurrentyAmountExercises();
+  //     generateCurrentyAmountMeals();
+  //     generateCurrentyAmountDays();
 
-      generateCurrentyAmountExercises();
-      generateCurrentyAmountMeals();
-      generateCurrentyAmountDays();
-    },
-    [activitySelected],
-    [activityInformation]
-  );
+  //     generateActivitiesDay();
+  //   },
+  //   [activitySelected],
+  //   [activityInformation]
+  // );
 
   function handleSelectActivity(e) {
     setActivityType(e.type);
-    setActivityName(e.name);
-    setActivityDescription(e.description);
-    setActivityMedia(e.midia);
-    setActivityDuration(e.duration);
-    setActivityRepetitions(e.repetitions);
-    setActivitySeries(e.series);
+    setActivityName(e.nome);
+    setActivityDescription(e.descricao);
+    setActivityMedia(e.midia.caminho);
+    setActivityDuration(e.tempo);
+    setActivityRepetitions(e.repeticao);
+    setActivitySeries(e.serie);
     setActivityInformation(e);
 
 
@@ -87,22 +243,23 @@ export function HomePage() {
   // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
 
   function handleTotalAmount(activity) {
-    const response = activitiesDay.filter(
-      (element) => element.type == activity
-    );
-    console.log("Lista de " + activity + ": " + response);
+    const response = activitiesDay.filter((element) => {
+      // console.log(element.type);
+      return element.type == activity;
+    });
+    // console.log("Lista de " + activity + ": " + response);
     return response;
   }
 
   function generateTotalAmountExercises() {
     const totalAmountExercises = handleTotalAmount("Exercício").length;
-    console.log("Total de exercícios: " + totalAmountExercises);
+    // console.log("Total de exercícios: " + totalAmountExercises);
     setTotalAmountExercises(totalAmountExercises);
   }
 
   function generateTotalAmountMeals() {
     const amountMealsTotal = handleTotalAmount("Refeição").length;
-    console.log("Total de refeições: " + amountMealsTotal);
+    // console.log("Total de refeições: " + amountMealsTotal);
     setTotalAmountMeals(amountMealsTotal);
   }
 
@@ -116,19 +273,19 @@ export function HomePage() {
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
-    console.log("Lista de " + activity + " concluídos: " + response);
+    // console.log("Lista de " + activity + " concluídos: " + response);
     return response;
   }
 
   function generateCurrentyAmountExercises() {
     const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
-    console.log("Exercícios concluídos: " + currentyAmountExercises);
+    // console.log("Exercícios concluídos: " + currentyAmountExercises);
     setCurrentyAmountExercises(currentyAmountExercises);
   }
 
   function generateCurrentyAmountMeals() {
     const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
-    console.log("Refeições concluídas: " + currentyAmountMeals);
+    // console.log("Refeições concluídas: " + currentyAmountMeals);
     setCurrentyAmountMeals(currentyAmountMeals);
   }
 
@@ -141,13 +298,36 @@ export function HomePage() {
 
   // GERAR ATIVIDADES DO DIA
   function generateActivitiesDay() {
-    const activityDays = listaSemanal.find((element) => !element.concluido);
+    console.log("ACTIVITY WEEKS FICOU ASSIM");
+    console.log(activitiesWeek);
+    for (let i = 1; i <= 3; i++) {
+      if (activitiesWeek !== null && activitiesWeek !== undefined) {
+        const element = activitiesWeek[i];
+        console.log(element);
+        
+        setActivitiesDay(element);
+        return;
+        if (activitiesWeek[i] !== null && activitiesWeek[i] !== undefined) {
+          // console.log(element.length);
 
-    if (activityDays) {
-      setActivitiesDay(activityDays.atividades);
-    } else {
-      console.log("Não há itens com concluido == false.");
+          let quantidadeExerciciosConcluidos = 0;
+          for (let j = 0; j < element.length; j++) {
+            const elemento = activitiesWeek[i][j];
+            console.log(elemento);
+
+            if (elemento.concluido === 1) {
+              quantidadeExerciciosConcluidos++;
+            }
+          }
+
+          // if (quantidadeExerciciosConcluidos !== element.length) {
+          //   return setActivitiesDay(element);
+          // }
+        }
+      }
     }
+
+    console.log("Não há itens com concluido == false.");
   }
 
   // MARCAR ATIVIDADE COMO CONCLUÍDA
@@ -167,8 +347,6 @@ export function HomePage() {
       lastInputRef.current.focus();
     }
   }
-
-  const nickname = "Squirte";
 
   const listaSemanal = [
     {
@@ -308,19 +486,23 @@ export function HomePage() {
                   totalAmount={totalAmountDays}
                 />
               </div>
-              <div className="w-full h-[55%] flex flex-col gap-5 overflow-hidden overflow-y-scroll">
-                {activitiesDay.map((objeto, index) => {
-                  return (
-                    <AtividadeOption
-                      key={index}
-                      activity={objeto.type}
-                      nameActivity={objeto.name}
-                      onClickFunction={() => handleSelectActivity(objeto)}
-                      done={objeto.concluido}
-                      option
-                    />
-                  );
-                })}
+              <div className="w-full h-[55%] flex flex-col items-center justify-center gap-5 overflow-y-scroll p-1">
+                {activitiesDay.length == 0 ? (
+                  <span>Ainda sem atividades</span>
+                ) : (
+                  activitiesDay.map((objeto, index) => {
+                    return (
+                      <AtividadeOption
+                        key={index}
+                        activity={objeto.type}
+                        nameActivity={objeto.nome}
+                        onClickFunction={() => handleSelectActivity(objeto)}
+                        done={objeto.concluido}
+                        option
+                      />
+                    );
+                  })
+                )}
               </div>
             </div>
             <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
@@ -328,9 +510,9 @@ export function HomePage() {
                 Observe o seu resultado do seu esforço com o seu
                 <span className="font-bold"> mural de fotos!</span>
               </h1>
-              <button className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
+              <Link to="/mural" className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
                 Ver mural!
-              </button>
+              </Link>
             </div>
           </div>
           <div className="w-[40%] h-full bg-white flex flex-col justify-center items-center rounded-xl shadow-lg p-4">
