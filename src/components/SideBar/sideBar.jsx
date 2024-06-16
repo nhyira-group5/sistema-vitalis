@@ -8,6 +8,7 @@ import {
   Users,
   Chat,
   Images,
+  SignOut 
 } from "@phosphor-icons/react";
 import * as Separator from "@radix-ui/react-separator";
 import { space } from "postcss/lib/list";
@@ -41,6 +42,8 @@ export function SideBar() {
       <SideBarItem URI={"/chat"} Icon={<Chat size={28} />} />
 
       <SideBarItem URI={"/mural"} Icon={<Images size={28} />} />
+
+      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
     </nav>
   );
 }
