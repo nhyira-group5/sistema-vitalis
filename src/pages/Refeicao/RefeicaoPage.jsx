@@ -4,7 +4,7 @@ import {Button} from "@components/Button/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate  } from "react-router-dom";
-
+import {Splash} from "@components/Splash/splash"
 
 import { api } from "@apis/api";
 import { validateLogin, validateUsuario} from "@utils/globalFunc"
@@ -93,10 +93,7 @@ export function RefeicaoPage() {
                                     refeicao.midia && refeicao.midia.caminho? (
                                         <img className="w-full h-full bg-gray500 object-cover rounded-lg" src={refeicao.midia.caminho} alt={refeicao.nome} />
                                     ) : (
-                                    <div className="flex h-full w-full items-center justify-center">
-                                        <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                        <p className="text-gray-700 ">Carregando...</p>
-                                    </div>
+                                        <Splash />
                                     )
                                 }
 

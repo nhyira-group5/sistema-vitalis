@@ -2,7 +2,7 @@ import { SideBar } from "@components/SideBar/sideBar";
 
 import { useEffect, useState } from "react";
 import { RotinaCard, RotinaDiariaCard } from "@components/HorizontalCard/horizontalCard";
-
+import {Splash} from "@components/Splash/splash"
 
 import { useNavigate } from "react-router-dom";
 
@@ -88,9 +88,7 @@ export function RotinasSemanaisPage() {
                         <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
 
                     {rotinasSemanaisSplash ? (
-                                                    <div className="flex h-full w-full items-center justify-center">
-                                                        <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div> 
-                                                    </div>
+                        <Splash />
                     ): (
                         rotinas? (
                             rotinas.map(rotina => (
@@ -124,10 +122,7 @@ export function RotinasSemanaisPage() {
                             </div>
                         ) : (
                             rotinasDiariasSplash? (
-                                <div className="flex h-full w-full gap-2 items-center justify-center">
-                                    <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                    <p className="text-gray-700 ">Carregando...</p>
-                                </div>
+                                    <Splash />
                             ):(
                                 treinosRotina && treinosRotina.length > 0 ? (
                                     treinosRotina.map(treino => (

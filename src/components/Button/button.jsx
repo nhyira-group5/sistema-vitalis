@@ -28,40 +28,11 @@ export function Button ({ onClick, buttonStyle, content, type, disabled, variant
   };
   
    
-  export function CloudinaryButton(uploadImage){
+  export function CloudinaryButton({uploadFunction}){
     const cloudinaryRef = useRef();
     const widgetRef = useRef();
 
-    function insertImage(cloudObject){
-      const {url, original_filename, format} = cloudObject;
-      
-      const loginResponse = getLoginResponse();
 
-      const midiaDto = {
-        nome: original_filename,
-        caminho: url,
-        extensao: format
-      }
-      const muralItemDto = {
-        usuarioId: loginResponse.id,
-        midiaId: null
-      }
-
-      try{
-        const midiaResponse = api.post('/midias/salvarMidia', midiaDto);
-
-        muralItemDto.midiaId = midiaResponse.idMidia;
-
-        api.post(`/murais`, muralItemDto)
-        .then(()=>{
-          toast.success('Imagem carregada com sucesso!');
-        })
-
-      } catch (error){
-        toast.error('Falha no envio da imagem!')
-      }
-
-    }
 
     useEffect(()=>{
       cloudinaryRef.current = window.cloudinary;
@@ -100,8 +71,7 @@ export function Button ({ onClick, buttonStyle, content, type, disabled, variant
       }, function(error, result){
         
         if (!error && result.event === "success") {
-          console.log(result);
-          insertImage(result.info);
+          uploadFunction(result.info);
         }
 
       })

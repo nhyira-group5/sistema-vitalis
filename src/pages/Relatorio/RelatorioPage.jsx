@@ -9,8 +9,18 @@ import { Tag } from "../../components/Tag/tag";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
 import { useEffect, useState } from "react";
 import TooltipDemo from "../../components/Tooltip/tooltip";
+import {DisplayInput} from "@components/Input/input"
+import {Splash} from "@components/Splash/splash"
+import{Checkbox} from "@components/Checkbox/checkbox"
+
+import {api} from "@apis/api";
+
+import { getLoginResponse, validateLogin, validateUsuario, formatarCPF, converterDataFormato } from "@utils/globalFunc";
+import { useNavigate } from "react-router-dom";
 
 export function RelatorioPage() {
+  const navigate = useNavigate();
+
   const [currentyMouth, setCurrentyMouth] = useState("");
   
   const [imc, setImc] = useState(0);
@@ -29,6 +39,54 @@ export function RelatorioPage() {
   const [dados, setDados] = useState(null);
 
   const objetoPesoEAltura = { peso: 80, altura: 1.65 };
+
+  const [fichaUsuario, setFichaUsuario] = useState({})
+  const [rotinaUsuario, setRotinaUsuario] = useState({})
+
+  const [fichaIsLoading, setFichaIsLoading] = useState(false);
+
+
+  function getUsuarioFicha(){
+    const loginResponse = getLoginResponse();
+    setFichaIsLoading(true)
+    try{
+      api.get(`/fichas/${loginResponse.id}`)
+      .then((response) =>{
+        setFichaUsuario(response.data);
+        setFichaIsLoading(false);
+      })
+    } catch(error){
+      console.log(error);
+      setFichaIsLoading(false)
+    }
+  }
+
+  function getRotinaUsuario(){
+    const loginResponse = getLoginResponse();
+
+    try{
+      api.get(`/rotinaUsuarios/${loginResponse.id}`)
+      .then((response) =>{
+        setRotinaUsuario(response.data)
+      })
+    } catch(error){
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      getUsuarioFicha();
+      getRotinaUsuario();
+  }
+
+  validarLoginEUsuario();
+    
+  },[])
 
   useEffect(() => {
     setImc(
@@ -250,9 +308,10 @@ export function RelatorioPage() {
   return (
     <div>
       {dados && (
-        <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
+        <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
           <SideBar />
-          <div className="w-[88%] h-[90%] flex flex-col justify-between rounded-md">
+
+          <div className="w-[90vw] h-[90%] flex flex-col justify-between rounded-md">
             <h1 className="text-[#2B6E36] font-semibold text-2xl">
               Relatório Mensal
             </h1>
@@ -368,7 +427,168 @@ export function RelatorioPage() {
                   </div>
                 </div>
               </div>
-              <div className="w-[31%] h-full bg-white shadow-lg flex flex-col justify-between rounded-xl"></div>
+              
+              <div className="w-[35%] h-full bg-white shadow-lg flex flex-col justify-between rounded-xl">
+              {fichaIsLoading ? (
+                <Splash/>
+              ) : (
+                <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
+                <fieldset className="col-span-6">
+                    <DisplayInput
+                    labelContent={"Nome completo"}
+                    placeholder={"Nome completo do usuário"}
+                    nome={"nomeCompletoUsuario"}
+                    onChangeFunction={""}
+                    inputType={"text"}
+                    value={fichaUsuario.usuarioId.nome?? ""}
+                    disabled={true}
+                  />
+                </fieldset>
+
+                <fieldset className="col-span-2">
+                  <DisplayInput
+                    labelContent={"CPF"}
+                    placeholder={"CPF do usuário"}
+                    nome={"cpfUsuario"}
+                    onChangeFunction={""}
+                    inputType={"text"}
+                    value={formatarCPF(fichaUsuario.usuarioId.cpf)?? ""}
+                    disabled={true}
+                  />
+                </fieldset>
+
+                <fieldset className="col-span-2">
+                  <DisplayInput
+                      labelContent={"Dt. Nascimento"}
+                      placeholder={"--/--/----"}
+                      nome={"dtNascimentoUsuario"}
+                      onChangeFunction={""}
+                      inputType={"text"}
+                      value={converterDataFormato(fichaUsuario.usuarioId.dtNasc)?? ""}
+                      disabled={true}
+                    />
+                </fieldset>
+
+                <fieldset className="col-span-2">
+                  <DisplayInput
+                      labelContent={"Sexo"}
+                      placeholder={"Sexo do usuário"}
+                      nome={"sexo"}
+                      onChangeFunction={""}
+                      inputType={"text"}
+                      value={fichaUsuario.usuarioId.sexo === "F" ? "Feminino" : fichaUsuario.usuarioId.sexo === "M" ? "Masculino" : ""}
+                      disabled={true}
+
+                  />
+                </fieldset>
+
+                <fieldset className="col-span-6">
+                  <DisplayInput
+                      labelContent={"Email"}
+                      placeholder={"Email do usuário"}
+                      nome={"emailUsuario"}
+                      onChangeFunction={""}
+                      inputType={"Email"}
+                      value={fichaUsuario.usuarioId.email?? ""}
+                      disabled={true}
+                  />
+                </fieldset>
+
+
+                <fieldset className="col-span-4">
+                 <DisplayInput
+                      labelContent={"Meta"}
+                      placeholder={"Meta do usuário"}
+                      nome={"metaUsuario"}
+                      onChangeFunction={""}
+                      inputType={"text"}
+                      value={rotinaUsuario.metaId.nome?? ""}
+                      disabled={true}
+                  /> 
+                </fieldset>
+
+                <fieldset className="col-span-1">
+                  <DisplayInput
+                      labelContent={"Peso"}
+                      placeholder={"Peso"}
+                      nome={"pesoUsuario"}
+                      onChangeFunction={""}
+                      inputType={"text"}
+                      value={fichaUsuario.peso? `${fichaUsuario.peso}kg` : ""}
+                      disabled={true}
+                  />
+                </fieldset>
+
+                <fieldset className="col-span-1">
+                  <DisplayInput
+                      labelContent={"Altura"}
+                      placeholder={"Altura"}
+                      nome={"AlturaUsuario"}
+                      onChangeFunction={""}
+                      inputType={"text"}
+                      value={fichaUsuario.altura? `${fichaUsuario.altura}cm` : ""}
+                      disabled={true}
+                  />
+                </fieldset>
+
+                <fieldset className="col-span-6 grid auto-rows-auto grid-flow-row gap-y-2 h-full overflow-auto scrollbar-thin" >
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"} 
+                      Id={"displayproblemasCardiacos"} 
+                      checked={fichaUsuario.problemasCardiacos == 1 ? true : false}
+                      labelcontent={"Algum médico já disse que você possui algum problema de coração e que só deveria realizar atividade física supervisionado por profissionais de saúde?"}
+                      />
+
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"} 
+                      Id={"displayDorPeitoAtividade"} 
+                      checked={fichaUsuario.dorPeitoAtividade == 1 ? true : false}
+                      labelcontent={"Você sente dores no peito quando pratica atividade física?"}
+                      />
+
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"} 
+                      Id={"displayDorPeitoUltimoMes"} 
+                      checked={fichaUsuario.dorPeitoUltimoMes == 1 ? true : false}
+                      labelcontent={"No último mês, você sentiu dores no peito quando praticou atividade física?"}
+                      />
+
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"}               
+                      Id={"displayProblemaOsseoArticular"} 
+                      checked={fichaUsuario.problemaOsseoArticular == 1 ? true : false}
+                      labelcontent={"Você possui algum problema ósseo ou articular que poderia ser piorado pela atividade física?"}
+                      />
+
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"}               
+                      Id={"displayMedicamentoPressaoCoracao"} 
+                      checked={fichaUsuario.medicamentoPressaoCoracao == 1 ? true : false}
+                      labelcontent={"Você toma atualmente algum medicamento para pressão arterial e/ou problema de coração?"}
+                      />
+                  
+                  <Checkbox 
+                      disabled={true} 
+                      labelStyle={"text-gray500 text-lg"}               
+                      Id={"displayImpedimentoAtividade"} 
+                      checked={fichaUsuario.impedimentoAtividade == 1 ? true : false}
+                      labelcontent={"Sabe de alguma outra razão pela qual você não deve praticar atividade física?"}
+                      />
+                </fieldset>
+
+
+
+              </form>
+              )}
+
+
+
+              </div>
             </div>
           </div>
         </div>

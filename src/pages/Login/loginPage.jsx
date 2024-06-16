@@ -66,7 +66,7 @@ export function LoginPage() {
 
         await api.get(`/fichas/${response.data.id}`)
 
-        switch(response.tipo){
+        switch(response.data.tipo){
           case "USUARIO":
             redirecionarHome();
           break;
@@ -78,7 +78,6 @@ export function LoginPage() {
     } catch (error) {
       switch(error.response.data.status){
         case 404:
-          toast.success("Conclua seu cadastro!");
           navigate("/cadastroParq")
         break;
         case 401:

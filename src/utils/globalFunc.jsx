@@ -42,7 +42,6 @@ export function validateLogin(navigate) {
       return 'CPF inválido';
     }
   
-    // Insere pontos e traço no CPF
     const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   
     return cpfFormatado;
@@ -56,3 +55,8 @@ export function validateLogin(navigate) {
     const dataConvertida = data.replace(/-/g, '/');
     return dataConvertida;
   }
+
+  export function formatarData(date) {
+    const parts = date.split("-");
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
