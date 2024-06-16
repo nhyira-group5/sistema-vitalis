@@ -1,30 +1,39 @@
 import { SideBar } from "@components/SideBar/sideBar";
 import { IngredienteCard } from "@components/IngredienteCard/ingredienteCard"
-import Button from "@components/Button/button";
+import {Button} from "@components/Button/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams  } from "react-router-dom";
-
+import { useParams, useNavigate  } from "react-router-dom";
+import {Splash} from "@components/Splash/splash"
 
 import { api } from "@apis/api";
-
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
 
 export function RefeicaoPage() {
     
+    const navigate = useNavigate();
+
     const { idRefeicao } = useParams();
     const [refeicao, setRefeicao] = useState({});
 
 
     useEffect(() => {
+        const validarLoginEUsuario = async () =>{
 
+            await validateLogin(navigate);
+            await validateUsuario(navigate);
+      
+          try{
             api.get(`/refeicoes/${idRefeicao}`)
             .then((response) => {
                  setRefeicao(response.data);
              })
-            .catch((error) => {
-                 console.error(error);
-             });
-        
+          } catch (error){
+            console.log(error)
+          }
+        }
+      
+        validarLoginEUsuario();
 
     }, []);
 
@@ -84,10 +93,7 @@ export function RefeicaoPage() {
                                     refeicao.midia && refeicao.midia.caminho? (
                                         <img className="w-full h-full bg-gray500 object-cover rounded-lg" src={refeicao.midia.caminho} alt={refeicao.nome} />
                                     ) : (
-                                    <div className="flex h-full w-full items-center justify-center">
-                                        <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                        <p className="text-gray-700 ">Carregando...</p>
-                                    </div>
+                                        <Splash />
                                     )
                                 }
 

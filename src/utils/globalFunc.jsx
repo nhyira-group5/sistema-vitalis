@@ -5,15 +5,31 @@ export function getLoginResponse(){
     return storedResponse;
 }
 
-
-
 export function validateLogin(navigate) {
     const usuarioLogado = getLoginResponse();
-    
-    if (usuarioLogado && Object.keys(usuarioLogado).length < 0) {
+
+    if (!usuarioLogado) {
         navigate("/login");
+        console.log("er pra ter redirecionado. não?")
       } 
   };
+
+  export function validatePersonal(navigate){
+    const usuarioLogado = getLoginResponse();
+
+    if (usuarioLogado && usuarioLogado.tipo != "PERSONAL") {
+      navigate("/home");
+    } 
+  }
+
+  export function validateUsuario(navigate){
+    const usuarioLogado = getLoginResponse();
+
+    if (usuarioLogado && usuarioLogado.tipo != "USUARIO") {
+      navigate("/home-personal");
+    } 
+  }
+
 
 
   export function formatarCPF(cpf) {
@@ -26,7 +42,6 @@ export function validateLogin(navigate) {
       return 'CPF inválido';
     }
   
-    // Insere pontos e traço no CPF
     const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   
     return cpfFormatado;
@@ -40,3 +55,8 @@ export function validateLogin(navigate) {
     const dataConvertida = data.replace(/-/g, '/');
     return dataConvertida;
   }
+
+  export function formatarData(date) {
+    const parts = date.split("-");
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}

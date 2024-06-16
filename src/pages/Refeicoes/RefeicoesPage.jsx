@@ -5,27 +5,41 @@ import {
   } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { RefeicaoCard } from "@components/RefeicaoCard/refeicaoCard";
+import {Splash} from "@components/Splash/splash"
 
 import { api } from "@apis/api";
 
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+import { useNavigate } from "react-router-dom";
+
 export function RefeicoesPage() {
     const [refeicoes, setRefeicoes] = useState([]);
+    const [refeicoesIsLoading, setRefeicoesIsLoading] = useState(false)
+    const navigate = useNavigate();
 
 
-
-    function getRefeicoes(){
-        api.get(`/refeicoes`)
-        .then((response)=>{
-
-          setRefeicoes([...refeicoes,...response.data]);
-        })
-
-    }
-    
 
     
       useEffect(()=>{
-        getRefeicoes();
+        const validarLoginEUsuario = async () =>{
+
+          await validateLogin(navigate);
+          await validateUsuario(navigate);
+    
+        try{
+          setRefeicoesIsLoading(true);
+          api.get(`/refeicoes`)
+          .then((response)=>{
+            setRefeicoes([...refeicoes,...response.data]);
+            setRefeicoesIsLoading(false)
+          })
+        } catch (error){
+          console.log(error)
+          setRefeicoesIsLoading(false)
+        }
+      }
+    
+      validarLoginEUsuario();
       }, [])
 
     return(
@@ -51,9 +65,25 @@ export function RefeicoesPage() {
 
                 <div className="grid grid-cols-5  auto-rows-min gap-x-7 gap-y-7 h-full overflow-auto p-5">
 
-                {refeicoes.map(refeicao => (
-                    <RefeicaoCard key={refeicao.idRefeicao} refeicao={refeicao} />
-                ))}
+                {refeicoesIsLoading ? (
+                  <div className="w-full h-full col-span-5">
+                    <Splash/>
+                  </div>
+                ): (
+                  refeicoes && refeicoes.length > 0 ?(
+                    refeicoes.map(refeicao => (
+                        <RefeicaoCard key={refeicao.idRefeicao} refeicao={refeicao} />
+                    ))
+                    ) :(
+                      <div className="w-full h-full flex justify-center items-center">
+                        <span>Nenhuma refeição aqui D:</span>
+                      </div>
+                    )
+                )}
+
+
+
+
 
                 </div>
             </div>

@@ -2,13 +2,13 @@ import { SideBar } from "@components/SideBar/sideBar";
 
 import { useEffect, useState } from "react";
 import { RotinaCard, RotinaDiariaCard } from "@components/HorizontalCard/horizontalCard";
-
-import {validateLogin} from "@utils/globalFunc"
+import {Splash} from "@components/Splash/splash"
 
 import { useNavigate } from "react-router-dom";
 
 import { api } from "@apis/api";
-import {getLoginResponse} from "@utils/globalFunc"
+import {getLoginResponse, validateLogin, validateUsuario} from "@utils/globalFunc"
+
 
 export function RotinasSemanaisPage() {
     const [rotinas, setRotinas] = useState([]);
@@ -16,30 +16,37 @@ export function RotinasSemanaisPage() {
     
 
     const [rotinasDiariasSplash, setRotinasDiariasSplash] = useState(false);
+    const [rotinasSemanaisSplash, setRotinasSemanaisSplash] = useState(false);
     
 
     const [rotinaSelecionada, setRotinaSelecionada] = useState(null); 
     const [userData, setUserData] = useState(getLoginResponse())
+    
     const navigate = useNavigate();
 
-    function getRotinas(){
-        api.get(`/rotinaSemanais/buscarUsuario/${userData.id}`)
-        .then((response) =>{
-    
-          setRotinas([...rotinas,...response.data])
-        })      
-        .catch((error) => {
-          error.response.data.errors.forEach((erroMsg) => {
-            console.log(erroMsg.defaultMessage)
-          })
-        });
-        
-}
+
 
     useEffect(()=>{
-        validateLogin(navigate);
-        
-        getRotinas();
+        const validarLoginEUsuario = async () =>{
+            setRotinasSemanaisSplash(true)
+
+            await validateLogin(navigate);
+            await validateUsuario(navigate);
+    
+            api.get(`/rotinaSemanais/buscarUsuario/${userData.id}`)
+            .then((response) =>{
+              setRotinas([...rotinas,...response.data]);
+              setRotinasSemanaisSplash(false)
+            })      
+            .catch((error) => {
+              error.response.data.errors.forEach((erroMsg) => {
+                console.log(erroMsg.defaultMessage)
+              })
+              setRotinasSemanaisSplash(false)
+            });
+        }
+
+        validarLoginEUsuario();
     }, [])
 
     function handleClick(rotinaId) {
@@ -67,10 +74,6 @@ export function RotinasSemanaisPage() {
     }
 
 
-        useEffect(()=>{
-        console.log(treinosRotina)
-        },[treinosRotina])
-
 
 
     return(
@@ -83,34 +86,43 @@ export function RotinasSemanaisPage() {
                     </div>
                     <div className="flex h-full overflow-hidden">
                         <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
-                            {rotinas? (
-                                rotinas.map(rotina => (
-                                    <RotinaCard key={rotina.id}
-                                                rotina={rotina}
-                                                onClickFunction={() => {handleClick(rotina.id)}}
-                                                rotinaSelecionada={rotinaSelecionada}
-                                            />
-                                ))
-                            ):(
-                            <div className="h-full w-full flex items-center justify-center">
-                                <span>Sem rotinas :(</span>
-                            </div>
-                            )}
+
+                    {rotinasSemanaisSplash ? (
+                        <Splash />
+                    ): (
+                        rotinas? (
+                            rotinas.map(rotina => (
+                                <RotinaCard key={rotina.id}
+                                            rotina={rotina}
+                                            onClickFunction={() => {handleClick(rotina.id)}}
+                                            rotinaSelecionada={rotinaSelecionada}
+                                        />
+                            ))
+                        ):(
+                        <div className="h-full w-full flex items-center justify-center">
+                            <span>Sem rotinas :(</span>
+                        </div>
+                        )
+                    )}
+
+
 
 
                         </div>
 
                         <div className={`relative w-1/2 h-full overflow-auto flex flex-col gap-5 p-5 rounded-xl`}>
+
+                        
                         {!rotinaSelecionada ? (
                             <div className="h-full w-full flex items-center justify-center">
-                                <span>Selecione uma rotina!</span>
+                                {!rotinasSemanaisSplash ? (
+                                    <span>Selecione uma rotina!</span>
+                                ):(null)}
+                                
                             </div>
                         ) : (
                             rotinasDiariasSplash? (
-                                <div className="flex h-full w-full gap-2 items-center justify-center">
-                                    <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                    <p className="text-gray-700 ">Carregando...</p>
-                                </div>
+                                    <Splash />
                             ):(
                                 treinosRotina && treinosRotina.length > 0 ? (
                                     treinosRotina.map(treino => (

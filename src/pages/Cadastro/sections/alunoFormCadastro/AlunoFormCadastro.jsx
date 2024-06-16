@@ -1,5 +1,5 @@
 import { Select } from "@components/Select/select";
-import Button from "@components/Button/button.jsx";
+import {Button} from "@components/Button/button";
 import { Input } from "@components/Input/input";
 import { api } from "@apis/api";
 import { toast } from "react-toastify";

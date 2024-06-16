@@ -1,4 +1,4 @@
-import Button from "@components/Button/button";
+import {Button} from "@components/Button/button";
 export function IngredienteCard({ingrediente}){
     return(
     <div className="group p-5 flex flex-col justify-end items-center bg-gray500 rounded-xl h-full min-w-48 overflow-hidden gap-2 relative">

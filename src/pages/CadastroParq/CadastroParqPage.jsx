@@ -1,9 +1,11 @@
 import { Select } from "@components/Select/select";
-import Button from "@components/Button/button.jsx";
+import {Button} from "@components/Button/button";
 import { DisplayInput, Input } from "@components/Input/input";
 import { api } from "@apis/api";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+
 
 import {getLoginResponse, formatarCPF, converterDataFormato} from "@utils/globalFunc"
 
@@ -124,15 +126,25 @@ const encontrarMetaPeloId = (id, lista) => {
 
 
   useEffect(()=>{
-    const loginResponse = getLoginResponse();
 
-    setFormData((prevState) => ({
-      ...prevState,
-      idUsuario: loginResponse.id,
-    }));
+    const validarLoginEUsuario = async () =>{
 
-    getUsuarioResponse(loginResponse.id);
-    getMetas();
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      const loginResponse = getLoginResponse();
+      setFormData((prevState) => ({
+        ...prevState,
+        idUsuario: loginResponse.id,
+      }));
+  
+      getUsuarioResponse(loginResponse.id);
+      getMetas();
+  }
+
+  validarLoginEUsuario();
+    
+
   },[])
 
 
