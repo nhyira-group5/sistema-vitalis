@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { AltInput } from "@components/Input/input";
-import Button from "@components/Button/button.jsx";
+import {Button} from "@components/Button/button";
 import { AltSelect } from "@components/Select/select";
 
 import {

@@ -1,14 +1,10 @@
 import {
   User,
-  PencilSimpleLine,
-  EnvelopeSimple,
   Lock,
-  CalendarDots,
-  Hash,
 } from "@phosphor-icons/react";
 import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +16,14 @@ export function LoginPage() {
   const redirecionarHome = () => {
     navigate("/home");
   };
+
+  const redirecionarHomePersonal = () =>{
+    navigate('/home-personal');
+  }
+
+  useEffect(()=>{
+    sessionStorage.clear();
+  },[])
 
   const [nicknname, setNicknname] = useState("");
   const [senha, setSenha] = useState("");
@@ -57,12 +61,20 @@ export function LoginPage() {
 
     try {
         const response = await api.post(`/login/usuario`, userLoginDto);
+
         sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
 
         await api.get(`/fichas/${response.data.id}`)
 
-        redirecionarHome();
-        toast.success(`Bem-vindo ${response.data.nome}`);
+        switch(response.tipo){
+          case "USUARIO":
+            redirecionarHome();
+          break;
+          case "PERSONAL":
+            redirecionarHomePersonal();
+          break;
+        }
+        
     } catch (error) {
       switch(error.response.data.status){
         case 404:
@@ -74,6 +86,9 @@ export function LoginPage() {
         break;
         case 400:
           toast.error("Nickname e/ou senha inválidos!");
+        break;
+        case 500:
+          toast.error("Tivemos problemas ao efetuar seu login! tente novamente daqui a pouquinho :)");
         break;
       }
     } finally {

@@ -3,7 +3,9 @@ import { SideBar } from "@components/SideBar/sideBar";
 import { useEffect, useState } from "react";
 
 import { ExercicioImageCard } from "@components/ImageCard/imageCard";
-import { useParams  } from "react-router-dom";
+import { useParams , useNavigate} from "react-router-dom";
+
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
 
 
 import { api } from "@apis/api";
@@ -15,22 +17,33 @@ export function TreinoPage(){
 
     const { idRotinaDiaria } = useParams();
 
-
+    const navigate = useNavigate();
 
     useEffect(()=>{
-        setIsTreinosRotinaDiariaLoading(true)
-        try{
-            api.get(`/treinos/por-dia/${idRotinaDiaria}`)
-            .then((response)=>{
-                setTreinosRotinaDiaria([...treinosRotinaDiaria,...response.data]);
+        const validarLoginEUsuario = async () =>{
+
+            await validateLogin(navigate);
+            await validateUsuario(navigate);
+    
+            setIsTreinosRotinaDiariaLoading(true)
+            try{
+                api.get(`/treinos/por-dia/${idRotinaDiaria}`)
+                .then((response)=>{
+                    setTreinosRotinaDiaria([...treinosRotinaDiaria,...response.data]);
+                    setIsTreinosRotinaDiariaLoading(false)
+                })
+            } catch (error){
+                console.log(error)
                 setIsTreinosRotinaDiariaLoading(false)
-            })
-        } catch (error){
-            console.log(error)
-            setIsTreinosRotinaDiariaLoading(false)
+            }
         }
+
+        validarLoginEUsuario();
+    }, [])
+
+
+
         
-    },[]);
 
     return(
         <div className="flex items-center justify-center w-screen h-screen px-10 py-10 gap-5">

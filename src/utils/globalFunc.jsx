@@ -5,15 +5,31 @@ export function getLoginResponse(){
     return storedResponse;
 }
 
-
-
 export function validateLogin(navigate) {
     const usuarioLogado = getLoginResponse();
-    
-    if (usuarioLogado && Object.keys(usuarioLogado).length < 0) {
+
+    if (!usuarioLogado) {
         navigate("/login");
+        console.log("er pra ter redirecionado. não?")
       } 
   };
+
+  export function validatePersonal(navigate){
+    const usuarioLogado = getLoginResponse();
+
+    if (usuarioLogado && usuarioLogado.tipo != "PERSONAL") {
+      navigate("/home");
+    } 
+  }
+
+  export function validateUsuario(navigate){
+    const usuarioLogado = getLoginResponse();
+
+    if (usuarioLogado && usuarioLogado.tipo != "USUARIO") {
+      navigate("/home-personal");
+    } 
+  }
+
 
 
   export function formatarCPF(cpf) {
