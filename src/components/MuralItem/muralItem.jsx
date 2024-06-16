@@ -4,7 +4,10 @@ import {
     DotsThree
   } from "@phosphor-icons/react";
 
+  import {formatarData} from "@utils/globalFunc"
+
 export function MuralItem({muralItem, onDelete}){
+
     return(
     <div className="flex flex-col p-5 pt-7 rounded-xl items-center w-80 h-96 bg-white shadow-sombra-padrao gap-5 relative">
 
@@ -40,7 +43,7 @@ export function MuralItem({muralItem, onDelete}){
           <img className="w-full h-full object-cover " src={muralItem.midiaId.caminho} alt="" />
 
         
-        <span className="font-semibold">{muralItem.dtPostagem}</span>
+        <span className="font-semibold">{formatarData(muralItem.dtPostagem)}</span>
     </div>
     )
 }

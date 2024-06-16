@@ -126,7 +126,8 @@ const encontrarMetaPeloId = (id, lista) => {
 
 
   useEffect(()=>{
-
+    toast.success("Conclua seu cadastro!");
+    
     const validarLoginEUsuario = async () =>{
 
       await validateLogin(navigate);
