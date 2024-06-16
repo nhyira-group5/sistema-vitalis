@@ -4,21 +4,80 @@ import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import axios from "axios";
 
 export function PerfilPersonalPage() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
+  const [speciality, setSpeciality] = useState(null);
+  const [items, setItems] = useState(null);
+  
+  const [endereco, setEndereco] = useState(null);
+
+  //USUARIO
+  useEffect(() => {
+    const url = "http://localhost:8080/usuarios/2";
+    axios
+      .get(url)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
-    const url = "http://localhost:8080/usuarios/3"
+    const url = "http://localhost:8080/especialidadesPersonais/2";
     axios
     .get(url)
     .then((response) => {
-      setUser(response.data)
+      setSpeciality(response.data)
     })
-    .catch((error) => {
-      console.log(error)
-    })
-  }, [])
+  }, [user])
 
-  if (user == null) return null
+  useEffect(() => {
+    obterEspecialdiades()
+  }, [speciality])
+
+  //ENDEREÇO
+  useEffect(() => {
+    const url = "http://localhost:8080/enderecos/1"
+    axios
+    .get(url)
+    .then((response) => {
+      setEndereco(response.data)
+    })
+  })
+
+  function transformaData(data) {
+    let dataObj = new Date(data);
+    let dia = String(dataObj.getDate() + 1).padStart(2, "0");
+    let mes = String(dataObj.getMonth() + 1).padStart(2, "0"); // Os meses são de 0 a 11, então adicionamos 1
+    let ano = dataObj.getFullYear();
+
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  function obterEspecialdiades() {
+    console.log(speciality)
+    if (speciality !== null) {
+      let vetorAux = []
+      for (let i = 0; i < speciality.length; i++) {
+        const element = speciality[i];
+        vetorAux.push(element.especialidadeId.nome)
+      }
+      console.log(vetorAux)
+      setItems(vetorAux)
+    }
+  }
+
+  // function transformaEmAsteriscos(str) {
+  //   if (str.length < 4) {
+  //     return "A string precisa ter pelo menos 4 caracteres";
+  //   }
+  //   let inicio = str.slice(0, 2);
+  //   let fim = str.slice(-2);
+  //   return inicio + "*".repeat(str.length - 4) + fim;
+  // }
+
+  if (user == null) return null;
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBarPersonal />
@@ -38,34 +97,42 @@ export function PerfilPersonalPage() {
                 />
               </div>
               <div className="w-[42%] h-full flex flex-col justify-center gap-10">
-              <InfoPerfil width="w-[50%]" title="Nome" text={user.nome} />
-              <InfoPerfil width="w-[50%]" title="Email" text={user.email} />
+                <InfoPerfil width="w-[50%]" title="Nome" text={user.nome} />
+                <InfoPerfil width="w-[50%]" title="Email" text={user.email} />
               </div>
             </div>
             <div className="w-full h-3/6 flex flex-col justify-between pb-2">
               <div className="w-full h-fit flex justify-between">
-                <InfoPerfil width="w-[50%]" title="Nickname" text={user.nickname} />
+                <InfoPerfil
+                  width="w-[50%]"
+                  title="Nickname"
+                  text={user.nickname}
+                />
                 <InfoPerfil
                   width="w-[42%]"
                   title="Data de nascimento"
-                  text="17/01/1999"
+                  text={transformaData(user.dtNasc)}
                 />
               </div>
               <div className="w-full h-fit flex justify-between">
-                <InfoPerfil width="w-[50%]" title="Sexo" text={user.sexo === "M" ? "Masculino" : "Feminino"} />
-                <InfoPerfil width="w-[42%]" title="Senha" text="bananinha123" />
+                <InfoPerfil
+                  width="w-[50%]"
+                  title="Sexo"
+                  text={user.sexo === "M" ? "Masculino" : "Feminino"}
+                />
+                <InfoPerfil width="w-[42%]" title="Senha" text="********" />
               </div>
               <div className="w-full h-fit flex justify-between">
                 <InfoPerfil
                   width="w-[50%]"
                   title="Especialidades"
-                  text="Emagrecimento"
+                  text={items !== null && items.join(', ')}
                 />
-                <InfoPerfil
+                {/* <InfoPerfil
                   width="w-[42%]"
                   title="Data formação"
                   text="17/01/05"
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -78,19 +145,19 @@ export function PerfilPersonalPage() {
               <InfoPerfil
                 width="w-[50%]"
                 title="Logradouro"
-                text="Rua Doutor Benedito Arruda Vianna"
+                text={endereco.logradouro}
               />
-              <InfoPerfil width="w-[30%]" title="Número" text="219" />
-              <InfoPerfil width="w-1/6" title="CEP" text="05815-095" />
+              <InfoPerfil width="w-[30%]" title="Número" text={endereco.numero} />
+              <InfoPerfil width="w-1/6" title="CEP" text={endereco.cep} />
             </div>
-            <div className="w-full h-fit  flex justify-between">
+            <div className="w-full h-fit flex justify-between">
               <InfoPerfil
                 width="w-[50%]"
                 title="Bairro"
-                text="Jardim São Francisco de Assis"
+                text={endereco.bairro}
               />
-              <InfoPerfil width="w-[30%]" title="Cidade" text="São Paulo" />
-              <InfoPerfil width="w-1/6" title="Estado" text="SP" />
+              <InfoPerfil width="w-[30%]" title="Cidade" text={endereco.cidade} />
+              <InfoPerfil width="w-1/6" title="Estado" text={endereco.estado} />
             </div>
             <div className="w-full h-[58%] bg-pink-400"></div>
           </div>
