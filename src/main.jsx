@@ -123,7 +123,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <div className="font-inter font-normal m-0 min-w-80 min-h-screen">
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer className={"absolute"}/>
     </div>
   </React.StrictMode>
 );

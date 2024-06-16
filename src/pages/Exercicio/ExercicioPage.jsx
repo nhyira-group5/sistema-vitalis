@@ -1,18 +1,21 @@
 import { InfoCard } from "@components/HorizontalCard/horizontalCard";
 import { Check, X } from "@phosphor-icons/react";
 import { SideBar } from "@components/SideBar/sideBar";
-import { Link, useParams } from "react-router-dom";
-import Button from "@components/Button/button";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import {Button} from "@components/Button/button";
 import { useEffect, useState } from "react";
 import ReactPlayer from 'react-player'
 import { Tag } from "../../components/Tag/tag";
 import {api} from "@apis/api"
+
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
 
 export function ExercicioPage() {
   const [treino, setTreino] = useState(null);
 
   const { idTreino } = useParams();
 
+  const navigate = useNavigate();
 
   function desconcluirTreino(){
     const concluido = 0;
@@ -52,6 +55,11 @@ export function ExercicioPage() {
 
 
   useEffect(() => {
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
     try{
       api.get(`/treinos/buscarIdTreinos/${idTreino}`)
       .then((response)=>{
@@ -60,6 +68,9 @@ export function ExercicioPage() {
     } catch (error){
       console.log(error)
     }
+  }
+
+  validarLoginEUsuario();
 
   }, []);
 

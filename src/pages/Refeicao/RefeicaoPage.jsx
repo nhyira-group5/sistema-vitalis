@@ -1,30 +1,39 @@
 import { SideBar } from "@components/SideBar/sideBar";
 import { IngredienteCard } from "@components/IngredienteCard/ingredienteCard"
-import Button from "@components/Button/button";
+import {Button} from "@components/Button/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams  } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
 
 
 import { api } from "@apis/api";
-
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
 
 export function RefeicaoPage() {
     
+    const navigate = useNavigate();
+
     const { idRefeicao } = useParams();
     const [refeicao, setRefeicao] = useState({});
 
 
     useEffect(() => {
+        const validarLoginEUsuario = async () =>{
 
+            await validateLogin(navigate);
+            await validateUsuario(navigate);
+      
+          try{
             api.get(`/refeicoes/${idRefeicao}`)
             .then((response) => {
                  setRefeicao(response.data);
              })
-            .catch((error) => {
-                 console.error(error);
-             });
-        
+          } catch (error){
+            console.log(error)
+          }
+        }
+      
+        validarLoginEUsuario();
 
     }, []);
 

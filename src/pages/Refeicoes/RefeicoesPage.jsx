@@ -8,24 +8,39 @@ import { RefeicaoCard } from "@components/RefeicaoCard/refeicaoCard";
 
 import { api } from "@apis/api";
 
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+import { useNavigate } from "react-router-dom";
+
 export function RefeicoesPage() {
     const [refeicoes, setRefeicoes] = useState([]);
 
-
+    const navigate = useNavigate();
 
     function getRefeicoes(){
-        api.get(`/refeicoes`)
-        .then((response)=>{
 
-          setRefeicoes([...refeicoes,...response.data]);
-        })
 
     }
     
 
     
       useEffect(()=>{
-        getRefeicoes();
+        const validarLoginEUsuario = async () =>{
+
+          await validateLogin(navigate);
+          await validateUsuario(navigate);
+    
+        try{
+          api.get(`/refeicoes`)
+          .then((response)=>{
+  
+            setRefeicoes([...refeicoes,...response.data]);
+          })
+        } catch (error){
+          console.log(error)
+        }
+      }
+    
+      validarLoginEUsuario();
       }, [])
 
     return(
