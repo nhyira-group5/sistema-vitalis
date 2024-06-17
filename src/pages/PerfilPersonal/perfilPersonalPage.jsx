@@ -3,17 +3,28 @@ import { InfoPerfil } from "../../components/InfoPerfil/infoPerfil";
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import axios from "axios";
 
+import { validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
+import { useNavigate } from "react-router-dom";
+
 export function PerfilPersonalPage() {
   const [user, setUser] = useState(null);
   const [speciality, setSpeciality] = useState(null);
   const [items, setItems] = useState(null);
   
   const [endereco, setEndereco] = useState(null);
+  const navigate = useNavigate();
 
   //USUARIO
   useEffect(() => {
-    const url = "http://localhost:8080/usuarios/2";
-    axios
+    const loginResponse = getLoginResponse();
+    const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
+
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validatePersonal(navigate);
+
+      axios
       .get(url)
       .then((response) => {
         setUser(response.data);
@@ -21,6 +32,10 @@ export function PerfilPersonalPage() {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  validarLoginEUsuario();
+
   }, []);
 
   useEffect(() => {

@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
 import { Message } from "../../components/Message/message";
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import { FinnTheHuman, Siren } from "@phosphor-icons/react";
+import { validateLogin, validatePersonal} from "@utils/globalFunc"
+import { useNavigate } from "react-router-dom";
 
 export function ChatPersonalPage() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
-
+  const navigate = useNavigate();
+  
   function handleChangeInput(e) {
     setInputValue(e.target.value);
   }
@@ -26,6 +29,22 @@ export function ChatPersonalPage() {
     ]);
     setInputValue("");
   }
+
+
+
+  useEffect(()=>{
+
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validatePersonal(navigate);
+
+  }
+
+  validarLoginEUsuario();
+    
+
+  },[])
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">

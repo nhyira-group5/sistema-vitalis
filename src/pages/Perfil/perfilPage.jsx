@@ -1,23 +1,35 @@
 import { LockKey } from "@phosphor-icons/react";
 import { SideBar } from "../../components/SideBar/sideBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { validateLogin, validateUsuario, getLoginResponse} from "@utils/globalFunc"
 export function PerfilPage() {
   const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
 
   const [user, setUser] = useState(null);
   const [personal, setPersonal] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const url = "http://localhost:8080/usuarios/3";
-    axios
-      .get(url)
-      .then((response) => {
-        setUser(response.data);
-        setPagamentoAtivo(response.data.pagamentoAtivo);
-      });
+    const loginResponse = getLoginResponse();
+    const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
+
+      const validarLoginEUsuario = async () =>{
+
+        await validateLogin(navigate);
+        await validateUsuario(navigate);
+  
+        axios
+        .get(url)
+        .then((response) => {
+          setUser(response.data);
+          setPagamentoAtivo(response.data.pagamentoAtivo);
+        });
+    }
+  
+    validarLoginEUsuario();
   }, []);
 
   useEffect(() => {

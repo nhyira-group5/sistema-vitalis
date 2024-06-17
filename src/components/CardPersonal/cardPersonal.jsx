@@ -49,7 +49,9 @@ export function CardPersonal({
   }
 
 
-   function isUserFiliado(){      
+   function isUserFiliado(){    
+    if(usuario == undefined || personal == undefined) return false;
+
       return usuario.personalId == personal.idPersonal
   }
 
@@ -76,7 +78,7 @@ export function CardPersonal({
         <div className="h-full flex flex-col justify-between self-center ">
           <h2
             className={twMerge("font-semibold text-[#2B6E36]", !isUser ? "text-[#2B6E36]" : "text-[#503465]")}>
-            {personal.nome}
+            {personal.nome || "Xpto"}
           </h2>
 
 

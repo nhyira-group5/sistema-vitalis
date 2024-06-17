@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
 import { Message } from "../../components/Message/message";
 import { SideBar } from "../../components/SideBar/sideBar";
+
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+
 import {
   CalendarSlash,
   PaperPlaneRight,
@@ -9,12 +12,14 @@ import {
   Siren,
 } from "@phosphor-icons/react";
 import { twMerge } from "tailwind-merge";
+import { useNavigate } from "react-router-dom";
 
 export function ChatPage() {
   const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
 
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
 
   function handleChangeInput(e) {
     setInputValue(e.target.value);
@@ -34,6 +39,20 @@ export function ChatPage() {
     ]);
     setInputValue("");
   }
+
+  useEffect(()=>{
+
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+  }
+
+  validarLoginEUsuario();
+    
+
+  },[])
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">

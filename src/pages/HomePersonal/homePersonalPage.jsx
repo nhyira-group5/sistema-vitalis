@@ -12,29 +12,37 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
 
   function getUsuario(){
     const loginResponse = getLoginResponse();
+    console.log("entrou")
     try{
       api.get(`/usuarios/${loginResponse.id}`)
-      .them((response)=>{
+      .then((response)=>{
         setUsuario(response.data)
       })
+    } catch (error){
+      console.log(error);
     }
   }
 
-  function getFiliados(){
+  function getContratos(){
     const loginResponse = getLoginResponse();
+    console.log("entrou")
     try{
       api.get(`/usuarios/${loginResponse.id}`)
-      .them((response)=>{
+      .then((response)=>{
         setUsuario(response.data)
       })
+    } catch (error){
+      console.log(error);
     }
   }
+
+
 
   useEffect(()=>{
     const validarLoginEUsuario = async () =>{
 
         await validateLogin(navigate);
-        await validateUsuario(navigate);
+        await validatePersonal(navigate);
   
         getUsuario();
     }
@@ -48,7 +56,7 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <h1 className="text-[#503465] font-semibold text-2xl">Home</h1>
         <h1 className="w-full h-[5%] font-semibold text-xl flex rounded-xl">
-          Bem-vindo(a), Bulbassaur
+          Bem-vindo(a), {usuario.nome}
         </h1>
         <div className="w-full h-[82%] flex justify-between items-center">
           <div className="w-[73%] h-full bg-white flex flex-col justify-between items-center rounded-xl shadow-lg p-4">
@@ -65,6 +73,7 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
               Solicitação de afiliação
             </h1>
             <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
+              
               {false ? (
                 <span> lista msg </span>
               ) : (
@@ -72,6 +81,7 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
                   Nenhuma solicitação pendente.
                 </div>
               )}
+              
             </div>
           </div>
         </div>
