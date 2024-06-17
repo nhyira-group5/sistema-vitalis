@@ -1,9 +1,9 @@
 import { DotsThree, X } from "@phosphor-icons/react";
 import { twMerge } from "tailwind-merge";
-import {api} from "@apis/api";
-import {getLoginResponse, getDataAtual} from "@utils/globalFunc";
+import { api } from "@apis/api";
+import { getLoginResponse, getDataAtual } from "@utils/globalFunc";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import {Checkbox} from "@components/Checkbox/checkbox"
+import { Checkbox } from "@components/Checkbox/checkbox"
 import {Button} from "@components/Button/button"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

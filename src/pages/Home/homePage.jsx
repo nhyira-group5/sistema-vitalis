@@ -204,13 +204,15 @@ export function HomePage() {
   }, [activitiesWeek]);
 
   useEffect(() => {
-    generateCurrentyAmountExercises();
-    generateCurrentyAmountMeals();
-    generateCurrentyAmountDays();
-
-    generateTotalAmountExercises();
-    generateTotalAmountMeals();
-    generateTotalAmountDays();
+    if (activitiesWeek !== null) {
+      generateCurrentyAmountExercises();
+      generateCurrentyAmountMeals();
+      generateCurrentyAmountDays();
+  
+      generateTotalAmountExercises();
+      generateTotalAmountMeals();
+      generateTotalAmountDays();
+    }
   }, [activitiesDay]);
 
   // useEffect(
@@ -264,7 +266,7 @@ export function HomePage() {
   }
 
   function generateTotalAmountDays() {
-    const totalDays = listaSemanal.length;
+    const totalDays = Object.keys(activitiesWeek).length;
     setTotalAmountDays(totalDays);
   }
 
@@ -301,8 +303,8 @@ export function HomePage() {
     console.log("ACTIVITY WEEKS FICOU ASSIM");
 
     console.log(activitiesWeek);
-    for (let i = 1; i <= 3; i++) {
-      if (activitiesWeek !== null && activitiesWeek !== undefined) {
+    if (activitiesWeek !== null && activitiesWeek !== undefined) {
+    for (let i = 1; i <= Object.keys(activitiesWeek).length; i++) {
         const element = activitiesWeek[i];
         console.log(element);
         
