@@ -1,10 +1,10 @@
-import "./index.css";
-import React from "react";
-import WebFont from "webfontloader";
-import ReactDOM from "react-dom/client";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ReactDOM from "react-dom/client";
+import WebFont from "webfontloader";
+import React from "react";
+import "./index.css";
 
 import {
   RelatorioRoute,
