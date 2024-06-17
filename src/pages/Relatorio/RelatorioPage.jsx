@@ -316,28 +316,34 @@ export function RelatorioPage() {
             <h1 className="text-[#2B6E36] font-semibold text-2xl">
               Relatório Mensal
             </h1>
-            <div className="w-full flex bg-white justify-between items-center shadow-lg rounded-se-none rounded-ss-none rounded-xl ">
-              <button
+            <div className="w-full flex bg-white justify-center p-4 items-center shadow-lg rounded-se-none rounded-ss-none rounded-xl ">
+              {/* <button
                 className="py-3 px-[14px] bg-[#48B75A] rounded-se-none rounded-xl"
                 onClick={() => previousMonth()}
               >
                 <img src={SetaEsquerda} alt="" />
-              </button>
+              </button> */}
               <span className="h-fit flex font-semibold gap-2">
                 {currentyMouth} / 2024{" "}
                 <img className="size-6" src={Calendar} alt="" />
               </span>
-              <button
+              {/* <button
                 className="py-3 px-[14px] bg-[#48B75A] rounded-ss-none rounded-xl"
                 onClick={() => nextMonth()}
               >
                 <img src={SetaDireita} alt="" />
-              </button>
+              </button> */}
             </div>
+
             <div className="w-full h-4/5 flex justify-between">
               <div className="w-[31%] h-full flex flex-col justify-between">
                 <div className="w-full h-[16%] bg-white shadow-lg flex justify-center items-center rounded-xl">
-                  <h1 className="font-semibold">Meta: Emagrecimento</h1>
+                  {rotinaUsuario && rotinaUsuario.metaId ? (
+                    <h1 className="font-semibold">Meta: {rotinaUsuario.metaId.nome}</h1>
+                  ) : (
+                    "..."
+                  )}
+                  
                 </div>
                 <div className="w-full h-[22%] bg-white shadow-lg flex justify-around items-center rounded-xl">
                   <AtividadeCard
