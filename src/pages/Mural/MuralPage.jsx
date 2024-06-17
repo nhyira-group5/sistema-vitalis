@@ -8,7 +8,7 @@ import {CloudinaryButton} from "@components/Button/button";
 
 import { toast } from "react-toastify";
 import {api} from "@apis/api"; 
-import { getLoginResponse, validateLogin, validateUsuario} from "@utils/globalFunc";
+import { getLoginResponse, validateLogin, validateUsuario, getDataAtual} from "@utils/globalFunc";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -72,11 +72,7 @@ export function MuralPage() {
     };
 
 
-    function getDataAtual() {
-        const dataHojeISO = new Date().toISOString();
-        const dataFormatada = dataHojeISO.split('T')[0];
-        return dataFormatada;
-      }
+
 
 
     function insertImage(cloudObject){
