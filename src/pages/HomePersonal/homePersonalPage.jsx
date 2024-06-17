@@ -1,6 +1,6 @@
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import { CardUsuario } from "../../components/CardUsuario/cardUsuario";
-import {validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
+import { validateLogin, validatePersonal, getLoginResponse } from "@utils/globalFunc"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@apis/api";
