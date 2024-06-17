@@ -77,7 +77,7 @@ export function PerfilPersonalPage() {
   //   return inicio + "*".repeat(str.length - 4) + fim;
   // }
 
-  if (user == null) return null;
+  if (user == null || speciality == null || endereco == null) return null;
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBarPersonal />
