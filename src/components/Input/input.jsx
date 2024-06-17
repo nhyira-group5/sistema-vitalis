@@ -223,7 +223,7 @@ export function DisplayInput({inputType, inputStyle, labelContent, labelStyle, p
       
 
         <input
-          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
+          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-lg bg-white outline-none  w-full rounded-e-full text-gray500`}
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChangeFunction}

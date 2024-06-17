@@ -8,8 +8,11 @@ import {
   Paperclip,
   Siren,
 } from "@phosphor-icons/react";
+import { twMerge } from "tailwind-merge";
 
 export function ChatPage() {
+  const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
+
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -35,7 +38,7 @@ export function ChatPage() {
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBar />
-      <div className="w-[88%] h-[90%] flex flex-col justify-between">
+      <div className={twMerge("w-[88%] h-[90%] flex flex-col justify-between", !pagamentoAtivo && "blur-sm")}>
         <div className="w-full flex justify-between items-center ">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">Chat</h1>
           <button className="p-1.5 bg-[#CA1B1B] rounded-md">
