@@ -1,4 +1,4 @@
-gimport { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
+import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
 import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
 import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
 import { Reminder } from "../../components/Reminder/reminder";
