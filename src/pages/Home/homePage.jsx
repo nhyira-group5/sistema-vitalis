@@ -299,6 +299,7 @@ export function HomePage() {
   // GERAR ATIVIDADES DO DIA
   function generateActivitiesDay() {
     console.log("ACTIVITY WEEKS FICOU ASSIM");
+
     console.log(activitiesWeek);
     for (let i = 1; i <= 3; i++) {
       if (activitiesWeek !== null && activitiesWeek !== undefined) {
@@ -464,6 +465,7 @@ export function HomePage() {
             <div className="w-full h-[5%] font-semibold text-xl flex justify-center items-center rounded-xl">
               <h1>Bem-vindo(a), {nicknameUser}</h1>
             </div>
+            
             <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
               <h2 className="w-full font-semibold">Atividades de hoje</h2>
               <div className="w-full h-[31%] bg-black flex justify-between items-center rounded-3xl p-4">
@@ -486,10 +488,15 @@ export function HomePage() {
                   totalAmount={totalAmountDays}
                 />
               </div>
-              <div className="w-full h-[55%] flex flex-col items-center justify-center gap-5 overflow-y-scroll p-1">
+
+              <div className="w-full p-5 flex flex-col  overflow-auto gap-5">
+                {console.log(activitiesDay, "procura por isso")}
+
                 {activitiesDay.length == 0 ? (
                   <span>Ainda sem atividades</span>
                 ) : (
+                  
+
                   activitiesDay.map((objeto, index) => {
                     return (
                       <AtividadeOption
@@ -505,6 +512,8 @@ export function HomePage() {
                 )}
               </div>
             </div>
+
+
             <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
               <h1 className="w-[60%] text-wrap ">
                 Observe o seu resultado do seu esforço com o seu
