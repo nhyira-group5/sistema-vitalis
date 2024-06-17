@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 function fichaDtoCriacao(userFormInfo) {
   const fichaDto = {
-    problemasCardiaco: userFormInfo.problemasCardiacos,
+    problemaCardiaco: userFormInfo.problemasCardiacos,
     dorPeitoAtividade: userFormInfo.dorPeitoAtividade,
     dorPeitoUltimoMes: userFormInfo.dorPeitoUltimoMes,
     problemaOsseoArticular: userFormInfo.problemaOsseoArticular,
