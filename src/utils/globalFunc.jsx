@@ -10,7 +10,7 @@ export function validateLogin(navigate) {
 
     if (!usuarioLogado) {
         navigate("/login");
-        console.log("er pra ter redirecionado. não?")
+       
       } 
   };
 
