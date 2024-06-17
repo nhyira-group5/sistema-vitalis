@@ -7,6 +7,10 @@ import { Mapa } from "../../components/Mapa/mapa";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
+import {validateLogin, validateUsuario, getLoginResponse} from "@utils/globalFunc"
+import { api } from "@apis/api"
+import { useNavigate } from "react-router-dom";
+import{Splash} from "@components/Splash/splash"
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
@@ -16,11 +20,58 @@ export function BuscarPersonalPage() {
   const [academias, setAcademias] = useState(null);
   const [infoDistance, setInfoDistance] = useState(null);
 
-  useEffect(() => {
-    if (academias !== null) {
-      console.log(academias);
+  const [personais, setPersonais] = useState([]);
+  const [usuario, setUsuario] = useState({});
+
+  const [isUsuarioLoading, setIsUsuarioLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  function getUsuario(){
+    setIsUsuarioLoading(true);
+
+    const loginResponse = getLoginResponse();
+    try {
+
+      
+       api.get(`usuarios/${loginResponse.id}`)
+       .then((response)=>{
+        setUsuario(response.data);
+        
+
+        setIsUsuarioLoading(false);
+       })
+    } catch (error){
+      console.log(error);
+      setIsUsuarioLoading(false);
     }
-  }, [academias]);
+  }
+
+  useEffect(()=>{
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      getUsuario()
+
+    try{
+      api.get(`/usuarios/personais`)
+      .then((response) => {
+        setPersonais(response.data);
+       })
+    } catch (error){
+      console.log(error)
+    }
+
+  }
+
+  validarLoginEUsuario();
+  },[])
+
+  useEffect(()=>{
+    console.log(personais);
+  },[personais])
 
   function handleInputCep(e) {
     setCep(e.target.value);
@@ -45,9 +96,9 @@ export function BuscarPersonalPage() {
   }
 
   return (
-    <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
+    <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
-      <div className="w-[88%] h-[90%] flex justify-between">
+      <div className="w-[90vw] h-full flex justify-between">
         <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre uma academia
@@ -126,75 +177,42 @@ export function BuscarPersonalPage() {
                 onClickFunction={handleClickCard}
               />
             )}
-            {/* <CardAcad
-              title={academias[1].nome}
-              rating={academias[1].classificacao}
-              distance="10"
-              address={academias[1].endereco}
-            /> */}
+
           </div>
         </div>
         <div className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre um personal
           </h1>
-          <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-scroll items-center">
-            <CardPersonal
-              name={"User0101"}
-              specialty={"Emagrecimento"}
-              city={"Itaquera"}
-              state={"SP"}
-              media={
-                "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
-              }
-              haveDots
-              haveShadow
-            />
-            <CardPersonal
-              name={"User0101"}
-              specialty={"Emagrecimento"}
-              city={"Itaquera"}
-              state={"SP"}
-              media={
-                "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
-              }
-              haveDots
-              haveShadow
-            />
-            <CardPersonal
-              name={"User0101"}
-              specialty={"Emagrecimento"}
-              city={"Itaquera"}
-              state={"SP"}
-              media={
-                "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
-              }
-              haveDots
-              haveShadow
-            />
-            <CardPersonal
-              name={"User0101"}
-              specialty={"Emagrecimento"}
-              city={"Itaquera"}
-              state={"SP"}
-              media={
-                "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
-              }
-              haveDots
-              haveShadow
-            />
-            <CardPersonal
-              name={"User0101"}
-              specialty={"Emagrecimento"}
-              city={"Itaquera"}
-              state={"SP"}
-              media={
-                "https://sportsjob.com.br/wp-content/uploads/2018/06/Mauricio-Rossi-foto-para-site-3.jpg"
-              }
-              haveDots
-              haveShadow
-            />
-          </div>
+
+          
+
+          {isUsuarioLoading ? (
+            
+          <Splash/>
+        ):(
+                      <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-auto items-center">
+
+                      {personais.length > 0? (
+                          personais.map((personal, index)=>{
+                            return(
+                              <CardPersonal
+                              key={index}
+                              haveDots
+                              haveShadow
+                              personal={personal}
+        
+                              usuario={usuario}
+                            />
+                            )
+                          })
+                      ):(
+                        <div>Nenhum personal encontrado</div>
+                      )}
+                   
+                  </div>
+          )}
+
         </div>
       </div>
     </div>

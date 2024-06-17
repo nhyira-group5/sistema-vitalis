@@ -60,3 +60,9 @@ export function validateLogin(navigate) {
     const parts = date.split("-");
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
+
+export function getDataAtual() {
+  const dataHojeISO = new Date().toISOString();
+  const dataFormatada = dataHojeISO.split('T')[0];
+  return dataFormatada;
+}

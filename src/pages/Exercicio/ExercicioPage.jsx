@@ -117,7 +117,14 @@ export function ExercicioPage() {
 
         <div className="flex w-full h-3/5 max-h-3/5 py-5 gap-10 p-5">
           <div className="w-3/5 p-5 bg-white shadow-sombra-padrao rounded-xl">
-            {treino ? (
+           
+          <ReactPlayer
+                url={"https://youtu.be/GOj4TMPVuZg?si=oOY0c63n1bEW2v6M "}
+                controls={true}
+                width="100%"
+                height="100%"
+              />
+            {/* {treino ? (
               treino.exercicioId.midiaCaminho ? (
                 <ReactPlayer
                 url={treino.exercicioId.midiaCaminho}
@@ -133,7 +140,7 @@ export function ExercicioPage() {
 
             ):(
               "..."
-            )}
+            )} */}
 
           </div>
 
