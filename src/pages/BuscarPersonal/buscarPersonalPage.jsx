@@ -7,13 +7,17 @@ import { Mapa } from "../../components/Mapa/mapa";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
+
 import {validateLogin, validateUsuario, getLoginResponse} from "@utils/globalFunc"
 import { api } from "@apis/api"
 import { useNavigate } from "react-router-dom";
 import{Splash} from "@components/Splash/splash"
+import { twMerge } from "tailwind-merge";
+
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
+  const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
 
   const [cep, setCep] = useState("");
   const [infoEndereco, setInfoEndereco] = useState(null);
@@ -98,8 +102,13 @@ export function BuscarPersonalPage() {
   return (
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
-      <div className="w-[90vw] h-full flex justify-between">
-        <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
+
+      <div className={twMerge("w-[90vw] h-full flex justify-between",
+            !pagamentoAtivo && "blur-sm"
+          )}>
+        <div
+          className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between"
+        >
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre uma academia
           </h1>
@@ -180,7 +189,9 @@ export function BuscarPersonalPage() {
 
           </div>
         </div>
-        <div className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between">
+        <div
+          className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between"
+        >
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre um personal
           </h1>
