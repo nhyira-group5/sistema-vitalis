@@ -24,6 +24,7 @@ import {
 } from "@utils/globalFunc";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function RelatorioPage() {
   const navigate = useNavigate();
@@ -49,8 +50,32 @@ export function RelatorioPage() {
 
   const [fichaUsuario, setFichaUsuario] = useState({});
   const [rotinaUsuario, setRotinaUsuario] = useState({});
+  const [meta, setMeta] = useState(null);
 
   const [fichaIsLoading, setFichaIsLoading] = useState(false);
+  
+  const [listaTarefas, setListaTarefas] = useState(null);
+
+  useEffect(() => {
+    const url = `http://localhost:8080/usuarios/3`
+    axios.get(url)
+    .then((response) => {
+      setMeta(response.data.meta.nome)
+      console.log(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    const url = `http://localhost:8080/treinos/relatorio/1`
+    axios.get(url)
+    .then((response) => {
+      setListaTarefas(response.data)
+    } )
+  })
+
+
+
+
 
   function getUsuarioFicha() {
     const loginResponse = getLoginResponse();
@@ -78,18 +103,7 @@ export function RelatorioPage() {
     }
   }
 
-  useEffect(() => {
-    const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
-
-      getUsuarioFicha();
-      getRotinaUsuario();
-    };
-
-    validarLoginEUsuario();
-  }, []);
-
+  useEffec0
   useEffect(() => {
     setImc(
       calculateImc(objetoPesoEAltura.peso, objetoPesoEAltura.altura).toFixed(2)
@@ -261,7 +275,7 @@ export function RelatorioPage() {
         },
         {
           type: "Exercício",
-          name: "Crucifixo funciona 1",
+          name: "Crucifixo",
           concluido: true,
           description: "CUSCUZ PAULISTA",
           midia:
@@ -272,7 +286,7 @@ export function RelatorioPage() {
         },
         {
           type: "Exercício",
-          name: "Crucifixo funciona 2",
+          name: "Crucifixo",
           concluido: true,
           description: "CUSCUZ PAULISTA",
           midia:
@@ -337,7 +351,7 @@ export function RelatorioPage() {
             <div className="w-full h-4/5 flex justify-between">
               <div className="w-[31%] h-full flex flex-col justify-between">
                 <div className="w-full h-[16%] bg-white shadow-lg flex justify-center items-center rounded-xl">
-                  <h1 className="font-semibold">Meta: Emagrecimento</h1>
+                  <h1 className="font-semibold">Meta: {meta !== null && meta}</h1>
                 </div>
                 <div className="w-full h-[22%] bg-white shadow-lg flex justify-around items-center rounded-xl">
                   <AtividadeCard
@@ -416,14 +430,14 @@ export function RelatorioPage() {
                     Atividades mais realizadas no mês
                   </h1>
                   <div className="w-full h-full">
-                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-scroll">
+                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-scroll p-1">
                       {listinha.map((objeto, index) => {
                         return (
                           <AtividadeOption
                             key={index}
                             activity={objeto.type}
                             nameActivity={objeto.name}
-                            done={objeto.concluido}
+                            done={0}
                           />
                         );
                       })}

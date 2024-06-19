@@ -14,10 +14,10 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
+  const [activityId, setActivityId] = useState("");
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
   const [activitiesDay, setActivitiesDay] = useState([]);
@@ -28,9 +28,12 @@ export function HomePage() {
   const [activityDescription, setActivityDescription] = useState("");
   const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activityInformation, setActivityInformation] = useState({});
+  const [activityCompleteded, setActivityCompleteded] = useState("");
 
   const [activitiesWeek, setActivitiesWeek] = useState(null);
-  const [allDataActivities, setAllDataActivities] = useState(false);
+
+  const [listFood, setListFood] = useState(null);
+  const [listFoodName, setListFoodName] = useState(null);
 
   const [totalAmountDays, setTotalAmountDays] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
@@ -208,12 +211,33 @@ export function HomePage() {
       generateCurrentyAmountExercises();
       generateCurrentyAmountMeals();
       generateCurrentyAmountDays();
-  
+
       generateTotalAmountExercises();
       generateTotalAmountMeals();
       generateTotalAmountDays();
     }
   }, [activitiesDay]);
+
+  useEffect(() => {
+    if (
+      activityInformation.type === "Refeição" &&
+      activityId !== "" &&
+      activityId !== null
+    ) {
+      console.log(activityId);
+      const url = `http://localhost:8080/refeicoes/${activityId}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          setListFood(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [activityInformation]);
 
   // useEffect(
   //   () => {
@@ -229,18 +253,54 @@ export function HomePage() {
   // );
 
   function handleSelectActivity(e) {
+    console.log(e);
     setActivityType(e.type);
     setActivityName(e.nome);
-    setActivityDescription(e.descricao);
+
+    if (e.type === "Refeição") {
+      setActivityId(e.idRefeicao);
+      setActivityDescription(e.preparo);
+    } else {
+      setActivityId(e.idExercicio);
+      setActivityDescription(e.descricao);
+    }
     setActivityMedia(e.midia.caminho);
     setActivityDuration(e.tempo);
     setActivityRepetitions(e.repeticao);
     setActivitySeries(e.serie);
     setActivityInformation(e);
-
+    setActivityCompleteded(e.concluido)
 
     setActivitySelected(true);
   }
+
+  useEffect(() => {
+    if (listFood !== null && listFood !== undefined) {
+      let vetorAux = [];
+      for (let i = 0; i < listFood.alimentoPorRefeicao.length; i++) {
+        const element = listFood.alimentoPorRefeicao[i];
+        console.log(element.alimento.nome);
+        vetorAux.push(element.alimento.nome);
+      }
+      console.log(vetorAux);
+      setListFoodName(vetorAux);
+    }
+  }, [listFood]);
+
+  useEffect(() => {
+    if (activitiesDay != null) {
+      console.log("gerando")
+      generateActivitiesDay()
+    }
+  }, [activityInformation, completedActivity])
+
+  // useEffect(() => {
+  //   const url = `/treinos/concluir/${activityId}`
+  //   axios.patch(url)
+  //   .then((response) => {
+  //     response.data
+  //   })
+  // })
 
   // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
 
@@ -292,10 +352,30 @@ export function HomePage() {
   }
 
   function generateCurrentyAmountDays() {
-    const currentyDays = listaSemanal.filter(
-      (element) => element.concluido == true
-    ).length;
-    setCurrentyAmountDays(currentyDays);
+    console.log(activitiesWeek[1])
+    
+    let qtdConcluido = 0;
+    for (let i = 0; i <= activitiesWeek[1].length; i++) {
+      const element = activitiesWeek[1];
+      if (element[i] !== undefined && element[i] !== null ) {
+        if (element[i].concluido == 1) {
+          qtdConcluido++
+        }
+      }
+      // const currentyDays = element.filter(
+      //   (element) => element.concluido == true
+      // ).length;
+      
+      // if (currentyDays === Object.keys(activitiesWeek).length) {
+      //   setCurrentyAmountDays((prev) => prev);
+      // }
+    }
+
+    console.log(qtdConcluido)
+    console.log(activitiesWeek[1].length)
+    if (qtdConcluido === activitiesWeek[1].length) {
+      setCurrentyAmountDays(1)
+    }
   }
 
   // GERAR ATIVIDADES DO DIA
@@ -304,10 +384,10 @@ export function HomePage() {
 
     console.log(activitiesWeek);
     if (activitiesWeek !== null && activitiesWeek !== undefined) {
-    for (let i = 1; i <= Object.keys(activitiesWeek).length; i++) {
+      for (let i = 1; i <= Object.keys(activitiesWeek).length; i++) {
         const element = activitiesWeek[i];
         console.log(element);
-        
+
         setActivitiesDay(element);
         return;
         if (activitiesWeek[i] !== null && activitiesWeek[i] !== undefined) {
@@ -336,8 +416,15 @@ export function HomePage() {
   // MARCAR ATIVIDADE COMO CONCLUÍDA
   function completedActivity() {
     console.log(activityInformation);
-    if (!activityInformation.concluido) {
-      setActivityInformation((activityInformation.concluido = true));
+    if (activityCompleteded == 0) {
+      if (activityType === "Refeição") {
+        setCurrentyAmountMeals(currentyAmountMeals + 1);
+        setarParaConcluidoRefeicao()
+      } else {
+        setCurrentyAmountExercises(currentyAmountExercises + 1);
+        setarParaConcluidoTreino()
+      }
+      setActivityCompleteded(1);
     } else {
       toast.error("Atividade já concluída!");
     }
@@ -351,111 +438,23 @@ export function HomePage() {
     }
   }
 
-  const listaSemanal = [
-    {
-      dia: "ROTINA UM",
-      concluido: true,
-      atividades: [
-        {
-          type: "Exercício",
-          name: "Crucifixo funciona 1",
-          concluido: true,
-          description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-          midia:
-            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
-        },
-        {
-          type: "Refeição",
-          name: "Torta de frango 321",
-          concluido: true,
-          description:
-            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
-          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-        },
-        {
-          type: "Exercício",
-          name: "Supino",
-          concluido: false,
-          description:
-            "Id consequatur quasi id explicabo autem aut consequatur totam est eligendi rerum At corporis libero. Aut numquam doloremque qui consequatur quas aut quibusdam obcaecati At asperiores ipsam et quibusdam distinctio et ipsum voluptatem quo quia voluptatem. Ut tempora temporibus quo veniam sint est architecto fugit sed eius internos aut consequatur dolore. Aut repudiandae omnis hic expedita adipisci in accusantium rerum aut galisum labore non consectetur modi.",
-        },
-        {
-          type: "Refeição",
-          name: "Torta de frango",
-          concluido: true,
-          description:
-            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
-        },
-        {
-          type: "Refeição",
-          name: "Coxinha",
-          concluido: true,
-          description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-        },
-      ],
-    },
-    {
-      dia: "ROTINA DOIS",
-      concluido: true,
-      atividades: [
-        {
-          type: "Refeição",
-          name: "Torta de frango",
-          concluido: false,
-          description:
-            "Est iusto omnis ut impedit dolorem non assumenda delectus. Qui sint amet ad fuga fuga cum quia beatae quo error aliquam. Vel esse obcaecati est voluptate provident sed dolorem impedit eum maiores reprehenderit ut internos dignissimos. Sit fuga eaque nam natus consequatur qui facere sint eum molestiae quasi ut nisi sequi.",
-        },
-        {
-          type: "Refeição",
-          name: "Coxinha",
-          concluido: true,
-          description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-        },
-      ],
-    },
-    {
-      dia: "ROTINA TRÊS",
-      concluido: false,
-      atividades: [
-        {
-          type: "Refeição",
-          name: "Coxinha",
-          concluido: false,
-          description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis isteandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiu",
-          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-          duration: "10:30",
-          repetitions: "5",
-          series: "10",
-        },
-        {
-          type: "Refeição",
-          name: "Habibs",
-          concluido: false,
-          description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-          duration: "05:30",
-          repetitions: "30",
-          series: "500",
-        },
-        {
-          type: "Exercício",
-          name: "Crucifixo funciona 1",
-          concluido: true,
-          description: "CUSCUZ PAULISTA",
-          midia:
-            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
-          duration: "00:30",
-          repetitions: "9",
-          series: "999",
-        },
-      ],
-    },
-  ];
+  function setarParaConcluidoTreino() {
+    console.log(activityId)
+    const url = `http://localhost:8080/treinos/concluir/${activityId}?concluido=1`
+    axios.patch(url)
+    .then((response) => {
+      console.log(response.data)
+    })
+  }
+
+  function setarParaConcluidoRefeicao() {
+    console.log(activityId)
+    const url = `http://localhost:8080/refeicaoDiarias/concluir/${activityId}?concluido=1`
+    axios.patch(url)
+    .then((response) => {
+      console.log(response.data)
+    })
+  }
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
@@ -467,7 +466,7 @@ export function HomePage() {
             <div className="w-full h-[5%] font-semibold text-xl flex justify-center items-center rounded-xl">
               <h1>Bem-vindo(a), {nicknameUser}</h1>
             </div>
-            
+
             <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
               <h2 className="w-full font-semibold">Atividades de hoje</h2>
               <div className="w-full h-[31%] bg-black flex justify-between items-center rounded-3xl p-4">
@@ -491,14 +490,12 @@ export function HomePage() {
                 />
               </div>
 
-              <div className="w-full p-5 flex flex-col  overflow-auto gap-5">
-                {console.log(activitiesDay, "procura por isso")}
+              <div className="w-full p-2 flex flex-col  overflow-auto scrollbar-thin gap-5">
+                {console.log(activitiesDay)}
 
                 {activitiesDay.length == 0 ? (
                   <span>Ainda sem atividades</span>
                 ) : (
-                  
-
                   activitiesDay.map((objeto, index) => {
                     return (
                       <AtividadeOption
@@ -515,13 +512,15 @@ export function HomePage() {
               </div>
             </div>
 
-
             <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
               <h1 className="w-[60%] text-wrap ">
                 Observe o seu resultado do seu esforço com o seu
                 <span className="font-bold"> mural de fotos!</span>
               </h1>
-              <Link to="/mural" className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]">
+              <Link
+                to="/mural"
+                className="px-9 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]"
+              >
                 Ver mural!
               </Link>
             </div>
@@ -534,6 +533,7 @@ export function HomePage() {
             ) : (
               <ExercicioBoard
                 activitySelected
+                id={activityId}
                 type={activityType}
                 name={activityName}
                 description={activityDescription}
@@ -541,7 +541,8 @@ export function HomePage() {
                 duration={activityDuration}
                 repetitions={activityRepetitions}
                 series={activitySeries}
-                concluido={activityInformation.concluido}
+                listFoodName={listFoodName}
+                concluido={activityCompleteded}
                 onClickFunction={() => completedActivity()}
               />
             )}
@@ -550,7 +551,7 @@ export function HomePage() {
             <h1 className="w-full text-white text-xl font-semibold flex items-center justify-center">
               Lembretes
             </h1>
-            <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
+            <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-auto">
               {reminders.length > 0 ? (
                 reminders.map((reminder, index) => {
                   return reminder;

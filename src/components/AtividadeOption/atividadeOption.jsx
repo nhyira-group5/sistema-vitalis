@@ -16,7 +16,7 @@ export function AtividadeOption({
   }, [done]);
 
   function changeColor() {
-    if (done) {
+    if (done !== 0) {
       setColorIcon("#FFFFFF");
       setColorText("[#FFFFFF]");
     } else {
@@ -28,7 +28,7 @@ export function AtividadeOption({
   return (
     <div
       className={`h-20 w-full flex items-center justify-between pl-4 bg-${
-        done ? "[#48B75A]" : "[#FFFFFF]"
+        done !== 0 ? "[#48B75A]" : "[#FFFFFF]"
       } rounded-xl shadow-md cursor-pointer`}
       onClick={onClickFunction}
     >
@@ -40,7 +40,7 @@ export function AtividadeOption({
         )}
         <span className={`text-${colorText} font-semibold`}>{activity}:</span>
         <span
-          className={`font-medium text-${colorText} ${done && "line-through"}`}
+          className={`font-medium text-${colorText} ${done !== 0 && "line-through"}`}
         >
           {nameActivity}
         </span>
