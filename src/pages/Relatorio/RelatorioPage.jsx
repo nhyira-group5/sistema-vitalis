@@ -1,21 +1,39 @@
-import { SideBar } from "../../components/SideBar/sideBar";
-import Calendar from "@assets/calendar.svg";
-import SetaEsquerda from "@assets/seta-esquerda.svg";
-import SetaDireita from "@assets/seta-direita.svg";
-import Interrogacao from "@assets/interrogacao.svg";
-import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
-import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
-import { Tag } from "../../components/Tag/tag";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
-import { useEffect, useState } from "react";
+import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
+import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
+import { SideBar } from "../../components/SideBar/sideBar";
 import TooltipDemo from "../../components/Tooltip/tooltip";
+import { Checkbox } from "@components/Checkbox/checkbox";
+import { DisplayInput } from "@components/Input/input";
+import SetaEsquerda from "@assets/seta-esquerda.svg";
+import Interrogacao from "@assets/interrogacao.svg";
+import SetaDireita from "@assets/seta-direita.svg";
+import { Splash } from "@components/Splash/splash";
+import { Tag } from "../../components/Tag/tag";
+import Calendar from "@assets/calendar.svg";
+import { useEffect, useState } from "react";
+
+import { api } from "@apis/api";
+
+import {
+  getLoginResponse,
+  validateLogin,
+  validateUsuario,
+  formatarCPF,
+  converterDataFormato,
+} from "@utils/globalFunc";
+
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function RelatorioPage() {
+  const navigate = useNavigate();
+
   const [currentyMouth, setCurrentyMouth] = useState("");
-  
+
   const [imc, setImc] = useState(0);
   const [labelImc, setLabelImc] = useState("");
-  
+
   const [activitiesDay, setActivitiesDay] = useState([]);
 
   const [totalAmountExercises, setTotalAmountExercises] = useState(0);
@@ -30,6 +48,62 @@ export function RelatorioPage() {
 
   const objetoPesoEAltura = { peso: 80, altura: 1.65 };
 
+  const [fichaUsuario, setFichaUsuario] = useState({});
+  const [rotinaUsuario, setRotinaUsuario] = useState({});
+  const [meta, setMeta] = useState(null);
+
+  const [fichaIsLoading, setFichaIsLoading] = useState(false);
+  
+  const [listaTarefas, setListaTarefas] = useState(null);
+
+  useEffect(() => {
+    const url = `http://localhost:8080/usuarios/3`
+    axios.get(url)
+    .then((response) => {
+      setMeta(response.data.meta.nome)
+      console.log(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    const url = `http://localhost:8080/treinos/relatorio/1`
+    axios.get(url)
+    .then((response) => {
+      setListaTarefas(response.data)
+    } )
+  })
+
+
+
+
+
+  function getUsuarioFicha() {
+    const loginResponse = getLoginResponse();
+    setFichaIsLoading(true);
+    try {
+      api.get(`/fichas/${loginResponse.id}`).then((response) => {
+        setFichaUsuario(response.data);
+        setFichaIsLoading(false);
+      });
+    } catch (error) {
+      console.log(error);
+      setFichaIsLoading(false);
+    }
+  }
+
+  function getRotinaUsuario() {
+    const loginResponse = getLoginResponse();
+
+    try {
+      api.get(`/rotinaUsuarios/${loginResponse.id}`).then((response) => {
+        setRotinaUsuario(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffec0
   useEffect(() => {
     setImc(
       calculateImc(objetoPesoEAltura.peso, objetoPesoEAltura.altura).toFixed(2)
@@ -84,10 +158,11 @@ export function RelatorioPage() {
   //   return (((imc - 18.5) * 100) / 16.5).toFixed(0) + "%";
   // }
 
-
-  // QUANTIDADE TOTAL DE CADA ATIVIDADE 
+  // QUANTIDADE TOTAL DE CADA ATIVIDADE
   function handleTotalAmount(activity) {
-    const response = activitiesDay.filter((element) => element.type == activity);
+    const response = activitiesDay.filter(
+      (element) => element.type == activity
+    );
     console.log("Lista de " + activity + ": " + response);
     return response;
   }
@@ -114,15 +189,13 @@ export function RelatorioPage() {
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
-    console.log("Lista de " + activity + " concluídos: " + response)
+    console.log("Lista de " + activity + " concluídos: " + response);
     return response;
   }
 
   function generateCurrentyAmountExercises() {
     const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
-    console.log(
-      "Exercícios concluídos: " + currentyAmountExercises
-    );
+    console.log("Exercícios concluídos: " + currentyAmountExercises);
     setCurrentyAmountExercises(currentyAmountExercises);
   }
 
@@ -145,7 +218,7 @@ export function RelatorioPage() {
     if (activityDays) {
       setActivitiesDay(activityDays.atividades);
     } else {
-      console.log('Não há itens com concluido == false.');
+      console.log("Não há itens com concluido == false.");
     }
   }
 
@@ -161,17 +234,17 @@ export function RelatorioPage() {
   const listaMeses = [
     {
       numero: 3,
-      nome: "MARÇO"
+      nome: "MARÇO",
     },
     {
       numero: 4,
-      nome: "ABRIL"
+      nome: "ABRIL",
     },
     {
       numero: 5,
-      nome: "MAIO"
-    }
-  ]
+      nome: "MAIO",
+    },
+  ];
 
   const listaSemanal = [
     {
@@ -202,7 +275,7 @@ export function RelatorioPage() {
         },
         {
           type: "Exercício",
-          name: "Crucifixo funciona 1",
+          name: "Crucifixo",
           concluido: true,
           description: "CUSCUZ PAULISTA",
           midia:
@@ -213,7 +286,7 @@ export function RelatorioPage() {
         },
         {
           type: "Exercício",
-          name: "Crucifixo funciona 2",
+          name: "Crucifixo",
           concluido: true,
           description: "CUSCUZ PAULISTA",
           midia:
@@ -250,31 +323,42 @@ export function RelatorioPage() {
   return (
     <div>
       {dados && (
-        <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
+        <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
           <SideBar />
-          <div className="w-[88%] h-[90%] flex flex-col justify-between rounded-md">
+
+          <div className="w-[90vw] h-[90%] flex flex-col justify-between rounded-md">
             <h1 className="text-[#2B6E36] font-semibold text-2xl">
               Relatório Mensal
             </h1>
-            <div className="w-full flex bg-white justify-between items-center shadow-lg rounded-se-none rounded-ss-none rounded-xl ">
-              <button 
-              className="py-3 px-[14px] bg-[#48B75A] rounded-se-none rounded-xl"
-              onClick={() => previousMonth()}>
+            <div className="w-full flex bg-white justify-center p-4 items-center shadow-lg rounded-se-none rounded-ss-none rounded-xl ">
+              {/* <button
+                className="py-3 px-[14px] bg-[#48B75A] rounded-se-none rounded-xl"
+                onClick={() => previousMonth()}
+              >
                 <img src={SetaEsquerda} alt="" />
-              </button>
+              </button> */}
               <span className="h-fit flex font-semibold gap-2">
-                {currentyMouth} / 2024 <img className="size-6" src={Calendar} alt="" />
+                {currentyMouth} / 2024{" "}
+                <img className="size-6" src={Calendar} alt="" />
               </span>
-              <button 
-              className="py-3 px-[14px] bg-[#48B75A] rounded-ss-none rounded-xl" 
-              onClick={() => nextMonth()}>
+              {/* <button
+                className="py-3 px-[14px] bg-[#48B75A] rounded-ss-none rounded-xl"
+                onClick={() => nextMonth()}
+              >
                 <img src={SetaDireita} alt="" />
-              </button>
+              </button> */}
             </div>
+
             <div className="w-full h-4/5 flex justify-between">
               <div className="w-[31%] h-full flex flex-col justify-between">
                 <div className="w-full h-[16%] bg-white shadow-lg flex justify-center items-center rounded-xl">
-                  <h1 className="font-semibold">Meta: Emagrecimento</h1>
+                  {rotinaUsuario && rotinaUsuario.metaId ? (
+                    <h1 className="font-semibold">Meta: {rotinaUsuario.metaId.nome}</h1>
+                  ) : (
+                    "..."
+                  )}
+                  
+
                 </div>
                 <div className="w-full h-[22%] bg-white shadow-lg flex justify-around items-center rounded-xl">
                   <AtividadeCard
@@ -353,14 +437,14 @@ export function RelatorioPage() {
                     Atividades mais realizadas no mês
                   </h1>
                   <div className="w-full h-full">
-                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-scroll">
+                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-scroll p-1">
                       {listinha.map((objeto, index) => {
                         return (
                           <AtividadeOption
                             key={index}
                             activity={objeto.type}
                             nameActivity={objeto.name}
-                            done={objeto.concluido}
+                            done={0}
                           />
                         );
                       })}
@@ -368,7 +452,202 @@ export function RelatorioPage() {
                   </div>
                 </div>
               </div>
-              <div className="w-[31%] h-full bg-white shadow-lg flex flex-col justify-between rounded-xl"></div>
+
+              <div className="w-[35%] h-full bg-white shadow-lg flex flex-col justify-between rounded-xl">
+                {fichaIsLoading ? (
+                  <Splash />
+                ) : (
+                  <></>
+                  // <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
+                  //   <fieldset className="col-span-6">
+                  //     <DisplayInput
+                  //       labelContent={"Nome completo"}
+                  //       placeholder={"Nome completo do usuário"}
+                  //       nome={"nomeCompletoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={fichaUsuario.usuarioId.nome ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"CPF"}
+                  //       placeholder={"CPF do usuário"}
+                  //       nome={"cpfUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={formatarCPF(fichaUsuario.usuarioId.cpf) ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"Dt. Nascimento"}
+                  //       placeholder={"--/--/----"}
+                  //       nome={"dtNascimentoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         converterDataFormato(fichaUsuario.usuarioId.dtNasc) ??
+                  //         ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"Sexo"}
+                  //       placeholder={"Sexo do usuário"}
+                  //       nome={"sexo"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.usuarioId.sexo === "F"
+                  //           ? "Feminino"
+                  //           : fichaUsuario.usuarioId.sexo === "M"
+                  //           ? "Masculino"
+                  //           : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-6">
+                  //     <DisplayInput
+                  //       labelContent={"Email"}
+                  //       placeholder={"Email do usuário"}
+                  //       nome={"emailUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"Email"}
+                  //       value={fichaUsuario.usuarioId.email ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-4">
+                  //     <DisplayInput
+                  //       labelContent={"Meta"}
+                  //       placeholder={"Meta do usuário"}
+                  //       nome={"metaUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={rotinaUsuario.metaId.nome ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-1">
+                  //     <DisplayInput
+                  //       labelContent={"Peso"}
+                  //       placeholder={"Peso"}
+                  //       nome={"pesoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-1">
+                  //     <DisplayInput
+                  //       labelContent={"Altura"}
+                  //       placeholder={"Altura"}
+                  //       nome={"AlturaUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
+
+                  //   <fieldset className="col-span-6 grid auto-rows-auto grid-flow-row gap-y-2 h-full overflow-auto scrollbar-thin">
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayproblemasCardiacos"}
+                  //       checked={
+                  //         fichaUsuario.problemasCardiacos == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Algum médico já disse que você possui algum problema de coração e que só deveria realizar atividade física supervisionado por profissionais de saúde?"
+                  //       }
+                  //     />
+
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayDorPeitoAtividade"}
+                  //       checked={
+                  //         fichaUsuario.dorPeitoAtividade == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você sente dores no peito quando pratica atividade física?"
+                  //       }
+                  //     />
+
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayDorPeitoUltimoMes"}
+                  //       checked={
+                  //         fichaUsuario.dorPeitoUltimoMes == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "No último mês, você sentiu dores no peito quando praticou atividade física?"
+                  //       }
+                  //     />
+
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayProblemaOsseoArticular"}
+                  //       checked={
+                  //         fichaUsuario.problemaOsseoArticular == 1
+                  //           ? true
+                  //           : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você possui algum problema ósseo ou articular que poderia ser piorado pela atividade física?"
+                  //       }
+                  //     />
+
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayMedicamentoPressaoCoracao"}
+                  //       checked={
+                  //         fichaUsuario.medicamentoPressaoCoracao == 1
+                  //           ? true
+                  //           : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você toma atualmente algum medicamento para pressão arterial e/ou problema de coração?"
+                  //       }
+                  //     />
+
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayImpedimentoAtividade"}
+                  //       checked={
+                  //         fichaUsuario.impedimentoAtividade == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Sabe de alguma outra razão pela qual você não deve praticar atividade física?"
+                  //       }
+                  //     />
+                  //   </fieldset>
+                  // </form>
+                )}
+              </div>
             </div>
           </div>
         </div>

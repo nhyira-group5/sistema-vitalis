@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "@components/Button/button.jsx";
+import {Button} from "@components/Button/button";
 import { SideCard } from "./sections/sideCard/SideCard";
 
 import { AlunoFormCadastro } from "./sections/alunoFormCadastro/AlunoFormCadastro";

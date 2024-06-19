@@ -8,6 +8,7 @@ import {
   Users,
   Chat,
   Images,
+  SignOut 
 } from "@phosphor-icons/react";
 import * as Separator from "@radix-ui/react-separator";
 import { space } from "postcss/lib/list";
@@ -30,7 +31,7 @@ export function SideBar() {
 
       <SideBarItem URI={"/home"} Icon={<HouseLine size={28} />} />
 
-      <SideBarItem URI={"/rotinas"} Icon={<Barbell size={28} />} />
+      <SideBarItem URI={"/rotinas_semanais"} Icon={<Barbell size={28} />} />
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />
 
@@ -41,6 +42,8 @@ export function SideBar() {
       <SideBarItem URI={"/chat"} Icon={<Chat size={28} />} />
 
       <SideBarItem URI={"/mural"} Icon={<Images size={28} />} />
+
+      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
     </nav>
   );
 }
@@ -56,9 +59,9 @@ export function SideBarPersonal() {
 
       <SideBarItemPersonal URI={"/home-personal"} Icon={<HouseLine size={28} />} />
 
-      <SideBarItemPersonal URI={"/"} Icon={<Users size={28} />} />
-
       <SideBarItemPersonal URI={"/chat-personal"} Icon={<Chat size={28} />} />
+
+      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
     </nav>
   )
 }

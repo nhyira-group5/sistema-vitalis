@@ -1,14 +1,10 @@
 import {
   User,
-  PencilSimpleLine,
-  EnvelopeSimple,
   Lock,
-  CalendarDots,
-  Hash,
 } from "@phosphor-icons/react";
 import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../apis/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +17,18 @@ export function LoginPage() {
     navigate("/home");
   };
 
+  const redirecionarHomePersonal = () =>{
+    navigate('/home-personal');
+  }
+
+  useEffect(()=>{
+    sessionStorage.clear();
+  },[])
+
   const [nicknname, setNicknname] = useState("");
   const [senha, setSenha] = useState("");
+
+  const [loginSplash, setLoginSplash] = useState(false);
 
   function onNicknameInputChanged(event) {
     setNicknname(event.target.value);
@@ -44,27 +50,32 @@ export function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setLoginSplash(true);
+
     const myForm = document.getElementById("myForm");
     const dadosFormulario = new FormData(myForm);
-
     const userLoginDto = userDtoCriacao(dadosFormulario);
   
 
 
 
-
     try {
         const response = await api.post(`/login/usuario`, userLoginDto);
-        
+
         sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
 
-        const fichaResponse = await api.get(`/fichas/${response.data.id}`)
-            
-        redirecionarHome();
-        toast.success("Logando...");
+        await api.get(`/fichas/${response.data.id}`)
 
+        switch(response.data.tipo){
+          case "USUARIO":
+            redirecionarHome();
+          break;
+          case "PERSONAL":
+            redirecionarHomePersonal();
+          break;
+        }
+        
     } catch (error) {
-
       switch(error.response.data.status){
         case 404:
           navigate("/cadastroParq")
@@ -72,10 +83,15 @@ export function LoginPage() {
         case 401:
           toast.error("Nickname e/ou senha inválidos!");
         break;
+        case 400:
+          toast.error("Nickname e/ou senha inválidos!");
+        break;
+        case 500:
+          toast.error("Tivemos problemas ao efetuar seu login! tente novamente daqui a pouquinho :)");
+        break;
       }
-
-
-
+    } finally {
+      setLoginSplash(false)
     }
   };
 
@@ -131,12 +147,23 @@ export function LoginPage() {
         <div className="flex justify-around">
   
           <button
-            className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A]"
+            className="w-64 flex justify-around py-3 px-7 rounded-full text-xl text-[#FFFFFF] font-bold drop-shadow-xl bg-[#48B75A] *:h-8 *:flex *:items-center"
             type="submit"
             id="btnForm"
             onClick={handleSubmit}
           >
-            Entrar
+                  {
+                                   loginSplash? (
+                                      <div>
+                                        <div className="animate-pulse rounded-full w-5 h-5 bg-white"></div>
+                                      </div>
+                                    ) : (
+                                      <div>
+                                        <span>Entrar</span>
+                                      </div>
+                                    )
+                    }
+
           </button>
         </div>
 

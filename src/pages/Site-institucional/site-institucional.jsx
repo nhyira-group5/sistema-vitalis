@@ -27,7 +27,7 @@ import {
     EnvelopeSimple,
     Phone 
   } from "@phosphor-icons/react";
-import Button from "../../components/Button/button";
+import {Button} from "@components/Button/button";
   
 
 const SiteInstitucional = () => {

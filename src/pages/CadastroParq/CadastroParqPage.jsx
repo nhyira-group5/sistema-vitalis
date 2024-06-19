@@ -1,9 +1,11 @@
 import { Select } from "@components/Select/select";
-import Button from "@components/Button/button.jsx";
+import {Button} from "@components/Button/button";
 import { DisplayInput, Input } from "@components/Input/input";
 import { api } from "@apis/api";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+
 
 import {getLoginResponse, formatarCPF, converterDataFormato} from "@utils/globalFunc"
 
@@ -23,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 function fichaDtoCriacao(userFormInfo) {
   const fichaDto = {
-    problemasCardiacos: userFormInfo.problemasCardiacos,
+    problemaCardiaco: userFormInfo.problemasCardiacos,
     dorPeitoAtividade: userFormInfo.dorPeitoAtividade,
     dorPeitoUltimoMes: userFormInfo.dorPeitoUltimoMes,
     problemaOsseoArticular: userFormInfo.problemaOsseoArticular,
@@ -32,7 +34,6 @@ function fichaDtoCriacao(userFormInfo) {
     altura: userFormInfo.altura,
     peso: userFormInfo.peso,
     usuarioId: userFormInfo.idUsuario,
-    rotinaUsuarioId: null
   };
 
   return fichaDto;
@@ -75,7 +76,7 @@ export function CadastroParqPage() {
     altura: "",
     metaId: null,
     metaNome: null,
-    idUsuario: null,
+    idUsuario: usuarioData.id,
 
     problemasCardiacos: 0,
     dorPeitoAtividade: 0,
@@ -85,34 +86,24 @@ export function CadastroParqPage() {
     impedimentoAtividade : 0
   });
 
-  useEffect(()=>{
-    console.log(formData)
-  },[formData])
+
 
 
   
   function getMetas(){
-    const metasResponse = [{
-      id: 1,
-      nome: "Sexo de ladinho"
-      }, 
-      {
-        id: 2,
-        nome: "Boquete parafuso"
-      }
-  ]
 
-    setMetas([...metas,...metasResponse])
-    // api.get(`/metas`)
-    // .then((response) =>{
 
-    //   setMetas([...metas,...response.data])
-    // })      
-    // .catch((error) => {
-    //   error.response.data.errors.forEach((erroMsg) => {
-    //     console.log(erroMsg.defaultMessage)
-    //   })
-    // });
+    api.get(`/metas`)
+    .then((response) =>{
+
+      setMetas([...metas,...response.data])
+    })      
+    .catch((error) => {
+      error.response.data.errors.forEach((erroMsg) => {
+        console.log(erroMsg.defaultMessage)
+      })
+    });
+    
 }
 
 function getUsuarioResponse(id){
@@ -135,15 +126,25 @@ const encontrarMetaPeloId = (id, lista) => {
 
 
   useEffect(()=>{
-    const loginResponse = getLoginResponse();
 
-    setFormData((prevState) => ({
-      ...prevState,
-      idUsuario: loginResponse.id,
-    }));
+    const validarLoginEUsuario = async () =>{
 
-    getUsuarioResponse(loginResponse.id);
-    getMetas();
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      const loginResponse = getLoginResponse();
+      setFormData((prevState) => ({
+        ...prevState,
+        idUsuario: loginResponse.id,
+      }));
+  
+      getUsuarioResponse(loginResponse.id);
+      getMetas();
+  }
+
+  validarLoginEUsuario();
+    
+
   },[])
 
 
@@ -171,18 +172,17 @@ const encontrarMetaPeloId = (id, lista) => {
     if (isFormValid) {
       try {
         const fichaDto = fichaDtoCriacao(formData);
-        
         const rotinaUsuarioDto = rotinaUsuarioDtoCriacao(formData);
-        // const rotinaUsuariosResponse = await api.post(`/rotinaUsuarios`, rotinaUsuarioDto);
-        
-        // fichaDto.rotinaUsuarioId = rotinaUsuariosResponse.data.id
+
+        await api.post(`/rotinaUsuarios`, rotinaUsuarioDto);
         await api.post(`/fichas`, fichaDto);
        
-
+        toast.success("Ficha criada com sucesso");
         navigate("/home");
 
         } catch (error) {
-          console.log(error)
+          console.log(error);
+
           error.response.data.errors.forEach((erroMsg) => {
             toast.error(
               erroMsg.defaultMessage
@@ -375,8 +375,9 @@ const encontrarMetaPeloId = (id, lista) => {
                   nome={"sexo"}
                   onChangeFunction={""}
                   inputType={"text"}
-                  value={usuarioData.sexo === "M" ? "Mulher" : usuarioData.sexo === "H" ? "Homem" : ""}
+                  value={usuarioData.sexo === "F" ? "Feminino" : usuarioData.sexo === "M" ? "Masculino" : ""}
                   disabled={true}
+
               />
             </fieldset>
 

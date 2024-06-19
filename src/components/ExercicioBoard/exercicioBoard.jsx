@@ -1,8 +1,10 @@
 import { Barbell, CookingPot } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 import { CardBoard } from "../CardBoard/cardBoard";
 import { useEffect } from "react";
 
 export function ExercicioBoard({
+  id,
   description,
   type,
   name,
@@ -11,6 +13,7 @@ export function ExercicioBoard({
   repetitions,
   series,
   concluido,
+  listFoodName,
   onClickFunction,
 }) {
   useEffect(() => {
@@ -39,19 +42,35 @@ export function ExercicioBoard({
           {description}
         </div>
       </div>
-      <div className="w-full h-[18%] flex justify-around">
-        <CardBoard numberInfo={duration} textInfo="Duração" />
-        <CardBoard numberInfo={repetitions} textInfo="Repetições" />
-        <CardBoard numberInfo={series} textInfo="Séries" />
-      </div>
+      {type == "Refeição" && listFoodName !== null ? (
+        <div className="w-full h-[18%] flex justify-around overflow-x-auto gap-4 scrollbar-thin">
+          {listFoodName.map((foodName, index) => {
+            return <CardBoard textInfo={foodName} />;
+          })}
+        </div>
+      ) : (
+        <div className="w-full h-[18%] flex justify-around">
+          <CardBoard numberInfo={duration} textInfo="Duração" />
+          <CardBoard numberInfo={repetitions} textInfo="Repetições" />
+          <CardBoard numberInfo={series} textInfo="Séries" />
+        </div>
+      )}
       <div className="w-full flex justify-evenly">
-        <button className="w-[40%] py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A]">
-          {type === "Exercício" ? (
-            "Ir para o treino"
-          ) : (
-            "Ir para a refeição"
-          )}
-        </button>
+        {type === "Refeição" ? (
+          <Link
+            to={`/refeicoes/${id}`}
+            className="w-[40%] h-fit py-2 rounded-2xl shadow-lg text-sm flex items-center justify-center text-white bg-[#48B75A]"
+          >
+            Ir para a refeição
+          </Link>
+        ) : (
+          <Link
+            to={`/rotinas_semanais/diaria/1/exercicio/${id}`}
+            className="w-[40%] py-2 rounded-2xl shadow-lg text-sm flex items-center justify-center text-white bg-[#48B75A]"
+          >
+            Ir para o treino
+          </Link>
+        )}
         {!concluido ? (
           <button
             className="w-[40%] py-2 rounded-2xl shadow-lg text-sm text-white bg-[#1B70CA]"

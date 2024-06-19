@@ -4,7 +4,10 @@ import {
     DotsThree
   } from "@phosphor-icons/react";
 
+  import {formatarData} from "@utils/globalFunc"
+
 export function MuralItem({muralItem, onDelete}){
+
     return(
     <div className="flex flex-col p-5 pt-7 rounded-xl items-center w-80 h-96 bg-white shadow-sombra-padrao gap-5 relative">
 
@@ -23,7 +26,7 @@ export function MuralItem({muralItem, onDelete}){
                 >
                   
                   <DropdownMenu.Item 
-                  onClick={() => onDelete(muralItem.id)}
+                  onClick={() => onDelete(muralItem.idMural)}
                   className=" group text-[13px] leading-none text-errorRed rounded-[3px] flex pl-5  h-[25px] px-[5px] relative select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-red-200 data-[highlighted]:text-errorRed">
                     <button className="w-full flex justify-start items-center">Excluir</button>
                   </DropdownMenu.Item>
@@ -35,10 +38,12 @@ export function MuralItem({muralItem, onDelete}){
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
 
-        <img className="absolute" src={muralPin} alt="" />
+         <img className="absolute" src={muralPin} alt="" />
 
-        <img className="w-full h-full object-cover bg-gray500 " src={muralItem.sourceUrl} alt="" />
-        <span className="font-semibold">{muralItem.date}</span>
+          <img className="w-full h-full object-cover " src={muralItem.midiaId.caminho} alt="" />
+
+        
+        <span className="font-semibold">{formatarData(muralItem.dtPostagem)}</span>
     </div>
     )
 }
