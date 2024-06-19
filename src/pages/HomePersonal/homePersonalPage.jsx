@@ -1,6 +1,6 @@
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import { CardUsuario } from "../../components/CardUsuario/cardUsuario";
-import {validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
+import { validateLogin, validatePersonal, getLoginResponse } from "@utils/globalFunc"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@apis/api";
@@ -89,12 +89,13 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
         getFiliados();
         getContratos();
     }
-    
+ 
   
-    validarLoginEUsuario();
-}, [])
+//     validarLoginEUsuario();
+// }, [])
 
   return (
+
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBarPersonal />
       <div className="w-[90vw] h-full flex flex-col justify-between">
@@ -151,6 +152,7 @@ const [contratosUsuarios, setContratosUsuarios] = useState([]);
           </div>
         </div>
       </div>
+
     </div>
   );
 }
