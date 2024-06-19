@@ -17,7 +17,6 @@ import { twMerge } from "tailwind-merge";
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
-  const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
 
   const [cep, setCep] = useState("");
   const [infoEndereco, setInfoEndereco] = useState(null);
@@ -40,6 +39,7 @@ export function BuscarPersonalPage() {
       
        api.get(`usuarios/${loginResponse.id}`)
        .then((response)=>{
+        response.data.pagamentoAtivo = true;
         setUsuario(response.data);
         
 
@@ -104,7 +104,7 @@ export function BuscarPersonalPage() {
       <SideBar />
 
       <div className={twMerge("w-[90vw] h-full flex justify-between",
-            !pagamentoAtivo && "blur-sm"
+            !usuario.pagamentoAtivo && "blur-sm"
           )}>
         <div
           className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between"

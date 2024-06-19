@@ -32,7 +32,7 @@ export function CardPersonal({
 
     const contratoDto ={
       usuarioId: loginResponse.id,
-      personalId: personal.id,
+      personalId: personal.idPersonal,
       inicioContrato: getDataAtual()
     }
 

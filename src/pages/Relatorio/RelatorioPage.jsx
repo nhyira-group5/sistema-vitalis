@@ -442,194 +442,195 @@ export function RelatorioPage() {
                 {fichaIsLoading ? (
                   <Splash />
                 ) : (
-                  <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
-                    <fieldset className="col-span-6">
-                      <DisplayInput
-                        labelContent={"Nome completo"}
-                        placeholder={"Nome completo do usuário"}
-                        nome={"nomeCompletoUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={fichaUsuario.usuarioId.nome ?? ""}
-                        disabled={true}
-                      />
-                    </fieldset>
+                  <></>
+                  // <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
+                  //   <fieldset className="col-span-6">
+                  //     <DisplayInput
+                  //       labelContent={"Nome completo"}
+                  //       placeholder={"Nome completo do usuário"}
+                  //       nome={"nomeCompletoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={fichaUsuario.usuarioId.nome ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-2">
-                      <DisplayInput
-                        labelContent={"CPF"}
-                        placeholder={"CPF do usuário"}
-                        nome={"cpfUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={formatarCPF(fichaUsuario.usuarioId.cpf) ?? ""}
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"CPF"}
+                  //       placeholder={"CPF do usuário"}
+                  //       nome={"cpfUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={formatarCPF(fichaUsuario.usuarioId.cpf) ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-2">
-                      <DisplayInput
-                        labelContent={"Dt. Nascimento"}
-                        placeholder={"--/--/----"}
-                        nome={"dtNascimentoUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={
-                          converterDataFormato(fichaUsuario.usuarioId.dtNasc) ??
-                          ""
-                        }
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"Dt. Nascimento"}
+                  //       placeholder={"--/--/----"}
+                  //       nome={"dtNascimentoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         converterDataFormato(fichaUsuario.usuarioId.dtNasc) ??
+                  //         ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-2">
-                      <DisplayInput
-                        labelContent={"Sexo"}
-                        placeholder={"Sexo do usuário"}
-                        nome={"sexo"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={
-                          fichaUsuario.usuarioId.sexo === "F"
-                            ? "Feminino"
-                            : fichaUsuario.usuarioId.sexo === "M"
-                            ? "Masculino"
-                            : ""
-                        }
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-2">
+                  //     <DisplayInput
+                  //       labelContent={"Sexo"}
+                  //       placeholder={"Sexo do usuário"}
+                  //       nome={"sexo"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.usuarioId.sexo === "F"
+                  //           ? "Feminino"
+                  //           : fichaUsuario.usuarioId.sexo === "M"
+                  //           ? "Masculino"
+                  //           : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-6">
-                      <DisplayInput
-                        labelContent={"Email"}
-                        placeholder={"Email do usuário"}
-                        nome={"emailUsuario"}
-                        onChangeFunction={""}
-                        inputType={"Email"}
-                        value={fichaUsuario.usuarioId.email ?? ""}
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-6">
+                  //     <DisplayInput
+                  //       labelContent={"Email"}
+                  //       placeholder={"Email do usuário"}
+                  //       nome={"emailUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"Email"}
+                  //       value={fichaUsuario.usuarioId.email ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-4">
-                      <DisplayInput
-                        labelContent={"Meta"}
-                        placeholder={"Meta do usuário"}
-                        nome={"metaUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={rotinaUsuario.metaId.nome ?? ""}
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-4">
+                  //     <DisplayInput
+                  //       labelContent={"Meta"}
+                  //       placeholder={"Meta do usuário"}
+                  //       nome={"metaUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={rotinaUsuario.metaId.nome ?? ""}
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-1">
-                      <DisplayInput
-                        labelContent={"Peso"}
-                        placeholder={"Peso"}
-                        nome={"pesoUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={
-                          fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""
-                        }
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-1">
+                  //     <DisplayInput
+                  //       labelContent={"Peso"}
+                  //       placeholder={"Peso"}
+                  //       nome={"pesoUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-1">
-                      <DisplayInput
-                        labelContent={"Altura"}
-                        placeholder={"Altura"}
-                        nome={"AlturaUsuario"}
-                        onChangeFunction={""}
-                        inputType={"text"}
-                        value={
-                          fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""
-                        }
-                        disabled={true}
-                      />
-                    </fieldset>
+                  //   <fieldset className="col-span-1">
+                  //     <DisplayInput
+                  //       labelContent={"Altura"}
+                  //       placeholder={"Altura"}
+                  //       nome={"AlturaUsuario"}
+                  //       onChangeFunction={""}
+                  //       inputType={"text"}
+                  //       value={
+                  //         fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""
+                  //       }
+                  //       disabled={true}
+                  //     />
+                  //   </fieldset>
 
-                    <fieldset className="col-span-6 grid auto-rows-auto grid-flow-row gap-y-2 h-full overflow-auto scrollbar-thin">
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayproblemasCardiacos"}
-                        checked={
-                          fichaUsuario.problemasCardiacos == 1 ? true : false
-                        }
-                        labelcontent={
-                          "Algum médico já disse que você possui algum problema de coração e que só deveria realizar atividade física supervisionado por profissionais de saúde?"
-                        }
-                      />
+                  //   <fieldset className="col-span-6 grid auto-rows-auto grid-flow-row gap-y-2 h-full overflow-auto scrollbar-thin">
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayproblemasCardiacos"}
+                  //       checked={
+                  //         fichaUsuario.problemasCardiacos == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Algum médico já disse que você possui algum problema de coração e que só deveria realizar atividade física supervisionado por profissionais de saúde?"
+                  //       }
+                  //     />
 
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayDorPeitoAtividade"}
-                        checked={
-                          fichaUsuario.dorPeitoAtividade == 1 ? true : false
-                        }
-                        labelcontent={
-                          "Você sente dores no peito quando pratica atividade física?"
-                        }
-                      />
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayDorPeitoAtividade"}
+                  //       checked={
+                  //         fichaUsuario.dorPeitoAtividade == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você sente dores no peito quando pratica atividade física?"
+                  //       }
+                  //     />
 
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayDorPeitoUltimoMes"}
-                        checked={
-                          fichaUsuario.dorPeitoUltimoMes == 1 ? true : false
-                        }
-                        labelcontent={
-                          "No último mês, você sentiu dores no peito quando praticou atividade física?"
-                        }
-                      />
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayDorPeitoUltimoMes"}
+                  //       checked={
+                  //         fichaUsuario.dorPeitoUltimoMes == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "No último mês, você sentiu dores no peito quando praticou atividade física?"
+                  //       }
+                  //     />
 
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayProblemaOsseoArticular"}
-                        checked={
-                          fichaUsuario.problemaOsseoArticular == 1
-                            ? true
-                            : false
-                        }
-                        labelcontent={
-                          "Você possui algum problema ósseo ou articular que poderia ser piorado pela atividade física?"
-                        }
-                      />
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayProblemaOsseoArticular"}
+                  //       checked={
+                  //         fichaUsuario.problemaOsseoArticular == 1
+                  //           ? true
+                  //           : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você possui algum problema ósseo ou articular que poderia ser piorado pela atividade física?"
+                  //       }
+                  //     />
 
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayMedicamentoPressaoCoracao"}
-                        checked={
-                          fichaUsuario.medicamentoPressaoCoracao == 1
-                            ? true
-                            : false
-                        }
-                        labelcontent={
-                          "Você toma atualmente algum medicamento para pressão arterial e/ou problema de coração?"
-                        }
-                      />
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayMedicamentoPressaoCoracao"}
+                  //       checked={
+                  //         fichaUsuario.medicamentoPressaoCoracao == 1
+                  //           ? true
+                  //           : false
+                  //       }
+                  //       labelcontent={
+                  //         "Você toma atualmente algum medicamento para pressão arterial e/ou problema de coração?"
+                  //       }
+                  //     />
 
-                      <Checkbox
-                        disabled={true}
-                        labelStyle={"text-gray500 text-lg"}
-                        Id={"displayImpedimentoAtividade"}
-                        checked={
-                          fichaUsuario.impedimentoAtividade == 1 ? true : false
-                        }
-                        labelcontent={
-                          "Sabe de alguma outra razão pela qual você não deve praticar atividade física?"
-                        }
-                      />
-                    </fieldset>
-                  </form>
+                  //     <Checkbox
+                  //       disabled={true}
+                  //       labelStyle={"text-gray500 text-lg"}
+                  //       Id={"displayImpedimentoAtividade"}
+                  //       checked={
+                  //         fichaUsuario.impedimentoAtividade == 1 ? true : false
+                  //       }
+                  //       labelcontent={
+                  //         "Sabe de alguma outra razão pela qual você não deve praticar atividade física?"
+                  //       }
+                  //     />
+                  //   </fieldset>
+                  // </form>
                 )}
               </div>
             </div>
