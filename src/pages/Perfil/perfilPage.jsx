@@ -1,30 +1,93 @@
 import { LockKey } from "@phosphor-icons/react";
 import { SideBar } from "../../components/SideBar/sideBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import {Checkbox} from "@components/Checkbox/checkbox"
 
+import defaultIcon from "@assets/defaultIcon.png"
+
+
+
+import { DisplayInput } from "@components/Input/input";
+import { api} from "@apis/api";
+
+import { validateLogin, validateUsuario, getLoginResponse,   formatarCPF, converterDataFormato} from "@utils/globalFunc"
 export function PerfilPage() {
-  const [pagamentoAtivo, setPagamentoAtivo] = useState(false);
+
 
   const [user, setUser] = useState(null);
   const [personal, setPersonal] = useState(null);
 
-  useEffect(() => {
-    const url = "http://localhost:8080/usuarios/3";
-    axios
-      .get(url)
-      .then((response) => {
-        setUser(response.data);
-        setPagamentoAtivo(response.data.pagamentoAtivo);
+  const [fichaUsuario, setFichaUsuario] = useState({});
+  const [rotinaUsuario, setRotinaUsuario] = useState({});
+
+  const [fichaIsLoading, setFichaIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  function getUsuario(){
+    const loginResponse = getLoginResponse();
+    api.get(`/usuarios/${loginResponse.id}`)
+    .then((response)=>{
+      // response.data.pagamentoAtivo = true;
+      setUser(response.data)
+    })
+  }
+
+  function getUsuarioFicha() {
+    const loginResponse = getLoginResponse();
+    setFichaIsLoading(true);
+    try {
+      api.get(`/fichas/${loginResponse.id}`).then((response) => {
+        setFichaUsuario(response.data);
+        setFichaIsLoading(false);
       });
+    } catch (error) {
+      console.log(error);
+      setFichaIsLoading(false);
+    }
+  }
+
+  function getRotinaUsuario() {
+    const loginResponse = getLoginResponse();
+
+    try {
+      api.get(`/rotinaUsuarios/${loginResponse.id}`).then((response) => {
+        setRotinaUsuario(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+
+      const validarLoginEUsuario = async () =>{
+
+        await validateLogin(navigate);
+        await validateUsuario(navigate);
+  
+
+        getUsuario();
+        getUsuarioFicha();
+        getRotinaUsuario();
+    }
+  
+    validarLoginEUsuario();
   }, []);
 
   useEffect(() => {
-    console.log(user);
-    console.log(pagamentoAtivo);
-    if (user !== null && pagamentoAtivo === false) {
-      setPersonal(user.personalId);
+
+    if (user !== null && user.pagamentoAtivo == true) {
+      setPersonal({
+        idUsuario: 2,
+        nickname: "marC@SSilV4",
+        nome: "Marcos Silva Oliveira Pinto Santos",
+        dtNasc: "1980-12-05",
+        sexo: "M",
+        email:"marcos@gmail.com",
+        especialidade:{nome: "Peso Corporal"}
+      });
     }
   }, [user]);
 
@@ -48,71 +111,218 @@ export function PerfilPage() {
             <h2 className="text-lg font-medium text-[#48B75A]">
               Informações pessoais
             </h2>
+
+              <div className="rounded-full overflow-hidden w-52 h-52 self-center">
+                <img className="object-cover h-full w-full" src={user && user.midia ? user.midia.caminho : defaultIcon} alt="" />
+              </div>
+
             <div className="w-full h-1/4 flex gap-40">
-              <img
-                className="size-30 rounded-full object-contain bg-red-700"
-                src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
-                alt=""
-              />
-              <div className="h-full w-full font-medium text-lg flex flex-col gap-5">
-                <div className="h-1/3 w-full flex flex-col text-lg font-semibold tracking-wider">
-                  Data de Nascimento
-                  <span className="w-full text-base">Marcos da Silva</span>
-                </div>
+            <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
+                    <fieldset className="col-span-6">
+                      <DisplayInput
+                        labelContent={"Nome completo"}
+                        placeholder={"Nome completo do usuário"}
+                        nome={"nomeCompletoUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={fichaUsuario && fichaUsuario.usuarioId ? (fichaUsuario.usuarioId.nome) : ("xtop")}
+                        disabled={true}
+                      />
+                    </fieldset>
 
-                <div className="h-1/3 flex flex-col text-lg font-semibold tracking-wider">
-                  Data de Nascimento
-                  <span className="text-base">Marcos da Silva</span>
-                </div>
-              </div>
-              <div className="font-medium flex flex-col gap-2"></div>
+                    <fieldset className="col-span-2">
+                      <DisplayInput
+                        labelContent={"CPF"}
+                        placeholder={"CPF do usuário"}
+                        nome={"cpfUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={fichaUsuario && fichaUsuario.usuarioId ? (formatarCPF(fichaUsuario.usuarioId.cpf)) :  "000.000.000-00"}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-2">
+                      <DisplayInput
+                        labelContent={"Dt. Nascimento"}
+                        placeholder={"--/--/----"}
+                        nome={"dtNascimentoUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          fichaUsuario && fichaUsuario.usuarioId ? converterDataFormato(fichaUsuario.usuarioId.dtNasc) :  "25/ 01/2004"
+                          
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-2">
+                      <DisplayInput
+                        labelContent={"Sexo"}
+                        placeholder={"Sexo do usuário"}
+                        nome={"sexo"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          fichaUsuario && fichaUsuario.usuarioId ? (fichaUsuario.usuarioId.sexo === "F" ? "Feminino" : fichaUsuario.usuarioId.sexo === "M" ? "Masculino" : "") : ("")
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-6">
+                      <DisplayInput
+                        labelContent={"Email"}
+                        placeholder={"Email do usuário"}
+                        nome={"emailUsuario"}
+                        onChangeFunction={""}
+                        inputType={"Email"}
+                        value={fichaUsuario && fichaUsuario.usuarioId ? fichaUsuario.usuarioId.email : "caue@gmail.com"}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-4">
+                      <DisplayInput
+                        labelContent={"Meta"}
+                        placeholder={"Meta do usuário"}
+                        nome={"metaUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={fichaUsuario && fichaUsuario.metaId ? rotinaUsuario.metaId.nome : ""}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-1">
+                      <DisplayInput
+                        labelContent={"Peso"}
+                        placeholder={"Peso"}
+                        nome={"pesoUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-1">
+                      <DisplayInput
+                        labelContent={"Altura"}
+                        placeholder={"Altura"}
+                        nome={"AlturaUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+            </form>
+
             </div>
 
-            <div className="w-2/5 flex flex-col gap-5">
-              <div className="h-1/3 flex flex-col text-lg font-semibold tracking-wider">
-                Data de Nascimento
-                <span className="text-base">Marcos da Silva</span>
-              </div>
-              <div className="h-1/3 flex flex-col text-lg font-semibold tracking-wider">
-                Data de Nascimento
-                <span className="text-base">Marcos da Silva</span>
-              </div>
-              <div className="h-1/3 flex flex-col text-lg font-semibold tracking-wider">
-                Data de Nascimento
-                <span className="text-base">Marcos da Silva</span>
-              </div>
-              <div className="h-1/3 flex flex-col text-lg font-semibold tracking-wider">
-                Data de Nascimento
-                <span className="text-base">Marcos da Silva</span>
-              </div>
-            </div>
           </div>
-          <div className="w-[48%] h-full bg-green-200">
-            {pagamentoAtivo && personal ? (
-              <div className="w-full h-2/5 bg-[#1A1A1A] rounded-xl shadow-lg flex flex-col justify-between p-4">
+
+          <div className="w-[48%] h-full flex justify-center items-center">
+            {user && user.pagamentoAtivo && personal ? (
+              <div className="w-full h-full bg-[#1A1A1A] rounded-xl shadow-lg flex flex-col justify-between p-4 gap-3">
                 <h1 className="w-full text-white text-lg pb-2">
                   Personal Afiliado
                 </h1>
-                <div className="w-full h-full flex justify-between">
-                  <div className="w-[72%] h-full bg-white flex flex-col justify-between text-sm p-4 rounded-xl">
-                    <h2 className="font-semibold text-lg">{personal.nome}</h2>
-                    <span>Username: {personal.nickname}</span>
-                    <span>Email: {personal.email}</span>
-                    {/* <span>Meta: {user.meta.nome}</span> */}
-                    <span>Fim do plano: {mesQueVem()} </span>
-                  </div>
-                  <div className="w-[25%] h-full flex flex-col justify-between items-center">
-                    <img
-                      className="size-24 rounded-full object-contain"
-                      src="https://pbs.twimg.com/profile_images/1773510543183155200/-OHcp9Ud_400x400.jpg"
-                      alt=""
-                    />
+
+                <div className="w-full  flex flex-col gap-5 items-center">
+                    <div className="rounded-full overflow-hidden w-52 h-52 self-center">
+                      <img className="object-cover h-full w-full" src={personal && personal.midia ? personal.midia.caminho : defaultIcon} alt="" />
+                    </div>
                     <button className="px-5 py-1.5 bg-white rounded-full text-sm">
                       Ir para o chat
                     </button>
+                </div>
+
+                <div className="w-full h-full flex justify-between">
+                  <div className="w-full h-full bg-white flex flex-col justify-between text-sm p-4 rounded-xl">
+                    
+                  <form className="grid grid-cols-6 gap-y-3 gap-x-6 p-5  grid-flow-row auto-rows-auto bg-white rounded-xl w-full h-full">
+                    <fieldset className="col-span-3">
+                      <DisplayInput
+                        labelContent={"Nome completo"}
+                        placeholder={"Nome completo do usuário"}
+                        nome={"nomeCompletoUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={personal && personal.nome ? (personal.nome) : ("xtop")}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-2">
+                      <DisplayInput
+                        labelContent={"Dt. Nascimento"}
+                        placeholder={"--/--/----"}
+                        nome={"dtNascimentoUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          personal && personal.dtNasc ? converterDataFormato(personal.dtNasc) :  "25/ 01/2004"
+                          
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-1">
+                      <DisplayInput
+                        labelContent={"Sexo"}
+                        placeholder={"Sexo do usuário"}
+                        nome={"sexo"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={
+                          personal && personal.sexo ? (personal.sexo  === "F" ? "Feminino" : personal.sexo  === "M" ? "Masculino" : "") : ("")
+                        }
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-6">
+                      <DisplayInput
+                        labelContent={"Email"}
+                        placeholder={"Email do usuário"}
+                        nome={"emailUsuario"}
+                        onChangeFunction={""}
+                        inputType={"Email"}
+                        value={personal && personal.email ? personal.email : "caue@gmail.com"}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+                    <fieldset className="col-span-4">
+                      <DisplayInput
+                        labelContent={"Meta"}
+                        placeholder={"Meta do usuário"}
+                        nome={"metaUsuario"}
+                        onChangeFunction={""}
+                        inputType={"text"}
+                        value={personal && personal.especialidade ? personal.especialidade.nome : ""}
+                        disabled={true}
+                      />
+                    </fieldset>
+
+
+
+
+            </form>
                   </div>
+
                 </div>
               </div>
+
             ) : (
               <div className="w-full h-2/5 bg-white rounded-xl shadow-lg flex justify-between p-4">
                 <div className="w-3/5 h-full flex flex-col justify-between">

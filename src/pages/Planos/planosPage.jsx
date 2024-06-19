@@ -6,6 +6,8 @@ import { ptBR } from "date-fns/locale";
 import { useState } from "react";
 import axios from "axios";
 
+import { validateLogin, validateUsuario} from "@utils/globalFunc"
+
 export function PlanosPage() {
   const [qrCode, setQRCode] = useState("");
   const [dateExpiration, setDateExpiration] = useState("");
@@ -13,6 +15,20 @@ export function PlanosPage() {
   const [carregando, setCarregando] = useState(false);
   
   const navigate = useNavigate();
+
+  useEffect(()=>{
+
+    const validarLoginEUsuario = async () =>{
+
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+  }
+
+  validarLoginEUsuario();
+    
+
+  },[])
 
   function pagamentoDto() {
     const body = {

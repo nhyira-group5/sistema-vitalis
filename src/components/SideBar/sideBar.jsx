@@ -59,9 +59,9 @@ export function SideBarPersonal() {
 
       <SideBarItemPersonal URI={"/home-personal"} Icon={<HouseLine size={28} />} />
 
-      <SideBarItemPersonal URI={"/"} Icon={<Users size={28} />} />
-
       <SideBarItemPersonal URI={"/chat-personal"} Icon={<Chat size={28} />} />
+
+      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
     </nav>
   )
 }

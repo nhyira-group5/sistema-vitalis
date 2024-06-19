@@ -28,23 +28,31 @@ export function CardPersonal({
 
     const contratoDto = {
       usuarioId: loginResponse.id,
-      personalId: personal.id,
-      inicioContrato: getDataAtual(),
-    };
 
-    try {
-      api.post(`/contratos`, contratoDto).then((response) => {
-        modalInteract();
-        toast.success("Solicitação enviada!");
-      });
-    } catch (error) {
+      personalId: personal.idPersonal,
+      inicioContrato: getDataAtual()
+    }
+
+    try{
+      api.post(`/contratos`, contratoDto)
+      .then((response)=>{
+        modalInteract()
+        toast.success("Solicitação enviada!")
+      })
+    } catch(error){
       console.log(error);
       toast.error("Erro ao enviar solicitação!");
     }
   }
 
-  function isUserFiliado() {
-    return usuario.personalId == personal.idPersonal;
+8
+  
+
+   function isUserFiliado(){    
+    if(usuario == undefined || personal == undefined) return false;
+
+      return usuario.personalId == personal.idPersonal
+
   }
 
   useEffect(() => {
@@ -53,39 +61,31 @@ export function CardPersonal({
 
   return (
     <>
-      <div
-        className={twMerge(
-          "w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between",
-          haveShadow ? "drop-shadow-lg" : "",
-          isUserFiliado() ? "bg-primary-green100" : "bg-white "
-        )}
-      >
-        <div className="flex gap-5">
-          <img
-            className={twMerge(
-              "size-10 rounded-full object-cover self-center",
-              size
-            )}
-            src={""}
-            alt=""
-          />
 
-          <div className="h-full flex flex-col justify-between self-center ">
-            <h2
-              className={twMerge(
-                "font-semibold text-[#2B6E36]",
-                !isUser ? "text-[#2B6E36]" : "text-[#503465]"
-              )}
-            >
-              {personal.nome}
-            </h2>
+    <div
+      className={twMerge("w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between", haveShadow ? "drop-shadow-lg" : "", isUserFiliado() ? "bg-primary-green100" : "bg-white ")}
+    >
 
-            <span className="text-sm">
-              {!isUser
-                ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}`
-                : `Meta em ${usuario.meta.nome}`}
-              <span className="font-semibold"> {""}</span>
-            </span>
+              
+      <div className="flex gap-5">
+        <img
+          className={twMerge(
+            "size-10 rounded-full object-cover self-center",size)}
+          src={""}
+          alt=""
+        />
+
+        <div className="h-full flex flex-col justify-between self-center ">
+          <h2
+            className={twMerge("font-semibold text-[#2B6E36]", !isUser ? "text-[#2B6E36]" : "text-[#503465]")}>
+            {personal.nome || "Xpto"}
+          </h2>
+
+
+          <span className="text-sm">
+            {!isUser ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}` : `Meta em ${usuario.meta.nome}`}
+            <span className="font-semibold"> {""}</span>
+          </span>
 
             {/* {personal.academiaId.cidade != null && personal.academiaId.estado != null ? (
             <span className="text-sm font-semibold">
