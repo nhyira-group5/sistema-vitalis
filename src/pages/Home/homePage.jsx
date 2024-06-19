@@ -501,7 +501,7 @@ export function HomePage() {
                       <AtividadeOption
                         key={index}
                         activity={objeto.type}
-                        nameActivity={objeto.nome + objeto.concluido}
+                        nameActivity={objeto.nome}
                         onClickFunction={() => handleSelectActivity(objeto)}
                         done={objeto.concluido}
                         option
@@ -551,7 +551,7 @@ export function HomePage() {
             <h1 className="w-full text-white text-xl font-semibold flex items-center justify-center">
               Lembretes
             </h1>
-            <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-scroll">
+            <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-auto">
               {reminders.length > 0 ? (
                 reminders.map((reminder, index) => {
                   return reminder;
