@@ -47,14 +47,16 @@ export function validateLogin(navigate) {
     return cpfFormatado;
   }
 
-  export function converterDataFormato(data) {
-    if(data == undefined){
-        return;
-    }
-
-    const dataConvertida = data.replace(/-/g, '/');
-    return dataConvertida;
+export function converterDataFormato(data) {
+ 
+  if (typeof data!== 'string') {
+    console.error('A entrada precisa ser uma string.');
+    return; 
   }
+
+  const dataConvertida = data.replace(/-/g, '/');
+  return dataConvertida;
+}
 
   export function formatarData(date) {
     const parts = date.split("-");
