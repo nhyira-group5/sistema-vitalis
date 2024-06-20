@@ -9,6 +9,7 @@ import SetaEsquerda from "@assets/seta-esquerda.svg";
 import Interrogacao from "@assets/interrogacao.svg";
 import SetaDireita from "@assets/seta-direita.svg";
 import { Splash } from "@components/Splash/splash";
+import { BarChart } from "@mui/x-charts/BarChart";
 import { Tag } from "../../components/Tag/tag";
 import Calendar from "@assets/calendar.svg";
 import { useEffect, useState } from "react";
@@ -46,36 +47,74 @@ export function RelatorioPage() {
 
   const [dados, setDados] = useState(null);
 
-  const objetoPesoEAltura = { peso: 80, altura: 1.65 };
-
   const [fichaUsuario, setFichaUsuario] = useState({});
   const [rotinaUsuario, setRotinaUsuario] = useState({});
   const [meta, setMeta] = useState(null);
 
   const [fichaIsLoading, setFichaIsLoading] = useState(false);
-  
+
   const [listaTarefas, setListaTarefas] = useState(null);
 
+  const [user, setUser] = useState(null);
+
+  const [peso, setPeso] = useState(null);
+  const [altura, setAltura] = useState(null);
+
   useEffect(() => {
-    const url = `http://localhost:8080/usuarios/3`
-    axios.get(url)
-    .then((response) => {
-      setMeta(response.data.meta.nome)
-      console.log(response.data)
+    const loginResponse = getLoginResponse();
+    try {
+      api.get(`/usuarios/${loginResponse.id}`).then((response) => {
+        setUser(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user !== null) {
+      const url = `http://localhost:8080/usuarios/${user.id}`;
+      axios.get(url).then((response) => {
+        console.log(response.data);
+        if (response.data.meta === null) {
+          setMeta("Emagrecimento");
+        } else {
+          console.log(response.data.meta);
+          setMeta(response.data.meta.nome);
+        }
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user !== null) {
+      const url = `http://localhost:8080/fichas/${user.id}`;
+      axios.get(url).then((response) => {
+        console.log(response.data);
+        setPeso(response.data.peso);
+        setAltura(response.data.altura / 100);
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const url = `http://localhost:8080/treinos/relatorio/1`;
+    axios.get(url).then((response) => {
+      console.log(response.data);
+      console.log(response.data[0].nome);
+      setListaTarefas(response.data);
+    });
+  }, []);
+
+ function retornaVetorBonito() {
+    let vetorAux = []
+
+    listaTarefas.forEach((e) => {
+      vetorAux.push(e.nome)
     })
-  }, [])
-
-  useEffect(() => {
-    const url = `http://localhost:8080/treinos/relatorio/1`
-    axios.get(url)
-    .then((response) => {
-      setListaTarefas(response.data)
-    } )
-  })
-
-
-
-
+    console.log(vetorAux)
+    return vetorAux
+  }
 
   function getUsuarioFicha() {
     const loginResponse = getLoginResponse();
@@ -103,18 +142,11 @@ export function RelatorioPage() {
     }
   }
 
-  useEffec0
   useEffect(() => {
-    setImc(
-      calculateImc(objetoPesoEAltura.peso, objetoPesoEAltura.altura).toFixed(2)
-    );
-    setLabelImc(
-      classificationImc(
-        calculateImc(objetoPesoEAltura.peso, objetoPesoEAltura.altura)
-      )
-    );
+    setImc(calculateImc(peso, altura).toFixed(2));
+    setLabelImc(classificationImc(calculateImc(peso, altura)));
     setDados(true);
-  }, []);
+  }, [peso, altura]);
 
   useEffect(() => {
     generateCurrrentyMouth();
@@ -132,7 +164,7 @@ export function RelatorioPage() {
   }, [activitiesDay]);
 
   function generateCurrrentyMouth() {
-    setCurrentyMouth(listaMeses[0].nome);
+    setCurrentyMouth("MARÇO");
   }
 
   // CALCULO DO IMC E CLASSIFICAÇÃO
@@ -212,6 +244,8 @@ export function RelatorioPage() {
     setCurrentyAmountDays(currentyDays);
   }
 
+  
+
   function generateActivitiesDay() {
     const activityDays = listaSemanal.find((element) => !element.concluido);
 
@@ -230,21 +264,6 @@ export function RelatorioPage() {
   function previousMonth() {
     console.log("Mês anterior");
   }
-
-  const listaMeses = [
-    {
-      numero: 3,
-      nome: "MARÇO",
-    },
-    {
-      numero: 4,
-      nome: "ABRIL",
-    },
-    {
-      numero: 5,
-      nome: "MAIO",
-    },
-  ];
 
   const listaSemanal = [
     {
@@ -310,16 +329,6 @@ export function RelatorioPage() {
     },
   ];
 
-  const allActivities = () => {
-    let allActivities = [];
-    listaSemanal.forEach((item) => {
-      allActivities.push(...item.atividades);
-    });
-    return allActivities;
-  };
-
-  const listinha = allActivities();
-
   return (
     <div>
       {dados && (
@@ -352,13 +361,7 @@ export function RelatorioPage() {
             <div className="w-full h-4/5 flex justify-between">
               <div className="w-[31%] h-full flex flex-col justify-between">
                 <div className="w-full h-[16%] bg-white shadow-lg flex justify-center items-center rounded-xl">
-                  {rotinaUsuario && rotinaUsuario.metaId ? (
-                    <h1 className="font-semibold">Meta: {rotinaUsuario.metaId.nome}</h1>
-                  ) : (
-                    "..."
-                  )}
-                  
-
+                  {meta && <h1 className="font-semibold">Meta: {meta}</h1>}
                 </div>
                 <div className="w-full h-[22%] bg-white shadow-lg flex justify-around items-center rounded-xl">
                   <AtividadeCard
@@ -385,7 +388,25 @@ export function RelatorioPage() {
                     Atividades feitas nos últimos 15 dias
                   </h1>
                   <div className="w-full h-full flex justify-center items-center">
-                    GRÁFICO LEGAL
+                    {listaTarefas !== null && (
+                      <BarChart
+                        series={[{ data: listaTarefas !== null &&
+                          listaTarefas.map((objeto, index) => {
+                            return (
+                              objeto.concluido
+                            );
+                          })
+                         }]}
+                        xAxis={[
+                          {
+                            data: retornaVetorBonito(),
+                            scaleType: "band",
+                          },
+                        ]}
+                        width={600}
+                        margin={{ top: 1, bottom: 0, left: 0, right: 10 }}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="w-full h-[19%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">
@@ -437,17 +458,18 @@ export function RelatorioPage() {
                     Atividades mais realizadas no mês
                   </h1>
                   <div className="w-full h-full">
-                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-scroll p-1">
-                      {listinha.map((objeto, index) => {
-                        return (
-                          <AtividadeOption
-                            key={index}
-                            activity={objeto.type}
-                            nameActivity={objeto.name}
-                            done={0}
-                          />
-                        );
-                      })}
+                    <div className="w-full h-[90%] flex flex-col gap-5 overflow-y-auto p-1">
+                      {listaTarefas !== null &&
+                        listaTarefas.map((objeto, index) => {
+                          return (
+                            <AtividadeOption
+                              key={index}
+                              activity="Exercício"
+                              nameActivity={objeto.nome}
+                              done={0}
+                            />
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
