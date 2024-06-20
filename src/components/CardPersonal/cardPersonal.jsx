@@ -7,6 +7,7 @@ import { Checkbox } from "@components/Checkbox/checkbox";
 import { Button } from "@components/Button/button";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import defaultIcon from "@assets/defaultIcon.png"
 
 export function CardPersonal({
   size,
@@ -71,7 +72,7 @@ export function CardPersonal({
         <img
           className={twMerge(
             "size-10 rounded-full object-cover self-center",size)}
-          src={""}
+          src={defaultIcon}
           alt=""
         />
 

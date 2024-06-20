@@ -14,7 +14,14 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import {getLoginResponse} from "@utils/globalFunc"
+
+import {
+  getLoginResponse,
+  validateLogin,
+  validateUsuario,
+  formatarCPF,
+  converterDataFormato,
+} from "@utils/globalFunc";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
@@ -202,7 +209,8 @@ export function HomePage() {
 
     const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
     axios.get(url).then((response) => {
-      setNicknameUser(response.data.nickname);
+      const loginResponse = getLoginResponse();
+      setNicknameUser(loginResponse.nome);
     });
   }, []);
 

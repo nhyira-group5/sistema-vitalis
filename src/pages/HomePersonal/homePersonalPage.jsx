@@ -1,18 +1,25 @@
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import { CardUsuario } from "../../components/CardUsuario/cardUsuario";
-import { validateLogin, validatePersonal, getLoginResponse } from "@utils/globalFunc"
+import {
+  validateLogin,
+  validatePersonal,
+  getLoginResponse,
+} from "@utils/globalFunc";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@apis/api";
+
 import {SplashPersonal} from "@components/Splash/splash"
+
 
 import { ContratoCard } from "@components/ContratoCard/contradoCard";
 
-import {converterDataFormato} from "@utils/globalFunc"
+import { converterDataFormato } from "@utils/globalFunc";
 
 import { toast } from "react-toastify";
 
 export function HomePersonalPage() {
+
 const navigate = useNavigate();
 
 const [usuario, setUsuario] = useState({});
@@ -28,16 +35,17 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
 
 
   function getUsuario(){
+
     const loginResponse = getLoginResponse();
-    try{
-      api.get(`/usuarios/${loginResponse.id}`)
-      .then((response)=>{
-        setUsuario(response.data)
-      })
-    } catch (error){
+    try {
+      api.get(`/usuarios/${loginResponse.id}`).then((response) => {
+        setUsuario(response.data);
+      });
+    } catch (error) {
       console.log(error);
     }
   }
+
 
   function getContratos(){
     setContratosLoading(true);
@@ -50,10 +58,12 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
         setContratosLoading(false);
       })
     } catch (error){
+
       console.log(error);
       setContratosLoading(false);
     }
   }
+
 
   function getFiliados(){
     setUsuariosFiliadosLoading(true)
@@ -68,10 +78,12 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
         console.log(error);
         setUsuariosFiliadosLoading(false)
       }
+
   }
 
   function aceitarContrato(contrato){
     setAceitarContratoLoading(true);
+
 
     const today = new Date();
     today.setMonth(today.getMonth() + 1);
@@ -84,6 +96,7 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
       fimContrato: dateString,
       afiliado: 1
     };
+
 
     try{
       api.put(`/contratos/${contrato.idContrato}`, reqBody)
@@ -122,8 +135,11 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
       }
   }
 
-  useEffect(()=>{
-    const validarLoginEUsuario = async () =>{
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
+      await validateLogin(navigate);
+      await validatePersonal(navigate);
+
 
         await validateLogin(navigate);
         await validatePersonal(navigate);
@@ -137,8 +153,11 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
      validarLoginEUsuario();
  }, [])
 
-  return (
 
+  //     validarLoginEUsuario();
+  // }, [])
+
+  return (
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBarPersonal />
       <div className="w-[90vw] h-full flex flex-col justify-between">
@@ -151,6 +170,7 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
         <div className="w-full h-[82%] flex justify-between items-center">
           <div className="w-[73%] h-full bg-white flex flex-col justify-between items-center rounded-xl shadow-lg p-4">
             <h2 className="w-full">Usuarios afiliados</h2>
+
             <div className="w-full h-full max-h-full flex flex-wrap justify-start content-start gap-4 overflow-auto p-1">
 
               {usuariosFiliadosLoading ? (
@@ -171,6 +191,7 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
 
 
 
+
             </div>
           </div>
 
@@ -179,6 +200,7 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
               Solicitação de afiliação
             </h1>
             <div className="w-full h-5/6  flex flex-col gap-2 overflow-hidden overflow-y-auto">
+
  
               {contratosLoading ? (
                 <SplashPersonal/>
@@ -205,11 +227,11 @@ const[negarContratoLoading, setNegarContratoLoading] = useState(false)
 
 
               
+
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }
