@@ -5,6 +5,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {Button} from "@components/Button/button"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 
 export function CardUsuario({filiado}) {
@@ -39,9 +40,9 @@ export function CardUsuario({filiado}) {
 
             <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <button className="absolute right-2 top-0 outline-none">
+              {/* <Link to="/chat-personal" className="absolute right-2 top-0 outline-none"> 
                     <DotsThree size={32} color={"#000000"}/>
-               </button>
+               </Link> */}
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Portal>
