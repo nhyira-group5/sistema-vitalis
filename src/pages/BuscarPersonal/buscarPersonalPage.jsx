@@ -7,13 +7,17 @@ import { Mapa } from "../../components/Mapa/mapa";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
+import defaultIcon from "@assets/defaultIcon.png";
 
-import {validateLogin, validateUsuario, getLoginResponse} from "@utils/globalFunc"
-import { api } from "@apis/api"
+import {
+  validateLogin,
+  validateUsuario,
+  getLoginResponse,
+} from "@utils/globalFunc";
+import { api } from "@apis/api";
 import { useNavigate } from "react-router-dom";
-import{Splash} from "@components/Splash/splash"
+import { Splash } from "@components/Splash/splash";
 import { twMerge } from "tailwind-merge";
-
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
@@ -30,52 +34,53 @@ export function BuscarPersonalPage() {
 
   const navigate = useNavigate();
 
-  function getUsuario(){
+  function getUsuario() {
     setIsUsuarioLoading(true);
 
     const loginResponse = getLoginResponse();
     try {
-
-      
-       api.get(`usuarios/${loginResponse.id}`)
-       .then((response)=>{
+      api.get(`usuarios/${loginResponse.id}`).then((response) => {
         response.data.pagamentoAtivo = true;
         setUsuario(response.data);
-        
 
         setIsUsuarioLoading(false);
-       })
-    } catch (error){
+      });
+    } catch (error) {
       console.log(error);
       setIsUsuarioLoading(false);
     }
   }
 
-  useEffect(()=>{
-    const validarLoginEUsuario = async () =>{
+  useEffect(() => {
+    const url = `http://localhost:8080/usuarios/personais`
+    axios.get(url)
+    .then((response) => {
+      response.data
+    })
+  }, [])
 
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
       await validateLogin(navigate);
       await validateUsuario(navigate);
 
-      getUsuario()
+      getUsuario();
 
-    try{
-      api.get(`/usuarios/personais`)
-      .then((response) => {
-        setPersonais(response.data);
-       })
-    } catch (error){
-      console.log(error)
-    }
+      try {
+        api.get(`/usuarios/personais`).then((response) => {
+          setPersonais(response.data);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  }
+    validarLoginEUsuario();
+  }, []);
 
-  validarLoginEUsuario();
-  },[])
-
-  useEffect(()=>{
+  useEffect(() => {
     console.log(personais);
-  },[personais])
+  }, [personais]);
 
   function handleInputCep(e) {
     setCep(e.target.value);
@@ -103,12 +108,13 @@ export function BuscarPersonalPage() {
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
 
-      <div className={twMerge("w-[90vw] h-full flex justify-between",
-            !usuario.pagamentoAtivo && "blur-sm"
-          )}>
-        <div
-          className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between"
-        >
+      <div
+        className={twMerge(
+          "w-[90vw] h-full flex justify-between",
+          !usuario.pagamentoAtivo && "blur-sm"
+        )}
+      >
+        <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre uma academia
           </h1>
@@ -186,44 +192,34 @@ export function BuscarPersonalPage() {
                 onClickFunction={handleClickCard}
               />
             )}
-
           </div>
         </div>
-        <div
-          className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between"
-        >
+        <div className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre um personal
           </h1>
 
-          
-
           {isUsuarioLoading ? (
-            
-          <Splash/>
-        ):(
-                      <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-auto items-center">
-
-                      {personais.length > 0? (
-                          personais.map((personal, index)=>{
-                            return(
-                              <CardPersonal
-                              key={index}
-                              haveDots
-                              haveShadow
-                              personal={personal}
-        
-                              usuario={usuario}
-                            />
-                            )
-                          })
-                      ):(
-                        <div>Nenhum personal encontrado</div>
-                      )}
-                   
-                  </div>
+            <Splash />
+          ) : (
+            <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-auto items-center">
+              {personais.length > 0 ? (
+                personais.map((personal, index) => {
+                  return (
+                    <CardPersonal
+                      key={index}
+                      haveDots
+                      haveShadow
+                      personal={personal}
+                      usuario={usuario}
+                    />
+                  );
+                })
+              ) : (
+                <div>Nenhum personal encontrado</div>
+              )}
+            </div>
           )}
-
         </div>
       </div>
     </div>

@@ -14,6 +14,15 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
+import {
+  getLoginResponse,
+  validateLogin,
+  validateUsuario,
+  formatarCPF,
+  converterDataFormato,
+} from "@utils/globalFunc";
+
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
@@ -196,9 +205,12 @@ export function HomePage() {
   // }, [allData]);
 
   useEffect(() => {
-    const url = "http://localhost:8080/usuarios/1";
+    const loginResponse = getLoginResponse();
+
+    const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
     axios.get(url).then((response) => {
-      setNicknameUser(response.data.nickname);
+      const loginResponse = getLoginResponse();
+      setNicknameUser(loginResponse.nome);
     });
   }, []);
 

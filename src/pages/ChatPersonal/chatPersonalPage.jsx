@@ -113,6 +113,9 @@ export function ChatPersonalPage() {
         </div>
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#8656A9] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
+          <h1 className="text-white text-base font-medium">
+          Usuários afiliados
+            </h1>
             <div className="w-full h-[20%] bg-white rounded-2xl shadow-xl p-4 flex gap-4 justify-between">
               <div className="w-full flex gap-5">
                 <img
@@ -121,12 +124,14 @@ export function ChatPersonalPage() {
                   alt=""
                 />
                 <div className="w-[65%] h-full flex flex-col justify-center self-center">
-                  <h2 className="font-semibold text-sm text-[#ff4500]">
-                  {usuario !== null ? usuario : 'Personal não encontrado'}
+                  <h2 className="font-semibold text-sm text-black">
+                  w1llSal4d@
+
                   </h2>
                 </div>
               </div>
             </div>
+            <hr className="border" />
           </div>
           <div className="w-[70%] h-full flex flex-col justify-between">
             <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">

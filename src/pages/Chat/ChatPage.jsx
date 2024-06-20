@@ -100,7 +100,7 @@ export function ChatPage() {
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#48B75A] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
             <h1 className="text-white text-base font-medium">
-              Personal afiliado
+            Personal afiliado
             </h1>
 
             <div className="w-full h-[20%] bg-white rounded-2xl shadow-xl p-4 flex gap-4 justify-between">

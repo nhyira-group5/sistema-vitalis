@@ -3,6 +3,8 @@ import { InfoPerfil } from "../../components/InfoPerfil/infoPerfil";
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import axios from "axios";
 
+import defaultIcon from "@assets/defaultIcon.png"
+
 import { validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
 import { useNavigate } from "react-router-dom";
 
@@ -107,7 +109,7 @@ export function PerfilPersonalPage() {
               <div className="w-[45%] h-full flex items-center justify-center">
                 <img
                   className="size-32 border rounded-full self-center object-cover"
-                  src="https://png.pngtree.com/png-clipart/20230928/original/pngtree-salad-with-vegetables-png-image_13008901.png"
+                  src={defaultIcon}
                   alt=""
                 />
               </div>
@@ -174,7 +176,10 @@ export function PerfilPersonalPage() {
               <InfoPerfil width="w-[30%]" title="Cidade" text={endereco.cidade} />
               <InfoPerfil width="w-1/6" title="Estado" text={endereco.estado} />
             </div>
-            <div className="w-full h-[58%] bg-pink-400"></div>
+            <div className="w-full h-[58%] flex flex-col justify-center items-center border">
+              <span>Endereço não encontrado :(</span>
+              <span>Tente mais tarde </span>
+            </div>
           </div>
         </div>
       </div>
