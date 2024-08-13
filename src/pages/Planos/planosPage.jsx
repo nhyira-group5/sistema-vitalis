@@ -3,38 +3,30 @@ import { SideBar } from "../../components/SideBar/sideBar";
 import { Link, useNavigate } from "react-router-dom";
 import { parseISO, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { validateLogin, validateUsuario} from "@utils/globalFunc"
+import { validateLogin, validateUsuario } from "@utils/globalFunc";
 
 export function PlanosPage() {
   const [qrCode, setQRCode] = useState("");
   const [dateExpiration, setDateExpiration] = useState("");
-  
-  const [carregando, setCarregando] = useState(false);
-  
-  const navigate = useNavigate();
+  const [assinatura, setAssinatura] = useState({});
 
-  useEffect(()=>{
-
-    const validarLoginEUsuario = async () =>{
-
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
-
-  }
-
-  validarLoginEUsuario();
-    
-
-  },[])
+  useEffect(() => {
+    const url = "http://localhost:8080/assinaturas/1";
+    axios.get(url).then((response) => {
+      // setAssinatura(response.data);
+      console.log(response.data);
+    });
+    console.log("Oi");
+  }, []);
 
   function pagamentoDto() {
     const body = {
-      usuarioId: 19, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
+      usuarioId: 6, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
       tipo: "PIX", // SEMPRE SERA PIX
-      assinaturaId: 2, // VAI SER UM ID FIXO E MOCKADO, PROVAVELMENTE O VALOR SERÁ 1
+      assinaturaId: 1, // VAI SER UM ID FIXO E MOCKADO, PROVAVELMENTE O VALOR SERÁ 1
     };
 
     return body;
@@ -65,7 +57,7 @@ export function PlanosPage() {
       { locale: ptBR }
     );
 
-    setDateExpiration(dataFormatada)
+    setDateExpiration(dataFormatada);
   }
 
   return (
@@ -86,7 +78,10 @@ export function PlanosPage() {
               <ItemCheck text="Guia de Alimentação" />
               <ItemCheck text="Personais e Academias perto de você" />
             </div>
-            <Link to="../home" className="bg-[#64C273] px-4 py-1.5 rounded-xl text-white text-sm">
+            <Link
+              to="../home"
+              className="bg-[#64C273] px-4 py-1.5 rounded-xl text-white text-sm cursor-pointer"
+            >
               Estou satisfeito
             </Link>
           </div>
@@ -115,7 +110,7 @@ export function PlanosPage() {
                 </span>
               </div>
               <button
-                className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold"
+                className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold cursor-pointer"
                 onClick={handlePayment}
               >
                 Adquirir plano
@@ -127,7 +122,7 @@ export function PlanosPage() {
                 Plano Viva Vitalis
               </h1>
               <span className="text-sm">Vencimento: {dateExpiration}</span>
-              <span className="text-sm">Pague R$ 49,99 via Pix</span>
+              <span className="text-sm">Pague R$ {"500 milhoes"} via Pix</span>
               <img
                 className="w-44"
                 src={
