@@ -109,7 +109,7 @@ export function PerfilPage() {
               Informações pessoais
             </h2>
 
-            <div className="max-w-40 rounded rounded-3xl my-0 mx-auto">
+            <div className="max-w-40 rounded-3xl my-0 mx-auto">
               <img
                 className="py-4 rounded-full block max-w-full "
                 src={
@@ -197,7 +197,7 @@ export function PerfilPage() {
                   Personal Afiliado
                 </h2>
 
-                <div className="max-w-40 rounded rounded-3xl my-0 mx-auto">
+                <div className="max-w- rounded-3xl my-0 mx-auto">
                   <img
                     className="py-4 rounded-full block max-w-full "
                     src={
