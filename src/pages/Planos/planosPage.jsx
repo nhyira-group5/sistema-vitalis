@@ -109,10 +109,7 @@ export function PlanosPage() {
                   Por mês
                 </span>
               </div>
-              <button
-                className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold cursor-pointer"
-                onClick={handlePayment}
-              >
+              <button className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold cursor-pointer" onClick={handlePayment}>
                 Adquirir plano
               </button>
             </div>
