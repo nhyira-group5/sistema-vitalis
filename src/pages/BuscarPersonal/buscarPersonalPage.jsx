@@ -21,6 +21,7 @@ import { twMerge } from "tailwind-merge";
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
 
   const [cep, setCep] = useState("");
   const [infoEndereco, setInfoEndereco] = useState(null);
@@ -40,11 +41,13 @@ export function BuscarPersonalPage() {
     const loginResponse = getLoginResponse();
     try {
       api.get(`usuarios/${loginResponse.id}`).then((response) => {
-        response.data.pagamentoAtivo = true;
+        // response.data.pagamentoAtivo = true;
         setUsuario(response.data);
 
         setIsUsuarioLoading(false);
       });
+
+      setLoadingPage(false);
     } catch (error) {
       console.log(error);
       setIsUsuarioLoading(false);
@@ -52,12 +55,11 @@ export function BuscarPersonalPage() {
   }
 
   useEffect(() => {
-    const url = `http://localhost:8080/usuarios/personais`
-    axios.get(url)
-    .then((response) => {
-      response.data
-    })
-  }, [])
+    const url = `http://localhost:8080/usuarios/personais`;
+    axios.get(url).then((response) => {
+      response.data;
+    });
+  }, []);
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
@@ -77,10 +79,6 @@ export function BuscarPersonalPage() {
 
     validarLoginEUsuario();
   }, []);
-
-  useEffect(() => {
-    console.log(personais);
-  }, [personais]);
 
   function handleInputCep(e) {
     setCep(e.target.value);
@@ -104,9 +102,30 @@ export function BuscarPersonalPage() {
     console.log(props);
   }
 
+  if (loadingPage) return null;
   return (
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
+
+      {!usuario.pagamentoAtivo && !loadingPage && (
+        <div className="absolute bg-white mx-auto my-0 max-w-prose p-4 rounded-xl z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4">
+          <h3 className="font-medium text-xl col-span-full">
+            Acesso Exclusivo para Usuários Premium
+          </h3>
+          <p className="text-base">
+            Esta funcionalidade está disponível apenas para assinantes premium.
+            Para continuar e aproveitar todos os recursos do nosso site, você
+            precisará atualizar sua assinatura.
+          </p>
+
+          <a
+            className="block py-2 px-4 max-w-max rounded-md bg-[#2B6E36] uppercase font-medium text-lg text-white mx-auto my-0 place-self-center"
+            href=""
+          >
+            Ver Planos
+          </a>
+        </div>
+      )}
 
       <div
         className={twMerge(

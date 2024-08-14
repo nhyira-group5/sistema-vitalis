@@ -28,13 +28,13 @@ export function ChatPersonalPage() {
         const chatResponse = await axios.get(
           `http://localhost:3001/messages/usuario/${usuario.id}`
         );
-        const chatId = chatResponse.data.recordset[0].id_chat;
+        const chatId = chatResponse.data[0].id_chat;
         setChatId(chatId);
 
         const messagesResponse = await axios.get(
           `http://localhost:3001/messages/chat/${chatId}`
         );
-        setMessages(messagesResponse.data.recordset);
+        setMessages(messagesResponse.data);
 
         // Configurar o socket
         if (!socket.connected) {
@@ -107,14 +107,14 @@ export function ChatPersonalPage() {
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <div className="w-full flex justify-between items-center">
           <h1 className="text-[#503465] font-semibold text-2xl">Chat</h1>
-          <button className="p-1.5 bg-[#CA1B1B] rounded-md">
+          {/* <button className="p-1.5 bg-[#CA1B1B] rounded-md">
             <Siren size={20} color="white" />
-          </button>
+          </button> */}
         </div>
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#8656A9] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
-          <h1 className="text-white text-base font-medium">
-          Usuários afiliados
+            <h1 className="text-white text-base font-medium">
+              Usuários afiliados
             </h1>
             <div className="w-full h-[20%] bg-white rounded-2xl shadow-xl p-4 flex gap-4 justify-between">
               <div className="w-full flex gap-5">
@@ -125,8 +125,7 @@ export function ChatPersonalPage() {
                 />
                 <div className="w-[65%] h-full flex flex-col justify-center self-center">
                   <h2 className="font-semibold text-sm text-black">
-                  w1llSal4d@
-
+                    w1llSal4d@
                   </h2>
                 </div>
               </div>
@@ -142,7 +141,10 @@ export function ChatPersonalPage() {
                     <Message
                       key={index}
                       message={m.assunto}
-                      time={format(new Date(m.data_hora), "dd/MM/yyyy HH:mm:ss")}
+                      time={format(
+                        new Date(m.data_hora),
+                        "dd/MM/yyyy HH:mm:ss"
+                      )}
                       remetente={m.remetenteId}
                       destinatario={m.destinatarioId}
                       user={m.user}

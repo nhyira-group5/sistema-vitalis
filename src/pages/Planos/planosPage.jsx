@@ -2,16 +2,24 @@ import { ItemCheck } from "../../components/ItemCheck/itemCheck";
 import { SideBar } from "../../components/SideBar/sideBar";
 import { Link, useNavigate } from "react-router-dom";
 import { parseISO, format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { id, ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { validateLogin, validateUsuario } from "@utils/globalFunc";
+import {
+  validateLogin,
+  validateUsuario,
+  getLoginResponse,
+} from "@utils/globalFunc";
 
 export function PlanosPage() {
   const [qrCode, setQRCode] = useState("");
   const [dateExpiration, setDateExpiration] = useState("");
   const [assinatura, setAssinatura] = useState({});
+  const [user, setUser] = useState({});
+  const [loadingPage, setLoadingPage] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const url = "http://localhost:8080/assinaturas/1";
@@ -22,9 +30,33 @@ export function PlanosPage() {
     console.log("Oi");
   }, []);
 
+  function getUsuario() {
+    const loginResponse = getLoginResponse();
+    try {
+      api.get(`usuarios/${loginResponse.id}`).then((response) => {
+        // response.data.pagamentoAtivo = true;
+        setUser(response.data);
+        setLoadingPage(true);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      getUsuario();
+    };
+
+    validarLoginEUsuario();
+  }, []);
+
   function pagamentoDto() {
     const body = {
-      usuarioId: 6, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
+      usuarioId: user.id, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
       tipo: "PIX", // SEMPRE SERA PIX
       assinaturaId: 1, // VAI SER UM ID FIXO E MOCKADO, PROVAVELMENTE O VALOR SERÁ 1
     };
@@ -34,6 +66,7 @@ export function PlanosPage() {
 
   function handlePayment() {
     const requestBody = pagamentoDto();
+    console.log(requestBody);
     axios
       .post("http://localhost:8080/pagamentos/criar", requestBody)
       .then((response) => {
@@ -60,6 +93,7 @@ export function PlanosPage() {
     setDateExpiration(dataFormatada);
   }
 
+  if (loadingPage == false) return null;
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBar />
@@ -109,7 +143,10 @@ export function PlanosPage() {
                   Por mês
                 </span>
               </div>
-              <button className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold cursor-pointer" onClick={handlePayment}>
+              <button
+                className="bg-[#64C273] px-7 py-1.5 rounded-xl text-white text-lg font-semibold cursor-pointer"
+                onClick={handlePayment}
+              >
                 Adquirir plano
               </button>
             </div>

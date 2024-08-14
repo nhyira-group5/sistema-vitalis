@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Message } from "../../components/Message/message";
 import { SideBar } from "../../components/SideBar/sideBar";
 import { Siren } from "@phosphor-icons/react";
 import axios from "axios";
 import { socket } from "../../utils/Socket";
 import { twMerge } from "tailwind-merge";
-import { format } from "date-fns"; 
+import { format } from "date-fns";
+import {
+  validateLogin,
+  validateUsuario,
+  getLoginResponse,
+} from "@utils/globalFunc";
 
 export function ChatPage() {
   const [inputValue, setInputValue] = useState("");
@@ -14,20 +19,53 @@ export function ChatPage() {
   const [personalId, setPersonalId] = useState(null);
   const [chatId, setChatId] = useState(null);
 
+  const navigate = useNavigate();
+
+  const isInitialRender = useRef(true); // Flag para identificar o primeiro render
+
+  const [user, setUser] = useState({});
+
+  function getUsuario() {
+    const loginResponse = getLoginResponse();
+    try {
+      api.get(`usuarios/${loginResponse.id}`).then((response) => {
+        // response.data.pagamentoAtivo = true;
+        setUser(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
+      await validateLogin(navigate);
+      await validateUsuario(navigate);
+
+      getUsuario();
+    };
+
+    validarLoginEUsuario();
+  }, []);
+
   useEffect(() => {
     const usuario = JSON.parse(sessionStorage.getItem("loginResponse"));
     let chatIdRes;
 
     const fetchData = async () => {
       try {
-        const chatRes = await axios.get(`http://localhost:3001/messages/usuario/${usuario.id}`);
-        const personalRes = await axios.get(`http://localhost:8080/usuarios/personal/${usuario.id}`);
-        
-        chatIdRes = chatRes.data.recordset[0].id_chat;
+        const chatRes = await axios.get(
+          `http://localhost:3001/messages/usuario/${usuario.id}`
+        );
+        const personalRes = await axios.get(
+          `http://localhost:8080/usuarios/personal/${usuario.id}`
+        );
+        chatIdRes = chatRes.data[0].id_chat;
 
-        const messagesRes = await axios.get(`http://localhost:3001/messages/chat/${chatIdRes}`);
-
-        setMessages(messagesRes.data.recordset);
+        const messagesRes = await axios.get(
+          `http://localhost:3001/messages/chat/${chatIdRes}`
+        );
+        setMessages(messagesRes.data);
         setChatId(chatIdRes);
         setPersonalId(personalRes.data.id);
         setPersonal(personalRes.data.nickname);
@@ -36,11 +74,9 @@ export function ChatPage() {
           socket.auth = {
             chats: [chatIdRes],
             user: {
-              id: usuario.id
-            }
+              id: usuario.id,
+            },
           };
-
-          socket.on("ttm", handleMessageReceived);
           socket.connect();
         }
       } catch (error) {
@@ -50,10 +86,23 @@ export function ChatPage() {
 
     fetchData();
 
+    // Inscrição ao evento de recebimento de mensagens
+    socket.on("ttm", handleMessageReceived);
+
     return () => {
-      socket.off("ttm", handleMessageReceived);
+      socket.off("ttm", handleMessageReceived); // Remover a inscrição no evento ao desmontar o componente
     };
   }, []);
+
+  useEffect(() => {
+    // Certificar-se de que as mensagens não são duplicadas na inicialização
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
+    // Lógica adicional para impedir duplicação se necessário
+  }, [messages]);
 
   const handleMessageReceived = (m) => {
     setMessages((prevMessages) => [
@@ -62,8 +111,8 @@ export function ChatPage() {
         assunto: m.assunto,
         destinatarioId: m.destinatarioId,
         remetenteId: m.remetenteId,
-        data_hora: m.dataHora
-      }
+        data_hora: m.dataHora,
+      },
     ]);
   };
 
@@ -74,35 +123,55 @@ export function ChatPage() {
   const sendMessage = () => {
     const text = inputValue.trim();
     if (text === "") return;
-
     const usuario = JSON.parse(sessionStorage.getItem("loginResponse"));
-
     socket.emit("ttm", {
       chatId,
       remetenteId: usuario.id,
       destinatarioId: personalId,
-      assunto: text
+      assunto: text,
     });
-
     setInputValue("");
   };
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBar />
-      <div className={twMerge("w-[88%] h-[90%] flex flex-col justify-between")}>
+      {!user.pagamentoAtivo && (
+        <div className="absolute bg-white mx-auto my-0 max-w-prose p-4 rounded-xl z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4">
+          <h3 className="font-medium text-xl col-span-full">
+            Acesso Exclusivo para Usuários Premium
+          </h3>
+          <p className="text-base">
+            Esta funcionalidade está disponível apenas para assinantes premium.
+            Para continuar e aproveitar todos os recursos do nosso site, você
+            precisará atualizar sua assinatura.
+          </p>
+
+          <a
+            className="block py-2 px-4 max-w-max rounded-md bg-[#2B6E36] uppercase font-medium text-lg text-white mx-auto my-0 place-self-center"
+            href=""
+          >
+            Ver Planos
+          </a>
+        </div>
+      )}
+      <div
+        className={twMerge(
+          "w-[88%] h-[90%] flex flex-col justify-between",
+          !user.pagamentoAtivo && "blur-sm"
+        )}
+      >
         <div className="w-full flex justify-between items-center ">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">Chat</h1>
-          <button className="p-1.5 bg-[#CA1B1B] rounded-md">
+          {/* <button className="p-1.5 bg-[#CA1B1B] rounded-md">
             <Siren size={20} color="white" />
-          </button>
+          </button> */}
         </div>
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#48B75A] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
             <h1 className="text-white text-base font-medium">
-            Personal afiliado
+              Personal afiliado
             </h1>
-
             <div className="w-full h-[20%] bg-white rounded-2xl shadow-xl p-4 flex gap-4 justify-between">
               <div className="w-full flex gap-5">
                 <img
@@ -112,16 +181,14 @@ export function ChatPage() {
                 />
                 <div className="w-[65%] h-full flex flex-col justify-center self-center">
                   <h2 className="font-semibold text-sm text-[#2B6E36]">
-                    {personal !== null ? personal : 'Personal não encontrado'}
+                    {personal !== null ? personal : "Personal não encontrado"}
                   </h2>
                 </div>
               </div>
             </div>
-
             <hr className="border" />
           </div>
-
-          <div className="w-[70%] h-full  flex flex-col justify-between">
+          <div className="w-[70%] h-full flex flex-col justify-between">
             <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">
               <hr className="w-full border border-black" />
               <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-auto scrollbar-thin">
@@ -130,9 +197,12 @@ export function ChatPage() {
                     <Message
                       key={index}
                       message={m.assunto}
-                      time={format(new Date(m.data_hora), "dd/MM/yyyy HH:mm:ss")} // Formatação da data aqui
+                      time={format(
+                        new Date(m.data_hora),
+                        "dd/MM/yyyy HH:mm:ss"
+                      )}
                       remetente={m.remetenteId}
-                      destinatario={m.remetenteId}
+                      destinatario={m.destinatarioId}
                     />
                   ))
                 ) : (
@@ -160,6 +230,7 @@ export function ChatPage() {
           </div>
         </div>
       </div>
+         
     </div>
   );
 }

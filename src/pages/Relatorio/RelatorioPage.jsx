@@ -31,8 +31,6 @@ export function RelatorioPage() {
   const navigate = useNavigate();
 
   const [currentyMouth, setCurrentyMouth] = useState("");
-
-  const [imc, setImc] = useState(0);
   const [labelImc, setLabelImc] = useState("");
 
   const [activitiesDay, setActivitiesDay] = useState([]);
@@ -92,7 +90,7 @@ export function RelatorioPage() {
       axios.get(url).then((response) => {
         console.log(response.data);
         setPeso(response.data.peso);
-        setAltura(response.data.altura / 100);
+        setAltura(response.data.altura);
       });
     }
   }, [user]);
@@ -101,19 +99,18 @@ export function RelatorioPage() {
     const url = `http://localhost:8080/treinos/relatorio/1`;
     axios.get(url).then((response) => {
       console.log(response.data);
-      console.log(response.data[0].nome);
       setListaTarefas(response.data);
     });
   }, []);
 
- function retornaVetorBonito() {
-    let vetorAux = []
+  function retornaVetorBonito() {
+    let vetorAux = [];
 
     listaTarefas.forEach((e) => {
-      vetorAux.push(e.nome)
-    })
-    console.log(vetorAux)
-    return vetorAux
+      vetorAux.push(e.nome);
+    });
+    console.log(vetorAux);
+    return vetorAux;
   }
 
   function getUsuarioFicha() {
@@ -143,7 +140,6 @@ export function RelatorioPage() {
   }
 
   useEffect(() => {
-    setImc(calculateImc(peso, altura).toFixed(2));
     setLabelImc(classificationImc(calculateImc(peso, altura)));
     setDados(true);
   }, [peso, altura]);
@@ -164,7 +160,7 @@ export function RelatorioPage() {
   }, [activitiesDay]);
 
   function generateCurrrentyMouth() {
-    setCurrentyMouth("MARÇO");
+    setCurrentyMouth("AGOSTO");
   }
 
   // CALCULO DO IMC E CLASSIFICAÇÃO
@@ -243,8 +239,6 @@ export function RelatorioPage() {
     ).length;
     setCurrentyAmountDays(currentyDays);
   }
-
-  
 
   function generateActivitiesDay() {
     const activityDays = listaSemanal.find((element) => !element.concluido);
@@ -390,13 +384,15 @@ export function RelatorioPage() {
                   <div className="w-full h-full flex justify-center items-center">
                     {listaTarefas !== null && (
                       <BarChart
-                        series={[{ data: listaTarefas !== null &&
-                          listaTarefas.map((objeto, index) => {
-                            return (
-                              objeto.concluido
-                            );
-                          })
-                         }]}
+                        series={[
+                          {
+                            data:
+                              listaTarefas !== null &&
+                              listaTarefas.map((objeto, index) => {
+                                return objeto.concluido;
+                              }),
+                          },
+                        ]}
                         xAxis={[
                           {
                             data: retornaVetorBonito(),
@@ -424,7 +420,7 @@ export function RelatorioPage() {
               <div className="w-[31%] h-full flex flex-col justify-between">
                 <div className="w-full h-[20%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl px-4 py py-3">
                   <div className="w-full flex justify-between items-center">
-                    <h1>Seu IMC | {imc}</h1>
+                    <h1>Seu IMC: {(peso / (altura * altura)).toFixed(2)}</h1>
                     <TooltipDemo
                       text="O Índice de Massa Corporal (IMC) é uma medida de peso corporal baseada na altura e no peso de uma pessoa. É usado para classificar o peso corporal como subpeso, normal, acima do peso ou obeso."
                       icon={Interrogacao}

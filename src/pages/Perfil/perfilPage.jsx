@@ -1,4 +1,4 @@
-import { LockKey } from "@phosphor-icons/react";
+import { CameraRotate, LockKey } from "@phosphor-icons/react";
 import { SideBar } from "../../components/SideBar/sideBar";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -105,13 +105,13 @@ export function PerfilPage() {
         <h1 className="text-[#2B6E36] font-semibold text-2xl">Perfil</h1>
         <div className="flex w-full h-[88%] justify-between">
           <div className="w-[48%] bg-white rounded-xl p-5 shadow-lg flex flex-col justify-between">
-            <h2 className="text-lg font-semibold text-[#2B6E36]">
+            <h2 className="text-xl font-semibold text-[#2B6E36]">
               Informações pessoais
             </h2>
 
-            <div className="max-w-40 rounded-3xl my-0 mx-auto">
+            <div className="max-w-40 rounded my-0 mx-auto relative">
               <img
-                className="py-4 rounded-full block max-w-full "
+                className="object-cover h-full py-4 rounded-full block"
                 src={
                   personal && personal.midia
                     ? personal.midia.caminho
@@ -119,10 +119,13 @@ export function PerfilPage() {
                 }
                 alt=""
               />
+              <div className="bg-white p-1 rounded-full absolute bottom-0 right-0 border-2 border-[#2B6E36] hover:scale-110 transition-transform cursor-pointer">
+                <CameraRotate size={28} color="#2B6E36" weight="fill" />
+              </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
-              <div className="px-1 py-1 col-span-2 border-r">
+            <div className="grid grid-cols-4 ">
+              <div className="px-2 py-2 col-span-2 border-r border-b">
                 <h3 className="font-semibold text-sm">Nome Completo</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
@@ -131,7 +134,7 @@ export function PerfilPage() {
                 </p>
               </div>
 
-              <div className="px-1 py-1 col-span-2">
+              <div className="px-2 py-2 col-span-2 border-b">
                 <h3 className="font-semibold text-sm">E-mail</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
@@ -140,7 +143,7 @@ export function PerfilPage() {
                 </p>
               </div>
 
-              <div className="px-1 py-1 col-span-2 border-r">
+              <div className="px-2 py-2 col-span-2 border-r border-b">
                 <h3 className="font-semibold text-sm">CPF</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
@@ -149,8 +152,8 @@ export function PerfilPage() {
                 </p>
               </div>
 
-              <div className="px-1 py-1">
-                <h3 className="font-semibold text-sm">Data de Nasc.</h3>
+              <div className="px-2 py-2 border-b border-r">
+                <h3 className="font-semibold text-sm ">Data de Nasc.</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
                     ? converterDataFormato(fichaUsuario.usuarioId.dtNasc)
@@ -158,7 +161,7 @@ export function PerfilPage() {
                 </p>
               </div>
 
-              <div className="px-1 py-1">
+              <div className="px-2 py-2 border-b">
                 <h3 className="font-semibold text-sm">Sexo</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
@@ -171,19 +174,15 @@ export function PerfilPage() {
                 </p>
               </div>
 
-              <div className="px-1 py-1 col-span-2 border-r">
+              <div className="px-2 py-2 col-span-2 border-r">
                 <h3 className="font-semibold text-sm">Meta</h3>
-                <p>
-                  {personal && personal.especialidade
-                    ? personal.especialidade.nome
-                    : ""}
-                </p>
+                <p>{user && user.meta.nome}</p>
               </div>
-              <div className="px-1 py-1 ">
+              <div className="px-2 py-2 ">
                 <h3 className="font-semibold text-sm">Peso</h3>
                 <p>{fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""}</p>
               </div>
-              <div className="px-1 py-1 ">
+              <div className="px-2 py-2 ">
                 <h3 className="font-semibold text-sm">Altura</h3>
                 <p>{fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""}</p>
               </div>
@@ -197,9 +196,9 @@ export function PerfilPage() {
                   Personal Afiliado
                 </h2>
 
-                <div className="max-w- rounded-3xl my-0 mx-auto">
+                <div className="max-w-40 rounded-3xl my-0 mx-auto">
                   <img
-                    className="py-4 rounded-full block max-w-full "
+                    className="py-4 rounded-full block max-w-full"
                     src={
                       personal && personal.midia
                         ? personal.midia.caminho
@@ -216,12 +215,12 @@ export function PerfilPage() {
                 </div> */}
 
                 <div className="grid grid-cols-4 gap-2 bg-white p-2 rounded-xl">
-                  <div className="px-1 py-1 col-span-2 border-r">
+                  <div className="px-2 py-2 col-span-2 border">
                     <h3 className="font-semibold text-sm">Nome Completo</h3>
                     <p>{personal && personal.nome ? personal.nome : "xtop"}</p>
                   </div>
 
-                  <div className="px-1 py-1 col-span-2">
+                  <div className="px-2 py-2 col-span-2">
                     <h3 className="font-semibold text-sm">E-mail</h3>
                     <p>
                       {personal && personal.email
@@ -230,7 +229,7 @@ export function PerfilPage() {
                     </p>
                   </div>
 
-                  <div className="px-1 py-1 col-span-2 border-r">
+                  <div className="px-2 py-2 col-span-2 border">
                     <h3 className="font-semibold text-sm">Meta</h3>
                     <p>
                       {personal && personal.especialidade
@@ -239,7 +238,7 @@ export function PerfilPage() {
                     </p>
                   </div>
 
-                  <div className="px-1 py-1">
+                  <div className="px-2 py-2">
                     <h3 className="font-semibold text-sm">Data de Nasc.</h3>
                     <p>
                       {personal && personal.dtNasc
@@ -248,7 +247,7 @@ export function PerfilPage() {
                     </p>
                   </div>
 
-                  <div className="px-1 py-1">
+                  <div className="px-2 py-2">
                     <h3 className="font-semibold text-sm">Sexo</h3>
                     <p>
                       {personal && personal.sexo
@@ -263,31 +262,53 @@ export function PerfilPage() {
                 </div>
               </div>
             ) : (
-              <div className="w-full h-2/5 bg-white rounded-xl shadow-lg flex justify-between p-4">
-                <div className="w-3/5 h-full flex flex-col justify-between">
-                  <h1 className="font-semibold text-[#64C273] text-3xl">
-                    Personal afiliado
-                  </h1>
-                  <h2 className="font-medium">
-                    Este é um recurso{" "}
-                    <span className="font-semibold text-[#64C273]">PAGO</span>!
-                  </h2>
-                  <p className="text-sm">
-                    Para acessá-lo, é necessário participar do plano premium.
-                    Contribua para sua experiência premium como usuário e se
-                    mantenha melhor do que nunca!
-                  </p>
-                </div>
-                <div className="w-fit h-full flex flex-col justify-between items-center pt-5 pb-2.5">
-                  <LockKey size={50} />
-                  <Link
-                    to="/planos"
-                    className="px-14 py-2.5 bg-[#2B6E36] text-white font-semibold rounded-3xl text-sm"
-                  >
-                    Ser Premium
-                  </Link>
-                </div>
+              <div className="w-full bg-white shadow-lg rounded-lg grid grid-cols-[1fr_auto] p-4 place-content-start items-center gap-2">
+                <h2 className="text-xl font-semibold text-[#2B6E36] mb-4">
+                  Personal Afiliado
+                </h2>
+                <LockKey className="place-self-center row-span-2" size={44} />
+                <strong className="mb-2">
+                  Este é um recurso{" "}
+                  <span className="font-semibold text-[#2B6E36]">PAGO</span>!
+                </strong>
+                <p className="max-w-96 text-sm">
+                  Para acessá-lo, é necessário participar do plano premium.
+                  Contribua para sua experiência premium como usuário e se
+                  mantenha melhor do que nunca!
+                </p>
+                <Link
+                  to="/planos"
+                  className="place-self-end bg-[#2B6E36] text-white py-2 px-4 rounded-lg font-medium uppercase hover:bg-[#1E6129]"
+                >
+                  Ser Premium
+                </Link>
               </div>
+
+              // <div className="w-full h-2/5 bg-white rounded-xl shadow-lg flex justify-between p-4">
+              //   <div className="w-3/5 h-full flex flex-col justify-between">
+              //     <h1 className="font-semibold text-[#64C273] text-3xl">
+              //       Personal afiliado
+              //     </h1>
+              //     <h2 className="font-medium">
+              //       Este é um recurso{" "}
+              //       <span className="font-semibold text-[#64C273]">PAGO</span>!
+              //     </h2>
+              //     <p className="text-sm">
+              //       Para acessá-lo, é necessário participar do plano premium.
+              //       Contribua para sua experiência premium como usuário e se
+              //       mantenha melhor do que nunca!
+              //     </p>
+              //   </div>
+              //   <div className="w-fit h-full flex flex-col justify-between items-center pt-5 pb-2.5">
+              //     <LockKey size={50} />
+              //     <Link
+              //       to="/planos"
+              //       className="px-14 py-2.5 bg-[#2B6E36] text-white font-semibold rounded-3xl text-sm"
+              //     >
+              //       Ser Premium
+              //     </Link>
+              //   </div>
+              // </div>
             )}
           </div>
         </div>
