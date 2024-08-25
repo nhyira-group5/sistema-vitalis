@@ -1,15 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       boxShadow: {
         'inset-green': 'inset 5px 0px #2B6E36',
-        'sombra-padrao': '0px 0px 5px 0px rgba(0,0,0,0.50)'
-
+        'sombra-padrao': '0px 0px 5px 0px rgba(0,0,0,0.50)',
       },
       colors: {
         'primary-green100': '#daf1de',
@@ -22,17 +18,17 @@ export default {
         'alt-purple300': '#8656a9',
         'alt-purple400': '#503465',
         'alt-purple500': '#1b1122',
-        'gray100': '#F8FFF8',
-        'gray200': '#b3b3b3',
-        'gray300': '#808080',
-        'gray400': '#4d4d4d',
-        'gray500': '#1a1a1a',
-        'errorRed': '#CA1B1B',
-        'successBlue': '#1B70CA',
+        gray100: '#F8FFF8',
+        gray200: '#b3b3b3',
+        gray300: '#808080',
+        gray400: '#4d4d4d',
+        gray500: '#1a1a1a',
+        errorRed: '#CA1B1B',
+        successBlue: '#1B70CA',
       },
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
-        'mavenPro': ['Maven Pro', 'sans-serif']
+        inter: ['Inter', 'sans-serif'],
+        mavenPro: ['Maven Pro', 'sans-serif'],
       },
       keyframes: {
         slideDownAndFade: {
@@ -53,23 +49,25 @@ export default {
         },
         rotateAndInvert: {
           from: { transform: 'rotate(0deg)' },
-          to: { transform: 'rotate(360deg) scaleY(-1)' }
-        }
+          to: { transform: 'rotate(360deg) scaleY(-1)' },
+        },
       },
       animation: {
-        slideDownAndFade: 'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-        slideLeftAndFade: 'slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideDownAndFade:
+          'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideLeftAndFade:
+          'slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         slideUpAndFade: 'slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-        slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-        rotateAndInvert: 'rotateAndInvert 0.5s forwards'
+        slideRightAndFade:
+          'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+        rotateAndInvert: 'rotateAndInvert 0.5s forwards',
       },
-
     },
   },
   plugins: [
     require('tailwind-scrollbar'),
-    
-    function({ addUtilities }) {
+
+    function ({ addUtilities }) {
       addUtilities({
         '.truncate-multiline': {
           display: '-webkit-box',
@@ -80,8 +78,7 @@ export default {
           'max-height': '3em', // Ajuste conforme a altura da linha
           'line-height': '1.5em', // Ajuste conforme a altura da linha
         },
-      })
-    }
+      });
+    },
   ],
-  
-}
+};
