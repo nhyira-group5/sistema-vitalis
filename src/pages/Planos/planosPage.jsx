@@ -5,6 +5,7 @@ import { parseISO, format } from "date-fns";
 import { id, ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { api } from "@apis/api";
 
 import {
   validateLogin,
@@ -27,7 +28,6 @@ export function PlanosPage() {
       // setAssinatura(response.data);
       console.log(response.data);
     });
-    console.log("Oi");
   }, []);
 
   function getUsuario() {
@@ -36,6 +36,7 @@ export function PlanosPage() {
       api.get(`usuarios/${loginResponse.id}`).then((response) => {
         // response.data.pagamentoAtivo = true;
         setUser(response.data);
+        console.log(user);
         setLoadingPage(true);
       });
     } catch (error) {
@@ -55,6 +56,7 @@ export function PlanosPage() {
   }, []);
 
   function pagamentoDto() {
+    console.log(user);
     const body = {
       usuarioId: user.id, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
       tipo: "PIX", // SEMPRE SERA PIX
@@ -94,12 +96,38 @@ export function PlanosPage() {
   }
 
   if (loadingPage == false) return null;
+  if (user.pagamentoAtivo)
+    return (
+      <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
+        <SideBar />
+
+        <div className="w-[88%] h-[90%] flex flex-col justify-between">
+          <h1 className="text-[#2B6E36] font-semibold text-2xl">Planos</h1>
+          <div className="w-full h-[93%] flex justify-evenly items-center">
+            <div className="bg-white rounded-2xl p-4 shadow-xl grid grid-cols-1 gap-5 place-items-center conts">
+              <h2 className="font-semibold text-xl">
+                VOCÊ JÁ POSSUI UM PLANO ATIVO!
+              </h2>
+
+              <Link
+                to="../home"
+                className="bg-[#2B6E36] py-2 px-4 rounded-md text-white font-medium self-center"
+              >
+                VOLTAR PARA A PÁGINA PRINCIPAL
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBar />
+
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <h1 className="text-[#2B6E36] font-semibold text-2xl">Planos</h1>
         <div className="w-full h-[93%] flex justify-evenly items-center">
+          {/* {1 == 1 ? <h1>oi</h1> : <h2>tchau</h2>} */}
           <div className="bg-white w-[25%] h-5/6 rounded-2xl flex flex-col justify-between items-center p-6 shadow-xl">
             <h1 className="h-fit font-semibold text-[#5EAF6B] text-xl">
               Plano Gratuito
@@ -156,7 +184,7 @@ export function PlanosPage() {
                 Plano Viva Vitalis
               </h1>
               <span className="text-sm">Vencimento: {dateExpiration}</span>
-              <span className="text-sm">Pague R$ {"500 milhoes"} via Pix</span>
+              <span className="text-sm">Pague R$ {"49,99"} via Pix</span>
               <img
                 className="w-44"
                 src={
@@ -166,8 +194,7 @@ export function PlanosPage() {
                 alt="SEM IMAGEM AINDA"
               />
               <span className="text-xs text-center">
-                Assim que o pagamento for efetuado você será redirecionado para
-                "Home"
+                Após realizar o pagamento, volte para o página inicial
               </span>
             </div>
           )}

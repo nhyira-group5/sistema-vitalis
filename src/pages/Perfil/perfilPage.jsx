@@ -1,13 +1,14 @@
-import { CameraRotate, LockKey } from "@phosphor-icons/react";
-import { SideBar } from "../../components/SideBar/sideBar";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Checkbox } from "@components/Checkbox/checkbox";
+import { CameraRotate, LockKey } from '@phosphor-icons/react';
+import { SideBar } from '../../components/SideBar/sideBar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Checkbox } from '@components/Checkbox/checkbox';
+import { CloudinaryButtonPerfil } from '@components/Button/button';
 
-import defaultIcon from "@assets/defaultIcon.png";
+import defaultIcon from '@assets/defaultIcon.png';
 
-import { DisplayInput } from "@components/Input/input";
-import { api } from "@apis/api";
+import { DisplayInput } from '@components/Input/input';
+import { api } from '@apis/api';
 
 import {
   validateLogin,
@@ -15,7 +16,7 @@ import {
   getLoginResponse,
   formatarCPF,
   converterDataFormato,
-} from "@utils/globalFunc";
+} from '@utils/globalFunc';
 export function PerfilPage() {
   const [user, setUser] = useState(null);
   const [personal, setPersonal] = useState(null);
@@ -74,29 +75,50 @@ export function PerfilPage() {
     validarLoginEUsuario();
   }, []);
 
+  function insertImage(cloudObject) {
+    const { url, original_filename, format } = cloudObject;
+
+    const loginResponse = getLoginResponse();
+
+    const midiaDto = {
+      nome: original_filename,
+      caminho: url,
+      extensao: format,
+    };
+    const muralItemDto = {
+      usuarioId: loginResponse.id,
+      midiaId: null,
+      dtPostagem: getDataAtual(),
+    };
+
+    try {
+      api.post('/midias/salvarMidia', midiaDto).then((response) => {
+        muralItemDto.midiaId = response.data.idMidia;
+
+        api.post(`/murais`, muralItemDto).then((response) => {
+          toast.success('Imagem carregada com sucesso!');
+
+          setMuralItens((prevItems) => [...prevItems, response.data]);
+        });
+      });
+    } catch (error) {
+      toast.error('Falha no envio da imagem!');
+    }
+  }
+
   useEffect(() => {
     if (user !== null && user.pagamentoAtivo == true) {
       setPersonal({
         idUsuario: 2,
-        nickname: "marC@SSilV4",
-        nome: "Marcos Silva Oliveira Pinto Santos",
-        dtNasc: "1980-12-05",
-        sexo: "M",
-        email: "marcos@gmail.com",
-        especialidade: { nome: "Peso Corporal" },
+        nickname: 'marC@SSilV4',
+        nome: 'Marcos Silva Oliveira Pinto Santos',
+        dtNasc: '1980-12-05',
+        sexo: 'M',
+        email: 'marcos@gmail.com',
+        especialidade: { nome: 'Peso Corporal' },
       });
     }
   }, [user]);
-
-  function mesQueVem() {
-    const hoje = new Date();
-    hoje.setMonth(hoje.getMonth() + 1);
-
-    const opcoes = { day: "2-digit", month: "2-digit", year: "numeric" };
-    const proximoMesFormatado = hoje.toLocaleDateString("pt-BR", opcoes);
-
-    return proximoMesFormatado;
-  }
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
@@ -119,9 +141,10 @@ export function PerfilPage() {
                 }
                 alt=""
               />
-              <div className="bg-white p-1 rounded-full absolute bottom-0 right-0 border-2 border-[#2B6E36] hover:scale-110 transition-transform cursor-pointer">
-                <CameraRotate size={28} color="#2B6E36" weight="fill" />
-              </div>
+              {/* <div className="bg-white p-1 rounded-full absolute bottom-0 right-0 border-2 border-[#2B6E36] hover:scale-110 transition-transform cursor-pointer"> */}
+              <CloudinaryButtonPerfil uploadFunction={insertImage} />
+              {/* <CameraRotate size={28} color="#2B6E36" weight="fill" /> */}
+              {/* </div> */}
             </div>
 
             <div className="grid grid-cols-4 ">
@@ -130,7 +153,7 @@ export function PerfilPage() {
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
                     ? fichaUsuario.usuarioId.nome
-                    : "xtop"}
+                    : 'xtop'}
                 </p>
               </div>
 
@@ -139,7 +162,7 @@ export function PerfilPage() {
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
                     ? fichaUsuario.usuarioId.email
-                    : "caue@gmail.com"}
+                    : 'caue@gmail.com'}
                 </p>
               </div>
 
@@ -148,7 +171,7 @@ export function PerfilPage() {
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
                     ? formatarCPF(fichaUsuario.usuarioId.cpf)
-                    : "000.000.000-00"}
+                    : '000.000.000-00'}
                 </p>
               </div>
 
@@ -157,7 +180,7 @@ export function PerfilPage() {
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
                     ? converterDataFormato(fichaUsuario.usuarioId.dtNasc)
-                    : "25/ 01/2004"}
+                    : '25/ 01/2004'}
                 </p>
               </div>
 
@@ -165,12 +188,12 @@ export function PerfilPage() {
                 <h3 className="font-semibold text-sm">Sexo</h3>
                 <p>
                   {fichaUsuario && fichaUsuario.usuarioId
-                    ? fichaUsuario.usuarioId.sexo === "F"
-                      ? "Feminino"
-                      : fichaUsuario.usuarioId.sexo === "M"
-                      ? "Masculino"
-                      : ""
-                    : ""}
+                    ? fichaUsuario.usuarioId.sexo === 'F'
+                      ? 'Feminino'
+                      : fichaUsuario.usuarioId.sexo === 'M'
+                      ? 'Masculino'
+                      : ''
+                    : ''}
                 </p>
               </div>
 
@@ -180,11 +203,11 @@ export function PerfilPage() {
               </div>
               <div className="px-2 py-2 ">
                 <h3 className="font-semibold text-sm">Peso</h3>
-                <p>{fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ""}</p>
+                <p>{fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ''}</p>
               </div>
               <div className="px-2 py-2 ">
                 <h3 className="font-semibold text-sm">Altura</h3>
-                <p>{fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ""}</p>
+                <p>{fichaUsuario.altura ? `${fichaUsuario.altura}cm` : ''}</p>
               </div>
             </div>
           </div>
@@ -217,7 +240,7 @@ export function PerfilPage() {
                 <div className="grid grid-cols-4 gap-2 bg-white p-2 rounded-xl">
                   <div className="px-2 py-2 col-span-2 border">
                     <h3 className="font-semibold text-sm">Nome Completo</h3>
-                    <p>{personal && personal.nome ? personal.nome : "xtop"}</p>
+                    <p>{personal && personal.nome ? personal.nome : 'xtop'}</p>
                   </div>
 
                   <div className="px-2 py-2 col-span-2">
@@ -225,7 +248,7 @@ export function PerfilPage() {
                     <p>
                       {personal && personal.email
                         ? personal.email
-                        : "caue@gmail.com"}
+                        : 'caue@gmail.com'}
                     </p>
                   </div>
 
@@ -234,7 +257,7 @@ export function PerfilPage() {
                     <p>
                       {personal && personal.especialidade
                         ? personal.especialidade.nome
-                        : ""}
+                        : ''}
                     </p>
                   </div>
 
@@ -243,7 +266,7 @@ export function PerfilPage() {
                     <p>
                       {personal && personal.dtNasc
                         ? converterDataFormato(personal.dtNasc)
-                        : "25/ 01/2004"}
+                        : '25/ 01/2004'}
                     </p>
                   </div>
 
@@ -251,12 +274,12 @@ export function PerfilPage() {
                     <h3 className="font-semibold text-sm">Sexo</h3>
                     <p>
                       {personal && personal.sexo
-                        ? personal.sexo === "F"
-                          ? "Feminino"
-                          : personal.sexo === "M"
-                          ? "Masculino"
-                          : ""
-                        : ""}
+                        ? personal.sexo === 'F'
+                          ? 'Feminino'
+                          : personal.sexo === 'M'
+                          ? 'Masculino'
+                          : ''
+                        : ''}
                     </p>
                   </div>
                 </div>
@@ -268,7 +291,7 @@ export function PerfilPage() {
                 </h2>
                 <LockKey className="place-self-center row-span-2" size={44} />
                 <strong className="mb-2">
-                  Este é um recurso{" "}
+                  Este é um recurso{' '}
                   <span className="font-semibold text-[#2B6E36]">PAGO</span>!
                 </strong>
                 <p className="max-w-96 text-sm">

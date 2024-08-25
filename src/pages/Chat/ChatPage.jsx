@@ -1,25 +1,25 @@
-import { useEffect, useState, useRef } from "react";
-import { Message } from "../../components/Message/message";
-import { SideBar } from "../../components/SideBar/sideBar";
-import { Siren } from "@phosphor-icons/react";
-import axios from "axios";
-import { socket } from "../../utils/Socket";
-import { twMerge } from "tailwind-merge";
-import { format } from "date-fns";
+import { useEffect, useState, useRef } from 'react';
+import { Message } from '../../components/Message/message';
+import { SideBar } from '../../components/SideBar/sideBar';
+import { Siren } from '@phosphor-icons/react';
+import axios from 'axios';
+import { socket } from '../../utils/Socket';
+import { twMerge } from 'tailwind-merge';
+import { format } from 'date-fns';
 import {
   validateLogin,
   validateUsuario,
   getLoginResponse,
-} from "@utils/globalFunc";
+} from '@utils/globalFunc';
 
 export function ChatPage() {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState([]);
   const [personal, setPersonal] = useState(null);
   const [personalId, setPersonalId] = useState(null);
   const [chatId, setChatId] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const isInitialRender = useRef(true); // Flag para identificar o primeiro render
 
@@ -49,21 +49,21 @@ export function ChatPage() {
   }, []);
 
   useEffect(() => {
-    const usuario = JSON.parse(sessionStorage.getItem("loginResponse"));
+    const usuario = JSON.parse(sessionStorage.getItem('loginResponse'));
     let chatIdRes;
 
     const fetchData = async () => {
       try {
         const chatRes = await axios.get(
-          `http://localhost:3001/messages/usuario/${usuario.id}`
+          `http://localhost:3001/messages/usuario/${usuario.id}`,
         );
         const personalRes = await axios.get(
-          `http://localhost:8080/usuarios/personal/${usuario.id}`
+          `http://localhost:8080/usuarios/personal/${usuario.id}`,
         );
         chatIdRes = chatRes.data[0].id_chat;
 
         const messagesRes = await axios.get(
-          `http://localhost:3001/messages/chat/${chatIdRes}`
+          `http://localhost:3001/messages/chat/${chatIdRes}`,
         );
         setMessages(messagesRes.data);
         setChatId(chatIdRes);
@@ -80,17 +80,17 @@ export function ChatPage() {
           socket.connect();
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
 
     // Inscrição ao evento de recebimento de mensagens
-    socket.on("ttm", handleMessageReceived);
+    socket.on('ttm', handleMessageReceived);
 
     return () => {
-      socket.off("ttm", handleMessageReceived); // Remover a inscrição no evento ao desmontar o componente
+      socket.off('ttm', handleMessageReceived); // Remover a inscrição no evento ao desmontar o componente
     };
   }, []);
 
@@ -122,15 +122,15 @@ export function ChatPage() {
 
   const sendMessage = () => {
     const text = inputValue.trim();
-    if (text === "") return;
-    const usuario = JSON.parse(sessionStorage.getItem("loginResponse"));
-    socket.emit("ttm", {
+    if (text === '') return;
+    const usuario = JSON.parse(sessionStorage.getItem('loginResponse'));
+    socket.emit('ttm', {
       chatId,
       remetenteId: usuario.id,
       destinatarioId: personalId,
       assunto: text,
     });
-    setInputValue("");
+    setInputValue('');
   };
 
   return (
@@ -157,8 +157,8 @@ export function ChatPage() {
       )}
       <div
         className={twMerge(
-          "w-[88%] h-[90%] flex flex-col justify-between",
-          !user.pagamentoAtivo && "blur-sm"
+          'w-[88%] h-[90%] flex flex-col justify-between',
+          !user.pagamentoAtivo && 'blur-sm',
         )}
       >
         <div className="w-full flex justify-between items-center ">
@@ -181,7 +181,7 @@ export function ChatPage() {
                 />
                 <div className="w-[65%] h-full flex flex-col justify-center self-center">
                   <h2 className="font-semibold text-sm text-[#2B6E36]">
-                    {personal !== null ? personal : "Personal não encontrado"}
+                    {personal !== null ? personal : 'Personal não encontrado'}
                   </h2>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export function ChatPage() {
                       message={m.assunto}
                       time={format(
                         new Date(m.data_hora),
-                        "dd/MM/yyyy HH:mm:ss"
+                        'dd/MM/yyyy HH:mm:ss',
                       )}
                       remetente={m.remetenteId}
                       destinatario={m.destinatarioId}
