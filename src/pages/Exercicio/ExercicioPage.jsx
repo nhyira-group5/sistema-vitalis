@@ -6,7 +6,7 @@ import { Button } from '@components/Button/button';
 import { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Tag } from '../../components/Tag/tag';
-import { api } from '@apis/api';
+import { api } from '../../Api';
 
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 

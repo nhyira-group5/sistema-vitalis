@@ -1,13 +1,13 @@
-import { DotsThree, X } from "@phosphor-icons/react";
-import { twMerge } from "tailwind-merge";
-import { api } from "@apis/api";
-import { getLoginResponse, getDataAtual } from "@utils/globalFunc";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Checkbox } from "@components/Checkbox/checkbox";
-import { Button } from "@components/Button/button";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import defaultIcon from "@assets/defaultIcon.png"
+import { DotsThree, X } from '@phosphor-icons/react';
+import { twMerge } from 'tailwind-merge';
+import { api } from '../../Api';
+import { getLoginResponse, getDataAtual } from '@utils/globalFunc';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { Checkbox } from '@components/Checkbox/checkbox';
+import { Button } from '@components/Button/button';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import defaultIcon from '@assets/defaultIcon.png';
 
 export function CardPersonal({
   size,
@@ -31,29 +31,26 @@ export function CardPersonal({
       usuarioId: loginResponse.id,
 
       personalId: personal.idPersonal,
-      inicioContrato: getDataAtual()
-    }
+      inicioContrato: getDataAtual(),
+    };
 
-    try{
-      api.post(`/contratos`, contratoDto)
-      .then((response)=>{
-        modalInteract()
-        toast.success("Solicitação enviada!")
-      })
-    } catch(error){
+    try {
+      api.post(`/contratos`, contratoDto).then((response) => {
+        modalInteract();
+        toast.success('Solicitação enviada!');
+      });
+    } catch (error) {
       console.log(error);
-      toast.error("Erro ao enviar solicitação!");
+      toast.error('Erro ao enviar solicitação!');
     }
   }
 
-8
-  
+  8;
 
-   function isUserFiliado(){    
-    if(usuario == undefined || personal == undefined) return false;
+  function isUserFiliado() {
+    if (usuario == undefined || personal == undefined) return false;
 
-      return usuario.personalId == personal.idPersonal
-
+    return usuario.personalId == personal.idPersonal;
   }
 
   useEffect(() => {
@@ -62,31 +59,39 @@ export function CardPersonal({
 
   return (
     <>
+      <div
+        className={twMerge(
+          'w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between',
+          haveShadow ? 'drop-shadow-lg' : '',
+          isUserFiliado() ? 'bg-primary-green100' : 'bg-white ',
+        )}
+      >
+        <div className="flex gap-5">
+          <img
+            className={twMerge(
+              'size-10 rounded-full object-cover self-center',
+              size,
+            )}
+            src={defaultIcon}
+            alt=""
+          />
 
-    <div
-      className={twMerge("w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between", haveShadow ? "drop-shadow-lg" : "", isUserFiliado() ? "bg-primary-green100" : "bg-white ")}
-    >
+          <div className="h-full flex flex-col justify-between self-center ">
+            <h2
+              className={twMerge(
+                'font-semibold text-[#2B6E36]',
+                !isUser ? 'text-[#2B6E36]' : 'text-[#503465]',
+              )}
+            >
+              {personal.nome || 'Xpto'}
+            </h2>
 
-              
-      <div className="flex gap-5">
-        <img
-          className={twMerge(
-            "size-10 rounded-full object-cover self-center",size)}
-          src={defaultIcon}
-          alt=""
-        />
-
-        <div className="h-full flex flex-col justify-between self-center ">
-          <h2
-            className={twMerge("font-semibold text-[#2B6E36]", !isUser ? "text-[#2B6E36]" : "text-[#503465]")}>
-            {personal.nome || "Xpto"}
-          </h2>
-
-
-          <span className="text-sm">
-            {!isUser ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}` : `Meta em ${usuario.meta.nome}`}
-            <span className="font-semibold"> {""}</span>
-          </span>
+            <span className="text-sm">
+              {!isUser
+                ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}`
+                : `Meta em ${usuario.meta.nome}`}
+              <span className="font-semibold"> {''}</span>
+            </span>
 
             {/* {personal.academiaId.cidade != null && personal.academiaId.estado != null ? (
             <span className="text-sm font-semibold">
@@ -102,7 +107,7 @@ export function CardPersonal({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <button className="absolute right-2 top-0 outline-none">
-                <DotsThree size={32} color={"#000000"} />
+                <DotsThree size={32} color={'#000000'} />
               </button>
             </DropdownMenu.Trigger>
 
@@ -110,7 +115,7 @@ export function CardPersonal({
               <DropdownMenu.Content
                 className="min-w-[220px] bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
                 sideOffset={5}
-                side={"left"}
+                side={'left'}
               >
                 <DropdownMenu.Item
                   onClick={modalInteract}
@@ -155,7 +160,7 @@ export function CardPersonal({
 
             <div className="w-full flex justify-end items-center">
               <Button
-                content={"Solicitar"}
+                content={'Solicitar'}
                 iconVisibility={false}
                 onClick={postContact}
               />

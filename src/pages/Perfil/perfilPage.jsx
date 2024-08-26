@@ -8,7 +8,7 @@ import { CloudinaryButtonPerfil } from '@components/Button/button';
 import defaultIcon from '@assets/defaultIcon.png';
 
 import { DisplayInput } from '@components/Input/input';
-import { api } from '@apis/api';
+import { api } from '../../Api';
 
 import {
   validateLogin,

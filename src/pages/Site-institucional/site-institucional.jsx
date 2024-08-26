@@ -28,8 +28,13 @@ import {
   Phone,
 } from '@phosphor-icons/react';
 import { Button } from '@components/Button/button';
+import { useContext } from 'react';
+import { UserContext } from '../../UserContext';
 
 const SiteInstitucional = () => {
+  const nome = useContext(UserContext);
+  console.log(nome.nome);
+
   return (
     <main>
       <div className="fixed right-5 z-10 h-full  flex items-center">
