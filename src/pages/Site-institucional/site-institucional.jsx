@@ -1,11 +1,6 @@
 import './site-inst-stylesheet.scss';
 import { Link } from 'react-router-dom';
-
-// import "@shoelace-style/shoelace/dist/themes/base.css";
-// import "@shoelace-style/shoelace/dist/components/carousel/carousel.css";
-
 import blackNormalSize from '@assets/logos/greenNormalSizeBlackColor.svg';
-
 import vectorParalelepipedo from '@assets/vector-paralelepipedo.png';
 import vectorParalelepipedoInvertido from '@assets/vector-paralelepipedo-invertido.svg';
 import vectorCoracao from '@assets/vector-coracao.svg';
@@ -17,24 +12,15 @@ import vectorBottomRecursos from '@assets/vector-bottom-recursos.svg';
 import ProtoPersonaMarcelo from '@assets/proto-persona-marcelo.png';
 import ProtoPersonaTauane from '@assets/proto-persona-tauane.png';
 import logoNormal from '@assets/logos/greenNormalSize.svg';
-
 import celulaesrGenericos from '@assets/celulares-genericos.png';
-// import vai from "@assets/vai.png";
-// import volta from "@assets/volta.png";
-
 import {
   PersonSimpleCircle,
   EnvelopeSimple,
   Phone,
 } from '@phosphor-icons/react';
 import { Button } from '@components/Button/button';
-import { useContext } from 'react';
-import { UserContext } from '../../UserContext';
 
 const SiteInstitucional = () => {
-  const nome = useContext(UserContext);
-  console.log(nome.nome);
-
   return (
     <main>
       <div className="fixed right-5 z-10 h-full  flex items-center">

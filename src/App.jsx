@@ -19,6 +19,7 @@ import { HomePersonalPage } from './pages/HomePersonal/homePersonalPage.jsx';
 import { PerfilPersonalPage } from './pages/PerfilPersonal/perfilPersonalPage.jsx';
 import { ChatPersonalPage } from './pages/ChatPersonal/chatPersonalPage.jsx';
 import { UserStorage } from './UserContext.jsx';
+import { SiteInst } from './pages/Site-institucional/site-paralelo.jsx';
 
 export function App() {
   return (
@@ -26,6 +27,7 @@ export function App() {
       <UserStorage>
         <Routes>
           <Route path="/" element={<SiteInstitucional />} />
+          <Route path="/site" element={<SiteInst />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="cadastro" element={<CadastroPage />} />
           <Route path="cadastroParq" element={<CadastroParqPage />} />

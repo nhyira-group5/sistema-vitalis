@@ -99,7 +99,7 @@ export function BuscarPersonalPage() {
   }
 
   function handleClickCard(e) {
-    console.log(props);
+    console.log(e);
   }
 
   if (loadingPage) return null;
