@@ -1,29 +1,29 @@
-import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
-import { MagnifyingGlass } from "@phosphor-icons/react";
-import { InputAcad } from "../../components/InputAcad/inputAcad";
-import { CardAcad } from "../../components/CardAcad/cardAcad";
-import { SideBar } from "../../components/SideBar/sideBar";
-import { Mapa } from "../../components/Mapa/mapa";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
-import defaultIcon from "@assets/defaultIcon.png";
+import { CardPersonal } from '../../components/CardPersonal/cardPersonal';
+import { MagnifyingGlass } from '@phosphor-icons/react';
+import { InputAcad } from '../../components/InputAcad/inputAcad';
+import { CardAcad } from '../../components/CardAcad/cardAcad';
+import { SideBar } from '../../components/SideBar/sideBar';
+import { Mapa } from '../../components/Mapa/mapa';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { QuestionMark } from '@phosphor-icons/react/dist/ssr';
+import defaultIcon from '@assets/defaultIcon.png';
 
 import {
   validateLogin,
   validateUsuario,
   getLoginResponse,
-} from "@utils/globalFunc";
-import { api } from "@apis/api";
-import { useNavigate } from "react-router-dom";
-import { Splash } from "@components/Splash/splash";
-import { twMerge } from "tailwind-merge";
+} from '@utils/globalFunc';
+import { api } from '../../api';
+import { useNavigate } from 'react-router-dom';
+import { Splash } from '@components/Splash/splash';
+import { twMerge } from 'tailwind-merge';
 
 export function BuscarPersonalPage() {
   const [carregando, setCarregando] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
 
-  const [cep, setCep] = useState("");
+  const [cep, setCep] = useState('');
   const [infoEndereco, setInfoEndereco] = useState(null);
   const [academias, setAcademias] = useState(null);
   const [infoDistance, setInfoDistance] = useState(null);
@@ -99,7 +99,7 @@ export function BuscarPersonalPage() {
   }
 
   function handleClickCard(e) {
-    console.log(props);
+    console.log(e);
   }
 
   if (loadingPage) return null;
@@ -129,8 +129,8 @@ export function BuscarPersonalPage() {
 
       <div
         className={twMerge(
-          "w-[90vw] h-full flex justify-between",
-          !usuario.pagamentoAtivo && "blur-sm"
+          'w-[90vw] h-full flex justify-between',
+          !usuario.pagamentoAtivo && 'blur-sm',
         )}
       >
         <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
@@ -143,7 +143,7 @@ export function BuscarPersonalPage() {
               label="CEP"
               placeholder="00000-000"
               type="text"
-              width={"w-1/5"}
+              width={'w-1/5'}
               valueOption={cep}
               onChangeFunction={handleInputCep}
             />

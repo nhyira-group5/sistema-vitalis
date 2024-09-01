@@ -1,20 +1,19 @@
-import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
-import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
-import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
-import { SideBar } from "../../components/SideBar/sideBar";
-import TooltipDemo from "../../components/Tooltip/tooltip";
-import { Checkbox } from "@components/Checkbox/checkbox";
-import { DisplayInput } from "@components/Input/input";
-import SetaEsquerda from "@assets/seta-esquerda.svg";
-import Interrogacao from "@assets/interrogacao.svg";
-import SetaDireita from "@assets/seta-direita.svg";
-import { Splash } from "@components/Splash/splash";
-import { BarChart } from "@mui/x-charts/BarChart";
-import { Tag } from "../../components/Tag/tag";
-import Calendar from "@assets/calendar.svg";
-import { useEffect, useState } from "react";
-
-import { api } from "@apis/api";
+import { AtividadeOption } from '../../components/AtividadeOption/atividadeOption';
+import { AtividadeCard } from '../../components/AtividadeCard/atividadeCard';
+import { Barbell, BowlSteam, CalendarCheck } from '@phosphor-icons/react';
+import { SideBar } from '../../components/SideBar/sideBar';
+import TooltipDemo from '../../components/Tooltip/tooltip';
+import { Checkbox } from '@components/Checkbox/checkbox';
+import { DisplayInput } from '@components/Input/input';
+import SetaEsquerda from '@assets/seta-esquerda.svg';
+import Interrogacao from '@assets/interrogacao.svg';
+import SetaDireita from '@assets/seta-direita.svg';
+import { Splash } from '@components/Splash/splash';
+import { BarChart } from '@mui/x-charts/BarChart';
+import { Tag } from '../../components/Tag/tag';
+import Calendar from '@assets/calendar.svg';
+import { useEffect, useState } from 'react';
+import { api } from '../../api';
 
 import {
   getLoginResponse,
@@ -22,16 +21,16 @@ import {
   validateUsuario,
   formatarCPF,
   converterDataFormato,
-} from "@utils/globalFunc";
+} from '@utils/globalFunc';
 
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export function RelatorioPage() {
   const navigate = useNavigate();
 
-  const [currentyMouth, setCurrentyMouth] = useState("");
-  const [labelImc, setLabelImc] = useState("");
+  const [currentyMouth, setCurrentyMouth] = useState('');
+  const [labelImc, setLabelImc] = useState('');
 
   const [activitiesDay, setActivitiesDay] = useState([]);
 
@@ -75,7 +74,7 @@ export function RelatorioPage() {
       axios.get(url).then((response) => {
         console.log(response.data);
         if (response.data.meta === null) {
-          setMeta("Emagrecimento");
+          setMeta('Emagrecimento');
         } else {
           console.log(response.data.meta);
           setMeta(response.data.meta.nome);
@@ -160,7 +159,7 @@ export function RelatorioPage() {
   }, [activitiesDay]);
 
   function generateCurrrentyMouth() {
-    setCurrentyMouth("AGOSTO");
+    setCurrentyMouth('AGOSTO');
   }
 
   // CALCULO DO IMC E CLASSIFICAÇÃO
@@ -170,14 +169,14 @@ export function RelatorioPage() {
 
   function classificationImc(imc) {
     if (imc < 18.5) {
-      return "Abaixo do peso";
+      return 'Abaixo do peso';
     } else if (imc >= 18.5 && imc < 24.9) {
-      return "Peso normal";
+      return 'Peso normal';
     } else if (imc >= 25 && imc < 29.9) {
-      return "Sobrepeso";
+      return 'Sobrepeso';
     } else if (imc >= 30 && imc < 34.9) {
-      return "Obeso";
-    } else return "Extremamente obeso";
+      return 'Obeso';
+    } else return 'Extremamente obeso';
   }
 
   // function calculatePositionArrow() {
@@ -189,21 +188,21 @@ export function RelatorioPage() {
   // QUANTIDADE TOTAL DE CADA ATIVIDADE
   function handleTotalAmount(activity) {
     const response = activitiesDay.filter(
-      (element) => element.type == activity
+      (element) => element.type == activity,
     );
-    console.log("Lista de " + activity + ": " + response);
+    console.log('Lista de ' + activity + ': ' + response);
     return response;
   }
 
   function generateTotalAmountExercises() {
-    const totalAmountExercises = handleTotalAmount("Exercício").length;
-    console.log("Total de exercícios: " + totalAmountExercises);
+    const totalAmountExercises = handleTotalAmount('Exercício').length;
+    console.log('Total de exercícios: ' + totalAmountExercises);
     setTotalAmountExercises(totalAmountExercises);
   }
 
   function generateTotalAmountMeals() {
-    const amountMealsTotal = handleTotalAmount("Refeição").length;
-    console.log("Total de refeições: " + amountMealsTotal);
+    const amountMealsTotal = handleTotalAmount('Refeição').length;
+    console.log('Total de refeições: ' + amountMealsTotal);
     setTotalAmountMeals(amountMealsTotal);
   }
 
@@ -217,25 +216,25 @@ export function RelatorioPage() {
   function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
-    console.log("Lista de " + activity + " concluídos: " + response);
+    console.log('Lista de ' + activity + ' concluídos: ' + response);
     return response;
   }
 
   function generateCurrentyAmountExercises() {
-    const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
-    console.log("Exercícios concluídos: " + currentyAmountExercises);
+    const currentyAmountExercises = handleCurrentyAmount('Exercício').length;
+    console.log('Exercícios concluídos: ' + currentyAmountExercises);
     setCurrentyAmountExercises(currentyAmountExercises);
   }
 
   function generateCurrentyAmountMeals() {
-    const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
-    console.log("Refeições concluídas: " + currentyAmountMeals);
+    const currentyAmountMeals = handleCurrentyAmount('Refeição').length;
+    console.log('Refeições concluídas: ' + currentyAmountMeals);
     setCurrentyAmountMeals(currentyAmountMeals);
   }
 
   function generateCurrentyAmountDays() {
     const currentyDays = listaSemanal.filter(
-      (element) => element.concluido == true
+      (element) => element.concluido == true,
     ).length;
     setCurrentyAmountDays(currentyDays);
   }
@@ -246,78 +245,78 @@ export function RelatorioPage() {
     if (activityDays) {
       setActivitiesDay(activityDays.atividades);
     } else {
-      console.log("Não há itens com concluido == false.");
+      console.log('Não há itens com concluido == false.');
     }
   }
 
   // MUDAR DE MÊS
   function nextMonth() {
-    console.log("Mês posterior");
+    console.log('Mês posterior');
   }
 
   function previousMonth() {
-    console.log("Mês anterior");
+    console.log('Mês anterior');
   }
 
   const listaSemanal = [
     {
-      dia: "ROTINA TRÊS",
+      dia: 'ROTINA TRÊS',
       concluido: false,
       atividades: [
         {
-          type: "Refeição",
-          name: "Coxinha",
+          type: 'Refeição',
+          name: 'Coxinha',
           concluido: false,
           description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis isteandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiu",
-          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-          duration: "10:30",
-          repetitions: "5",
-          series: "10",
+            'Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis isteandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiuandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eiu',
+          midia: 'https://www.designi.com.br/images/preview/10138011.jpg',
+          duration: '10:30',
+          repetitions: '5',
+          series: '10',
         },
         {
-          type: "Refeição",
-          name: "Habibs",
+          type: 'Refeição',
+          name: 'Habibs',
           concluido: false,
           description:
-            "Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste",
-          midia: "https://www.designi.com.br/images/preview/10138011.jpg",
-          duration: "05:30",
-          repetitions: "30",
-          series: "500",
+            'Lorem ipsum dolor sit amet. Quo dolor eveniet ut enim dolores et voluptatem maxime ut consequatur consequatur et molestiae perferendis rem soluta temporibus sed dolore facere. Ut repudiandae minus et assumenda repellendus et nesciunt exercitationem qui provident error aut perferendis perspiciatis qui natus sint. Aut doloribus facere eos optio eius ut aspernatur maxime ut omnis iste',
+          midia: 'https://www.designi.com.br/images/preview/10138011.jpg',
+          duration: '05:30',
+          repetitions: '30',
+          series: '500',
         },
         {
-          type: "Exercício",
-          name: "Crucifixo",
+          type: 'Exercício',
+          name: 'Crucifixo',
           concluido: true,
-          description: "CUSCUZ PAULISTA",
+          description: 'CUSCUZ PAULISTA',
           midia:
-            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
-          duration: "00:30",
-          repetitions: "9",
-          series: "999",
+            'https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg',
+          duration: '00:30',
+          repetitions: '9',
+          series: '999',
         },
         {
-          type: "Exercício",
-          name: "Crucifixo",
+          type: 'Exercício',
+          name: 'Crucifixo',
           concluido: true,
-          description: "CUSCUZ PAULISTA",
+          description: 'CUSCUZ PAULISTA',
           midia:
-            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
-          duration: "00:30",
-          repetitions: "9",
-          series: "999",
+            'https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg',
+          duration: '00:30',
+          repetitions: '9',
+          series: '999',
         },
         {
-          type: "Exercício",
-          name: "Crucifixo funciona 3",
+          type: 'Exercício',
+          name: 'Crucifixo funciona 3',
           concluido: true,
-          description: "CUSCUZ PAULISTA",
+          description: 'CUSCUZ PAULISTA',
           midia:
-            "https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg",
-          duration: "00:30",
-          repetitions: "9",
-          series: "999",
+            'https://i.pinimg.com/474x/ac/6e/6b/ac6e6bde1fcab62ca489a7279380b506.jpg',
+          duration: '00:30',
+          repetitions: '9',
+          series: '999',
         },
       ],
     },
@@ -341,7 +340,7 @@ export function RelatorioPage() {
                 <img src={SetaEsquerda} alt="" />
               </button> */}
               <span className="h-fit flex font-semibold gap-2">
-                {currentyMouth} / 2024{" "}
+                {currentyMouth} / 2024{' '}
                 <img className="size-6" src={Calendar} alt="" />
               </span>
               {/* <button
@@ -396,7 +395,7 @@ export function RelatorioPage() {
                         xAxis={[
                           {
                             data: retornaVetorBonito(),
-                            scaleType: "band",
+                            scaleType: 'band',
                           },
                         ]}
                         width={600}
@@ -435,15 +434,15 @@ export function RelatorioPage() {
                   </div>
                   <div
                     className={
-                      labelImc == "Abaixo do peso"
-                        ? "w-full text-center text-blue-500 font-medium"
-                        : labelImc == "Peso normal"
-                        ? "w-full text-center text-[#48B75A] font-medium"
-                        : labelImc == "Sobrepeso"
-                        ? "w-full text-center text-[#F6D920] font-medium"
-                        : labelImc == "Obeso"
-                        ? "w-full text-center text-orange-500 font-medium"
-                        : "w-full text-center text-[#CA1B1B] font-medium"
+                      labelImc == 'Abaixo do peso'
+                        ? 'w-full text-center text-blue-500 font-medium'
+                        : labelImc == 'Peso normal'
+                          ? 'w-full text-center text-[#48B75A] font-medium'
+                          : labelImc == 'Sobrepeso'
+                            ? 'w-full text-center text-[#F6D920] font-medium'
+                            : labelImc == 'Obeso'
+                              ? 'w-full text-center text-orange-500 font-medium'
+                              : 'w-full text-center text-[#CA1B1B] font-medium'
                     }
                   >
                     {labelImc}

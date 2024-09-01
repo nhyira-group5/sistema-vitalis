@@ -1,14 +1,12 @@
-import { CameraRotate, LockKey } from '@phosphor-icons/react';
+import { LockKey } from '@phosphor-icons/react';
 import { SideBar } from '../../components/SideBar/sideBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@components/Checkbox/checkbox';
 import { CloudinaryButtonPerfil } from '@components/Button/button';
 
 import defaultIcon from '@assets/defaultIcon.png';
 
-import { DisplayInput } from '@components/Input/input';
-import { api } from '@apis/api';
+import { api } from '../../api';
 
 import {
   validateLogin,
@@ -17,6 +15,7 @@ import {
   formatarCPF,
   converterDataFormato,
 } from '@utils/globalFunc';
+
 export function PerfilPage() {
   const [user, setUser] = useState(null);
   const [personal, setPersonal] = useState(null);
@@ -191,8 +190,8 @@ export function PerfilPage() {
                     ? fichaUsuario.usuarioId.sexo === 'F'
                       ? 'Feminino'
                       : fichaUsuario.usuarioId.sexo === 'M'
-                      ? 'Masculino'
-                      : ''
+                        ? 'Masculino'
+                        : ''
                     : ''}
                 </p>
               </div>
@@ -277,8 +276,8 @@ export function PerfilPage() {
                         ? personal.sexo === 'F'
                           ? 'Feminino'
                           : personal.sexo === 'M'
-                          ? 'Masculino'
-                          : ''
+                            ? 'Masculino'
+                            : ''
                         : ''}
                     </p>
                   </div>
