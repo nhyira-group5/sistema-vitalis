@@ -6,7 +6,7 @@ import { Button } from '@components/Button/button';
 import { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Tag } from '../../components/Tag/tag';
-import { api } from '../../Api';
+import { api } from '../../api';
 
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
@@ -190,9 +190,8 @@ export function ExercicioPage() {
               <InfoCard
                 infoMessage={'Total de execução de séries'}
                 titulo={'Número de séries'}
-                content={`${
-                  treino ? treino.serie : '...'
-                } Séries de repetições`}
+                content={`${treino ? treino.serie : '...'
+                  } Séries de repetições`}
               />
             </div>
           </div>
@@ -200,9 +199,9 @@ export function ExercicioPage() {
           <div className="w-2/5 h-full flex flex-wrap rounded-xl p-5 gap-5">
             {treino
               ? treino.exercicioId.tagExercicioDtos &&
-                treino.exercicioId.tagExercicioDtos.map((tag, index) => (
-                  <Tag key={index} text={tag.tagId.nome} />
-                ))
+              treino.exercicioId.tagExercicioDtos.map((tag, index) => (
+                <Tag key={index} text={tag.tagId.nome} />
+              ))
               : '...'}
           </div>
         </div>

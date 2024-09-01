@@ -9,7 +9,7 @@ import { Splash } from '@components/Splash/splash';
 
 import { useNavigate } from 'react-router-dom';
 
-import { api } from '../../Api';
+import { api } from '../../api';
 import {
   getLoginResponse,
   validateLogin,

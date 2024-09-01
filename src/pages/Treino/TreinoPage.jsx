@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 import { Splash } from '@components/Splash/splash';
 
-import { api } from '../../Api';
+import { api } from '../../api';
 
 export function TreinoPage() {
   const [treinosRotinaDiaria, setTreinosRotinaDiaria] = useState([]);

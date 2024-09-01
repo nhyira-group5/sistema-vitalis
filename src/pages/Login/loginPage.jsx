@@ -2,7 +2,7 @@ import { User, Lock } from '@phosphor-icons/react';
 import { Input } from '../../components/Input/input';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { api } from '../../Api';
+import { api } from '../../api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 

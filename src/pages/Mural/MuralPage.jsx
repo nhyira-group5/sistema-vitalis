@@ -5,7 +5,7 @@ import { MuralItem } from '@components/MuralItem/muralItem';
 import { CloudinaryButton } from '@components/Button/button';
 
 import { toast } from 'react-toastify';
-import { api } from '../../Api';
+import { api } from '../../api';
 import {
   getLoginResponse,
   validateLogin,

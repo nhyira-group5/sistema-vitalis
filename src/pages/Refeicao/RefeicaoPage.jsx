@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
 
-import { api } from '../../Api';
+import { api } from '../../api';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 export function RefeicaoPage() {
@@ -128,7 +128,7 @@ export function RefeicaoPage() {
           <div className="flex w-full h-2/5 max-h-2/5 py-5 gap-10">
             <div className="w-3/5 max-w-3/5 overflow-auto scrollbar-thin flex gap-5">
               {refeicao.alimentoPorRefeicao &&
-              refeicao.alimentoPorRefeicao.length > 0 ? (
+                refeicao.alimentoPorRefeicao.length > 0 ? (
                 refeicao.alimentoPorRefeicao.map((ingrediente, index) => (
                   <IngredienteCard key={index} ingrediente={ingrediente} />
                 ))

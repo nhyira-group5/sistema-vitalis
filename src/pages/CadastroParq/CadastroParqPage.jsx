@@ -1,7 +1,7 @@
 import { Select } from '@components/Select/select';
 import { Button } from '@components/Button/button';
 import { DisplayInput, Input } from '@components/Input/input';
-import { api } from '../../Api';
+import { api } from '../../api';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
@@ -380,8 +380,8 @@ export function CadastroParqPage() {
                   usuarioData.sexo === 'F'
                     ? 'Feminino'
                     : usuarioData.sexo === 'M'
-                    ? 'Masculino'
-                    : ''
+                      ? 'Masculino'
+                      : ''
                 }
                 disabled={true}
               />

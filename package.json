@@ -45,8 +45,7 @@
     "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.11",
-    "tailwind-merge": "^2.3.0",
-    "webfontloader": "^1.6.28"
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

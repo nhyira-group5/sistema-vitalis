@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { RefeicaoCard } from '@components/RefeicaoCard/refeicaoCard';
 import { Splash } from '@components/Splash/splash';
 
-import { api } from '../../Api';
+import { api } from '../../api';
 
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 import { useNavigate } from 'react-router-dom';

@@ -14,7 +14,7 @@ import {
   validateUsuario,
   getLoginResponse,
 } from '@utils/globalFunc';
-import { api } from '../../Api';
+import { api } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
 import { twMerge } from 'tailwind-merge';

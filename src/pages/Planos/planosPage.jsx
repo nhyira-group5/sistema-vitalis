@@ -5,7 +5,7 @@ import { parseISO, format } from 'date-fns';
 import { id, ptBR } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { api } from '../../Api';
+import { api } from '../../api';
 
 import {
   validateLogin,

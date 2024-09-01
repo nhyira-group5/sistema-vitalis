@@ -7,7 +7,7 @@ import {
 } from '@utils/globalFunc';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../Api';
+import { api } from '../../api';
 
 import { SplashPersonal } from '@components/Splash/splash';
 

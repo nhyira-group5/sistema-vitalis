@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       boxShadow: {
@@ -27,8 +30,8 @@ export default {
         successBlue: '#1B70CA',
       },
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        mavenPro: ['Maven Pro', 'sans-serif'],
+        'inter': ['Inter', 'Arial', 'sans-serif'],
+        'mavenPro': ['"Maven Pro" ', 'mono'],
       },
       keyframes: {
         slideDownAndFade: {
@@ -64,21 +67,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require('tailwind-scrollbar'),
-
-    function ({ addUtilities }) {
-      addUtilities({
-        '.truncate-multiline': {
-          display: '-webkit-box',
-          '-webkit-line-clamp': '2',
-          '-webkit-box-orient': 'vertical',
-          overflow: 'hidden',
-          'text-overflow': 'ellipsis',
-          'max-height': '3em', // Ajuste conforme a altura da linha
-          'line-height': '1.5em', // Ajuste conforme a altura da linha
-        },
-      });
-    },
-  ],
+  plugins: [],
 };

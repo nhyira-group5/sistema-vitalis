@@ -25,7 +25,7 @@ import {
   ArrowLeft,
   ArrowRight,
 } from '@phosphor-icons/react';
-import { api } from '../../../../Api';
+import { api } from '../../../../api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -487,9 +487,8 @@ export function InstrutorFormCadastro() {
         onSubmit={handleFirstSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
 
-        xl:gap-x-16 xl:gap-y-5 xl:h-full xl:grid-cols-2 xl:overflow-auto ${
-          formStep == 1 ? 'lg:flex  xl:grid' : 'hidden'
-        }`}
+        xl:gap-x-16 xl:gap-y-5 xl:h-full xl:grid-cols-2 xl:overflow-auto ${formStep == 1 ? 'lg:flex  xl:grid' : 'hidden'
+          }`}
       >
         <AltInput
           labelContent={'Nome do usuário'}
@@ -609,9 +608,8 @@ export function InstrutorFormCadastro() {
       <form
         onSubmit={handleSecondSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
-        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${
-          formStep == 2 ? 'lg:flex  xl:grid' : 'hidden'
-        }`}
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 2 ? 'lg:flex  xl:grid' : 'hidden'
+          }`}
       >
         <AltInput
           labelContent={'CEP'}

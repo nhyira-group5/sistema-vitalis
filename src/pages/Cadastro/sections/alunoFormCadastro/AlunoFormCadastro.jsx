@@ -1,7 +1,7 @@
 import { Select } from '@components/Select/select';
 import { Button } from '@components/Button/button';
 import { Input } from '@components/Input/input';
-import { api } from '../../../../Api';
+import { api } from '../../../../api';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 

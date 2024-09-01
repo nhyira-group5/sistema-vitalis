@@ -13,7 +13,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { Tag } from '../../components/Tag/tag';
 import Calendar from '@assets/calendar.svg';
 import { useEffect, useState } from 'react';
-import { api } from '../../Api';
+import { api } from '../../api';
 
 import {
   getLoginResponse,
@@ -437,12 +437,12 @@ export function RelatorioPage() {
                       labelImc == 'Abaixo do peso'
                         ? 'w-full text-center text-blue-500 font-medium'
                         : labelImc == 'Peso normal'
-                        ? 'w-full text-center text-[#48B75A] font-medium'
-                        : labelImc == 'Sobrepeso'
-                        ? 'w-full text-center text-[#F6D920] font-medium'
-                        : labelImc == 'Obeso'
-                        ? 'w-full text-center text-orange-500 font-medium'
-                        : 'w-full text-center text-[#CA1B1B] font-medium'
+                          ? 'w-full text-center text-[#48B75A] font-medium'
+                          : labelImc == 'Sobrepeso'
+                            ? 'w-full text-center text-[#F6D920] font-medium'
+                            : labelImc == 'Obeso'
+                              ? 'w-full text-center text-orange-500 font-medium'
+                              : 'w-full text-center text-[#CA1B1B] font-medium'
                     }
                   >
                     {labelImc}
