@@ -82,29 +82,25 @@ export function CadastroParqPage() {
     dorPeitoAtividade: 0,
     dorPeitoUltimoMes: 0,
     problemaOsseoArticular: 0,
-    medicamentoPressaoCoracao : 0,
-    impedimentoAtividade : 0
+    medicamentoPressaoCoracao: 0,
+    impedimentoAtividade: 0,
   });
 
+  const [splashActive, setSplashActive] = useState(false);
 
 
-
-  
-  function getMetas(){
-
-
-    api.get(`/metas`)
-    .then((response) =>{
-
-      setMetas([...metas,...response.data])
-    })      
-    .catch((error) => {
-      error.response.data.errors.forEach((erroMsg) => {
-        console.log(erroMsg.defaultMessage)
+  function getMetas() {
+    api
+      .get(`/metas`)
+      .then((response) => {
+        setMetas([...metas, ...response.data]);
       })
-    });
-    
-}
+      .catch((error) => {
+        error.response.data.errors.forEach((erroMsg) => {
+          console.log(erroMsg.defaultMessage);
+        });
+      });
+  }
 
 function getUsuarioResponse(id){
     api.get(`/usuarios/${id}`)
@@ -171,17 +167,20 @@ const encontrarMetaPeloId = (id, lista) => {
 
     if (isFormValid) {
       try {
+        setSplashActive(true);
+
         const fichaDto = fichaDtoCriacao(formData);
         const rotinaUsuarioDto = rotinaUsuarioDtoCriacao(formData);
 
         await api.post(`/rotinaUsuarios`, rotinaUsuarioDto);
         await api.post(`/fichas`, fichaDto);
-       
-        toast.success("Ficha criada com sucesso");
-        navigate("/home");
 
-        } catch (error) {
-          console.log(error);
+        toast.success('Ficha criada com sucesso');
+        setSplashActive(false)
+        navigate('/home');
+      } catch (error) {
+        setSplashActive(false)
+        console.log(error);
 
           error.response.data.errors.forEach((erroMsg) => {
             toast.error(
@@ -481,13 +480,15 @@ const encontrarMetaPeloId = (id, lista) => {
             </fieldset>
 
             <fieldset className="col-span-6 grid place-items-center">
-            <Button
-              content={"Concluir cadastro"}
-              
-              variant={"accept"}
-              buttonStyle={"text-gray100 bg-primary-green300 rounded-full font-bold px-10 py-4 hover:bg-primary-green400 transition-all flex items-center gap-1"}
-              type={"submit"}
-            />
+              <Button
+                content={splashActive ? <div className="animate-pulse rounded-full w-5 h-5 bg-white"></div> : "Concluir cadastro!"}
+                variant={'accept'}
+                iconVisibility={false}
+                buttonStyle={
+                  'text-gray100 bg-primary-green300 rounded-full font-bold px-10 py-4 hover:bg-primary-green400 transition-all flex items-center gap-1'
+                }
+                type={'submit'}
+              />
             </fieldset>
 
         </form>

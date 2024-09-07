@@ -1,18 +1,17 @@
-import {
-  User,
-  Lock,
-} from "@phosphor-icons/react";
-import { Input } from "../../components/Input/input";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { api } from "../../apis/api";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { User, Lock } from '@phosphor-icons/react';
+import { Input } from '../../components/Input/input';
+import { Link } from 'react-router-dom';
+import { useEffect, useContext, useState } from 'react';
+import { api } from '../../api';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../user-context'; 
+
 
 
 export function LoginPage() {
+  const { updateUser, user, loading, error } = useContext(UserContext);
   const navigate = useNavigate();
-
   const redirecionarHome = () => {
     navigate("/home");
   };
@@ -60,11 +59,10 @@ export function LoginPage() {
 
 
     try {
-        const response = await api.post(`/login/usuario`, userLoginDto);
-
-        sessionStorage.setItem('loginResponse', JSON.stringify(response.data));
-
-        await api.get(`/fichas/${response.data.id}`)
+      const response = await api.post(`/login/usuario`, userLoginDto);
+      
+      updateUser(response.data);
+      await api.get(`/fichas/${response.data.id}`);
 
         switch(response.data.tipo){
           case "USUARIO":
