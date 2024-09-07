@@ -1,9 +1,9 @@
-import { Select } from "@components/Select/select";
-import {Button} from "@components/Button/button";
-import { Input } from "@components/Input/input";
-import { api } from "@apis/api";
-import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { Select } from '@components/Select/select';
+import { Button } from '@components/Button/button';
+import { Input } from '@components/Input/input';
+import { api } from '../../../../api';
+import { toast } from 'react-toastify';
+import { useState, useEffect } from 'react';
 
 import {
   validateNome,
@@ -13,7 +13,7 @@ import {
   validateEmail,
   validateIdade,
   validateCPF,
-} from "@utils/validacoes";
+} from '@utils/validacoes';
 
 import {
   User,
@@ -22,18 +22,17 @@ import {
   Lock,
   CalendarDots,
   Hash,
-} from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
+} from '@phosphor-icons/react';
+import { useNavigate } from 'react-router-dom';
 
 export function AlunoFormCadastro() {
   const navigate = useNavigate();
-  
+
   const redirecionarLogin = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
   function createUserBody(userFormInfo) {
-
     const userBody = {
       tipo: userFormInfo.tipo,
       nome: userFormInfo.nome,
@@ -60,15 +59,15 @@ export function AlunoFormCadastro() {
   const [splashActive, setSplashActive] = useState(false);
 
   const [formData, setFormData] = useState({
-    tipo: "USUARIO",
-    nome: "",
-    username: "",
-    email: "",
-    CPF: "",
-    senha: "",
-    confSenha: "",
-    dtNasc: "",
-    sexo: "",
+    tipo: 'USUARIO',
+    nome: '',
+    username: '',
+    email: '',
+    CPF: '',
+    senha: '',
+    confSenha: '',
+    dtNasc: '',
+    sexo: '',
   });
 
  
@@ -80,12 +79,12 @@ export function AlunoFormCadastro() {
     const isUsernameValid = validateUsername(formData.username);
     const isConfSenhaValid = validateConfSenha(
       formData.confSenha,
-      formData.senha
+      formData.senha,
     );
     const isEmailValid = validateEmail(formData.email);
     const isIdadeValid = validateIdade(formData.dtNasc);
     const isCPFValid = validateCPF(formData.CPF);
-    const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== "";
+    const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== '';
 
     setIsNomeValid(isNomeValid);
     setIsSenhaValid(isSenhaValid);
@@ -131,17 +130,14 @@ export function AlunoFormCadastro() {
               toast.error(error.response.data.message);
           } 
         }
-    }
-
+      }
     }
   };
 
   const sexos = [
-    {nome: 'Masculino',
-     id: 'M'},
-    {nome: 'Feminino',
-     id: 'F'}
-  ]
+    { nome: 'Masculino', id: 'M' },
+    { nome: 'Feminino', id: 'F' },
+  ];
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -152,28 +148,28 @@ export function AlunoFormCadastro() {
     }));
 
     switch (name) {
-      case "nome":
+      case 'nome':
         setIsNomeValid(true);
         break;
-      case "username":
+      case 'username':
         setIsUsernameValid(true);
         break;
-      case "email":
+      case 'email':
         setIsEmailValid(true);
         break;
-      case "senha":
+      case 'senha':
         setIsSenhaValid(true);
         break;
-      case "confSenha":
+      case 'confSenha':
         setIsConfSenhaValid(true);
         break;
-      case "dtNasc":
+      case 'dtNasc':
         setIsIdadeValid(true);
         break;
-      case "CPF":
+      case 'CPF':
         setIsCPFValid(true);
         break;
-      case "sexo":
+      case 'sexo':
         setIsSexoSelecionado(true);
         break;
       default:
@@ -181,9 +177,9 @@ export function AlunoFormCadastro() {
     }
   };
 
-  useEffect(()=>{
-    console.log(formData)
-  },[formData])
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const nomeErroList = () => {
     return (
@@ -239,120 +235,118 @@ export function AlunoFormCadastro() {
   };
 
   return (
-  <>
-    <div className="flex flex-col gap-3 font-mavenPro text-start">
-    <span
-      className={`text-7xl font-bold text-primary-green300`} 
-    >
-      Cadastro Aluno
-    </span>
+    <>
+      <div className="flex flex-col gap-3 font-mavenPro text-start">
+        <span className={`text-7xl font-bold text-primary-green300`}>
+          Cadastro Aluno
+        </span>
 
-    <div className="flex flex-col gap-1">
-      <span className="text-lg font-normal">
-        Quer acessar nossa aplicação? Vamos realizar seu cadastro!
-      </span>
-      <span className="text-lg font-normal">
-        Insira algumas informações sobre você para fazermos o cadastro
-        de sua conta!
-      </span>
-    </div>
-  </div>
+        <div className="flex flex-col gap-1">
+          <span className="text-lg font-normal">
+            Quer acessar nossa aplicação? Vamos realizar seu cadastro!
+          </span>
+          <span className="text-lg font-normal">
+            Insira algumas informações sobre você para fazermos o cadastro de
+            sua conta!
+          </span>
+        </div>
+      </div>
 
-    <form
-      onSubmit={handleSubmit}
-      className="lg:gap-y-10 lg:h-full lg:flex lg: flex-col lg:overflow-auto
+      <form
+        onSubmit={handleSubmit}
+        className="lg:gap-y-10 lg:h-full lg:flex lg: flex-col lg:overflow-auto
                  xl:gap-x-16 xl:gap-y-0 xl:h-full  xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto"
-    >
-      <Input
-        labelContent={"Nome do usuário"}
-        icon={<PencilSimpleLine size={28} color="#000000" />}
-        placeholder={"Cauê Augusto da Silva Paroquia"}
-        nome={"nome"}
-        value={formData.nome}
-        onChangeFunction={handleChange}
-        valid={!isNomeValid}
-        invalidMessage={nomeErroList}
-      />
+      >
+        <Input
+          labelContent={'Nome do usuário'}
+          icon={<PencilSimpleLine size={28} color="#000000" />}
+          placeholder={'Cauê Augusto da Silva Paroquia'}
+          nome={'nome'}
+          value={formData.nome}
+          onChangeFunction={handleChange}
+          valid={!isNomeValid}
+          invalidMessage={nomeErroList}
+        />
 
-      <Input
-        labelContent={"Nickname"}
-        icon={<User size={28} color="#000000" />}
-        placeholder={"CaueBigForças"}
-        nome={"username"}
-        value={formData.username}
-        onChangeFunction={handleChange}
-        valid={!isUsernameValid}
-        invalidMessage={usernameErroList}
-      />
+        <Input
+          labelContent={'Nickname'}
+          icon={<User size={28} color="#000000" />}
+          placeholder={'CaueBigForças'}
+          nome={'username'}
+          value={formData.username}
+          onChangeFunction={handleChange}
+          valid={!isUsernameValid}
+          invalidMessage={usernameErroList}
+        />
 
-      <Input
-        labelContent={"Email"}
-        icon={<EnvelopeSimple size={28} color="#000000" />}
-        placeholder={"caue@gmail.com"}
-        nome={"email"}
-        value={formData.email}
-        onChangeFunction={handleChange}
-        valid={!isEmailValid}
-        invalidMessage={emailErroList}
-      />
+        <Input
+          labelContent={'Email'}
+          icon={<EnvelopeSimple size={28} color="#000000" />}
+          placeholder={'caue@gmail.com'}
+          nome={'email'}
+          value={formData.email}
+          onChangeFunction={handleChange}
+          valid={!isEmailValid}
+          invalidMessage={emailErroList}
+        />
 
-      <Input
-        labelContent={"Data de nascimento"}
-        icon={<CalendarDots size={28} color="#000000" />}
-        placeholder={"25/01/2004"}
-        nome={"dtNasc"}
-        value={formData.dtNasc}
-        onChangeFunction={handleChange}
-        inputType={"date"}
-        valid={!isIdadeValid}
-        invalidMessage={idadeErroList}
-      />
+        <Input
+          labelContent={'Data de nascimento'}
+          icon={<CalendarDots size={28} color="#000000" />}
+          placeholder={'25/01/2004'}
+          nome={'dtNasc'}
+          value={formData.dtNasc}
+          onChangeFunction={handleChange}
+          inputType={'date'}
+          valid={!isIdadeValid}
+          invalidMessage={idadeErroList}
+        />
 
-      <Input
-        labelContent={"Senha"}
-        icon={<Lock size={28} color="#000000" />}
-        placeholder={"◦◦◦◦◦◦"}
-        nome={"senha"}
-        value={formData.senha}
-        onChangeFunction={handleChange}
-        inputType={"password"}
-        valid={!isSenhaValid}
-        invalidMessage={senhaErroList}
-      />
+        <Input
+          labelContent={'Senha'}
+          icon={<Lock size={28} color="#000000" />}
+          placeholder={'◦◦◦◦◦◦'}
+          nome={'senha'}
+          value={formData.senha}
+          onChangeFunction={handleChange}
+          inputType={'password'}
+          valid={!isSenhaValid}
+          invalidMessage={senhaErroList}
+        />
 
-      <Input
-        labelContent={"Confirmar senha"}
-        icon={<Lock size={28} color="#000000" />}
-        placeholder={"◦◦◦◦◦◦"}
-        nome={"confSenha"}
-        value={formData.confSenha}
-        onChangeFunction={handleChange}
-        inputType={"password"}
-        valid={!isConfSenhaValid}
-        invalidMessage={confSenhaErroList}
-      />
+        <Input
+          labelContent={'Confirmar senha'}
+          icon={<Lock size={28} color="#000000" />}
+          placeholder={'◦◦◦◦◦◦'}
+          nome={'confSenha'}
+          value={formData.confSenha}
+          onChangeFunction={handleChange}
+          inputType={'password'}
+          valid={!isConfSenhaValid}
+          invalidMessage={confSenhaErroList}
+        />
 
-      <Input
-        labelContent={"CPF"}
-        icon={<Hash size={28} color="#000000" />}
-        placeholder={"123.123.123-10"}
-        nome={"CPF"}
-        value={formData.CPF}
-        onChangeFunction={handleChange}
-        inputType={"text"}
-        valid={!isCPFValid}
-        invalidMessage={CPFErrorList}
-      />
+        <Input
+          labelContent={'CPF'}
+          icon={<Hash size={28} color="#000000" />}
+          placeholder={'123.123.123-10'}
+          nome={'CPF'}
+          value={formData.CPF}
+          onChangeFunction={handleChange}
+          inputType={'text'}
+          valid={!isCPFValid}
+          invalidMessage={CPFErrorList}
+        />
 
-      <Select
-        options={sexos}
-        labelContent="Sexo"
-        onChangeFunction={handleChange}
-        id="sexo"
-        nome="sexo"
-        valid={!isSexoSelecionado}
-        placeholder={"Selecione um sexo"}
-      />
+        <Select
+          options={sexos}
+          labelContent="Sexo"
+          onChangeFunction={handleChange}
+          id="sexo"
+          nome="sexo"
+          valid={!isSexoSelecionado}
+          placeholder={'Selecione um sexo'}
+        />
 
         <fieldset className="col-span-2 grid justify-center items-center">
           <Button
