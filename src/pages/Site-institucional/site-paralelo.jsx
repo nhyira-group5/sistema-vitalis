@@ -9,7 +9,7 @@ export const SiteInst = () => {
       <header className='font-inter shadow-md'>
         <Container>
           <img src={blackNormalSize} alt="" />
-          <Link to="/login" className='bg-primary-green300 px-5 py-2.5 uppercase font-medium rounded rounded-lg block text-white '>entrar</Link>
+          <Link to="/login" className='bg-primary-green300 px-5 py-2.5 uppercase font-medium rounded-lg block text-white '>entrar</Link>
         </Container>
       </header>
       <Container>
