@@ -1,6 +1,6 @@
 import { SideBar } from '@components/SideBar/sideBar';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
   RotinaCard,
   RotinaDiariaCard,
@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { api } from '../../api';
 import {
-  getLoginResponse,
   validateLogin,
   validateUsuario,
 } from '@utils/globalFunc';
 
+import { UserContext } from '../../user-context'; 
+
 export function RotinasSemanaisPage() {
+  const { user, loading, error} = useContext(UserContext);
   const [rotinas, setRotinas] = useState([]);
   const [treinosRotina, setTreinosRotina] = useState([]);
 
@@ -24,7 +26,7 @@ export function RotinasSemanaisPage() {
   const [rotinasSemanaisSplash, setRotinasSemanaisSplash] = useState(false);
 
   const [rotinaSelecionada, setRotinaSelecionada] = useState(null);
-  const [userData, setUserData] = useState(getLoginResponse());
+  const [userData, setUserData] = useState(user);
 
   const navigate = useNavigate();
 
@@ -32,21 +34,19 @@ export function RotinasSemanaisPage() {
     const validarLoginEUsuario = async () => {
       setRotinasSemanaisSplash(true);
 
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
-
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
+    try{
       api
-        .get(`/rotinaSemanais/buscarUsuario/${userData.id}`)
+        .get(`/rotinaSemanais/buscarUsuario/${user.userData.id}`)
         .then((response) => {
           setRotinas([...rotinas, ...response.data]);
-          setRotinasSemanaisSplash(false);
         })
-        .catch((error) => {
-          error.response.data.errors.forEach((erroMsg) => {
-            console.log(erroMsg.defaultMessage);
-          });
-          setRotinasSemanaisSplash(false);
-        });
+      } catch(error){
+        console.log(error)
+      } finally {
+        setRotinasSemanaisSplash(false);
+      }
     };
 
     validarLoginEUsuario();

@@ -1,7 +1,8 @@
 import { SideBar } from '@components/SideBar/sideBar';
 import { Input } from '@components/Input/input';
 import { MagnifyingGlass } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../user-context'; 
 import { RefeicaoCard } from '@components/RefeicaoCard/refeicaoCard';
 import { Splash } from '@components/Splash/splash';
 
@@ -9,25 +10,29 @@ import { api } from '../../api';
 
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 import { useNavigate } from 'react-router-dom';
+import { fi } from 'date-fns/locale';
 
 export function RefeicoesPage() {
   const [refeicoes, setRefeicoes] = useState([]);
   const [refeicoesIsLoading, setRefeicoesIsLoading] = useState(false);
   const navigate = useNavigate();
+  const {updateUser, user, loading, error} = useContext(UserContext);
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
       try {
         setRefeicoesIsLoading(true);
         api.get(`/refeicoes`).then((response) => {
           setRefeicoes([...refeicoes, ...response.data]);
-          setRefeicoesIsLoading(false);
+          
         });
       } catch (error) {
         console.log(error);
+        
+      } finally {
         setRefeicoesIsLoading(false);
       }
     };
@@ -65,14 +70,10 @@ export function RefeicoesPage() {
               <div className="w-full h-full col-span-5">
                 <Splash />
               </div>
-            ) : refeicoes && refeicoes.length > 0 ? (
+            ) : (
               refeicoes.map((refeicao) => (
                 <RefeicaoCard key={refeicao.idRefeicao} refeicao={refeicao} />
               ))
-            ) : (
-              <div className="w-full h-full flex justify-center items-center">
-                <span>Nenhuma refeição aqui D:</span>
-              </div>
             )}
           </div>
         </div>

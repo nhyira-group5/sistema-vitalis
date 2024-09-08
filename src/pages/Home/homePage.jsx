@@ -1,7 +1,7 @@
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
 import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
 import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BowlSteam, Barbell, CalendarCheck } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,10 @@ import { getLoginResponse } from "@utils/globalFunc";
 import { api } from "../../api";
 import { Template } from "../template";
 import { Reminder } from "../../components/Reminder/reminder";
+
+import { UserContext } from '../../user-context'; 
+import { useNavigate } from 'react-router-dom';
+
 import { Activities } from "./activities";
 
 export function HomePage() {
@@ -41,11 +45,14 @@ export function HomePage() {
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
-  useEffect(() => {
-    api
-      .get(`/refeicoes/por-semana/1`)
-      .then((response) => {
-        const listaRefeicoesDaSemana = response.data;
+  const { user, loading, error} = useContext(UserContext);
+  const navigate = useNavigate();
+  // useEffect(() => {
+  //   const url = "http://localhost:8080/refeicoes/por-semana/1";
+  //   axios
+  //     .get(url)
+  //     .then((response) => {
+  //       const listaRefeicoesDaSemana = response.data;
 
         const agrupadosPelaRefeicaoDiaria = listaRefeicoesDaSemana.reduce(
           (acc, curr) => {
@@ -364,6 +371,16 @@ export function HomePage() {
         console.log(response.data);
       });
   }
+
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
+      
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
+    };
+
+    validarLoginEUsuario();
+  }, []);
 
   return (
     <Template name="Home">

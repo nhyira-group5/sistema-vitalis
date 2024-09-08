@@ -1,27 +1,19 @@
-export function getLoginResponse() {
-  const storedResponse = JSON.parse(sessionStorage.getItem('loginResponse'));
-  return storedResponse;
-}
 
-export function validateLogin(navigate) {
-  const usuarioLogado = getLoginResponse();
-  if (!usuarioLogado) {
+export function validateLogin(navigate, user) {
+  if (!user) {
     navigate('/login');
   }
 }
 
-export function validatePersonal(navigate) {
-  const usuarioLogado = getLoginResponse();
+export function validatePersonal(navigate, user) {
 
-  if (usuarioLogado && usuarioLogado.tipo != 'PERSONAL') {
+  if (user && user.userData.tipo != 'PERSONAL') {
     navigate('/home');
   }
 }
 
-export function validateUsuario(navigate) {
-  const usuarioLogado = getLoginResponse();
-
-  if (usuarioLogado && usuarioLogado.tipo != 'USUARIO') {
+export function validateUsuario(navigate, user) {
+  if (user && user.userData.tipo != 'USUARIO') {
     navigate('/home-personal');
   }
 }

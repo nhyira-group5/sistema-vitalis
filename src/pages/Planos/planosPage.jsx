@@ -3,53 +3,54 @@ import { SideBar } from '../../components/SideBar/sideBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { parseISO, format } from 'date-fns';
 import { id, ptBR } from 'date-fns/locale';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { api } from '../../api';
+
+import { UserContext } from '../../user-context'; 
 
 import {
   validateLogin,
   validateUsuario,
-  getLoginResponse,
 } from '@utils/globalFunc';
 
 export function PlanosPage() {
   const [qrCode, setQRCode] = useState('');
   const [dateExpiration, setDateExpiration] = useState('');
   const [assinatura, setAssinatura] = useState({});
-  const [user, setUser] = useState({});
+  const { user, loading, error} = useContext(UserContext);
+
   const [loadingPage, setLoadingPage] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const url = 'http://localhost:8080/assinaturas/1';
+    const url = `http://localhost:8080/assinaturas/${user.userData.id}`;
     axios.get(url).then((response) => {
       // setAssinatura(response.data);
       console.log(response.data);
     });
   }, []);
 
-  function getUsuario() {
-    const loginResponse = getLoginResponse();
-    try {
-      api.get(`usuarios/${loginResponse.id}`).then((response) => {
-        // response.data.pagamentoAtivo = true;
-        setUser(response.data);
-        console.log(user);
-        setLoadingPage(true);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // function getUsuario() {
+  //   const loginResponse = getLoginResponse();
+  //   try {
+  //     api.get(`usuarios/${loginResponse.id}`).then((response) => {
+  //       // response.data.pagamentoAtivo = true;
+  //       setUser(response.data);
+  //       console.log(user);
+  //       setLoadingPage(true);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
-      getUsuario();
     };
 
     validarLoginEUsuario();
@@ -58,7 +59,7 @@ export function PlanosPage() {
   function pagamentoDto() {
     console.log(user);
     const body = {
-      usuarioId: user.id, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
+      usuarioId: user.userData.id, // PEGAR O ID DO USUARIO QUE VER POR LOCALSTORAGE
       tipo: 'PIX', // SEMPRE SERA PIX
       assinaturaId: 1, // VAI SER UM ID FIXO E MOCKADO, PROVAVELMENTE O VALOR SERÁ 1
     };
@@ -96,7 +97,7 @@ export function PlanosPage() {
   }
 
   if (loadingPage == false) return null;
-  if (user.pagamentoAtivo)
+  if (user.userData.pagamentoAtivo)
     return (
       <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
         <SideBar />
@@ -184,7 +185,7 @@ export function PlanosPage() {
                 Plano Viva Vitalis
               </h1>
               <span className="text-sm">Vencimento: {dateExpiration}</span>
-              <span className="text-sm">Pague R$ {'49,99'} via Pix</span>
+              <span className="text-sm">Pague R$ 49,99 via Pix</span>
               <img
                 className="w-44"
                 src={

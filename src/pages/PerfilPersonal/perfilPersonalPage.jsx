@@ -1,39 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 import { InfoPerfil } from "../../components/InfoPerfil/infoPerfil";
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import axios from "axios";
 
 import defaultIcon from "@assets/defaultIcon.png"
 
-import { validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
+import { validateLogin, validatePersonal} from "@utils/globalFunc"
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../../user-context'; 
 
 export function PerfilPersonalPage() {
-  const [user, setUser] = useState(null);
+  const { user, loading, error} = useContext(UserContext);
   const [speciality, setSpeciality] = useState(null);
   const [items, setItems] = useState(null);
   
-  const [endereco, setEndereco] = useState(null);
+  const [endereco, setEndereco] = useState(user.userData.academiaId);
   const navigate = useNavigate();
 
   //USUARIO
   useEffect(() => {
-    const loginResponse = getLoginResponse();
-    const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
-
     const validarLoginEUsuario = async () =>{
-
-      await validateLogin(navigate);
-      await validatePersonal(navigate);
-
-      axios
-      .get(url)
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      await validateLogin(navigate, user);
+      await validatePersonal(navigate, user);
   }
 
   validarLoginEUsuario();
@@ -41,7 +29,7 @@ export function PerfilPersonalPage() {
   }, []);
 
   useEffect(() => {
-    const url = "http://localhost:8080/especialidadesPersonais/2";
+    const url = `http://localhost:8080/especialidadesPersonais/${user.userData.id}`;
     axios
     .get(url)
     .then((response) => {
@@ -54,14 +42,14 @@ export function PerfilPersonalPage() {
   }, [speciality])
 
   //ENDEREÇO
-  useEffect(() => {
-    const url = "http://localhost:8080/enderecos/1"
-    axios
-    .get(url)
-    .then((response) => {
-      setEndereco(response.data)
-    })
-  })
+  // useEffect(() => {
+  //   const url = `http://localhost:8080/enderecos/${user.userData.academiaId.id}`
+  //   axios
+  //   .get(url)
+  //   .then((response) => {
+  //     setEndereco(response.data)
+  //   })
+  // })
 
   function transformaData(data) {
     let dataObj = new Date(data);

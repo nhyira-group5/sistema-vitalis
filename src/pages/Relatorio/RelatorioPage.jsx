@@ -12,11 +12,11 @@ import { Splash } from '@components/Splash/splash';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { Tag } from '../../components/Tag/tag';
 import Calendar from '@assets/calendar.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../user-context'; 
 import { api } from '../../api';
 
 import {
-  getLoginResponse,
   validateLogin,
   validateUsuario,
   formatarCPF,
@@ -28,6 +28,7 @@ import axios from 'axios';
 
 export function RelatorioPage() {
   const navigate = useNavigate();
+  const { user, loading, error} = useContext(UserContext);
 
   const [currentyMouth, setCurrentyMouth] = useState('');
   const [labelImc, setLabelImc] = useState('');
@@ -44,58 +45,53 @@ export function RelatorioPage() {
 
   const [dados, setDados] = useState(null);
 
-  const [fichaUsuario, setFichaUsuario] = useState({});
-  const [rotinaUsuario, setRotinaUsuario] = useState({});
-  const [meta, setMeta] = useState(null);
+  const [fichaUsuario, setFichaUsuario] = useState(user.userFicha);
+  const [rotinaUsuario, setRotinaUsuario] = useState({usuarioId: user.userData.id, metadId: user.userData.meta.id});
+  const [meta, setMeta] = useState(user.userData.meta.nome);
 
   const [fichaIsLoading, setFichaIsLoading] = useState(false);
 
   const [listaTarefas, setListaTarefas] = useState(null);
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
-  const [peso, setPeso] = useState(null);
-  const [altura, setAltura] = useState(null);
+  const [peso, setPeso] = useState(user.userFicha.peso);
+  const [altura, setAltura] = useState(user.userFicha.altura);
 
-  useEffect(() => {
-    const loginResponse = getLoginResponse();
-    try {
-      api.get(`/usuarios/${loginResponse.id}`).then((response) => {
-        setUser(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const loginResponse = getLoginResponse();
+  //   try {
+  //     api.get(`/usuarios/${loginResponse.id}`).then((response) => {
+  //       setUser(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (user !== null) {
-      const url = `http://localhost:8080/usuarios/${user.id}`;
-      axios.get(url).then((response) => {
-        console.log(response.data);
-        if (response.data.meta === null) {
-          setMeta('Emagrecimento');
-        } else {
-          console.log(response.data.meta);
-          setMeta(response.data.meta.nome);
-        }
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     if (user.meta === null) {
+  //       setMeta('Emagrecimento');
+  //     } else {
+  //       setMeta(user.meta.nome);
+  //     }
+  //   }
+  // }, [user]);
 
-  useEffect(() => {
-    if (user !== null) {
-      const url = `http://localhost:8080/fichas/${user.id}`;
-      axios.get(url).then((response) => {
-        console.log(response.data);
-        setPeso(response.data.peso);
-        setAltura(response.data.altura);
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     const url = `http://localhost:8080/fichas/${user.id}`;
+  //     axios.get(url).then((response) => {
+  //       console.log(response.data);
+  //       setPeso(response.data.peso);
+  //       setAltura(response.data.altura);
+  //     });
+  //   }
+  // }, [user]);
 
   useEffect(() => {
-    const url = `http://localhost:8080/treinos/relatorio/1`;
+    const url = `http://localhost:8080/treinos/relatorio/${user.userData.id}`;
     axios.get(url).then((response) => {
       console.log(response.data);
       setListaTarefas(response.data);
@@ -112,31 +108,30 @@ export function RelatorioPage() {
     return vetorAux;
   }
 
-  function getUsuarioFicha() {
-    const loginResponse = getLoginResponse();
-    setFichaIsLoading(true);
-    try {
-      api.get(`/fichas/${loginResponse.id}`).then((response) => {
-        setFichaUsuario(response.data);
-        setFichaIsLoading(false);
-      });
-    } catch (error) {
-      console.log(error);
-      setFichaIsLoading(false);
-    }
-  }
+  // function getUsuarioFicha() {
+  //   const loginResponse = getLoginResponse();
+  //   setFichaIsLoading(true);
+  //   try {
+  //     api.get(`/fichas/${loginResponse.id}`).then((response) => {
+  //       setFichaUsuario(response.data);
+  //       setFichaIsLoading(false);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     setFichaIsLoading(false);
+  //   }
+  // }
 
-  function getRotinaUsuario() {
-    const loginResponse = getLoginResponse();
+  // function getRotinaUsuario() {
 
-    try {
-      api.get(`/rotinaUsuarios/${loginResponse.id}`).then((response) => {
-        setRotinaUsuario(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //   try {
+  //     api.get(`/rotinaUsuarios/${user.id}`).then((response) => {
+  //       setRotinaUsuario(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     setLabelImc(classificationImc(calculateImc(peso, altura)));

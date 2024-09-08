@@ -1,13 +1,14 @@
 import { DotsThree, X } from '@phosphor-icons/react';
 import { twMerge } from 'tailwind-merge';
 import { api } from '../../api';
-import { getLoginResponse, getDataAtual } from '@utils/globalFunc';
+import {  getDataAtual } from '@utils/globalFunc';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Checkbox } from '@components/Checkbox/checkbox';
 import { Button } from '@components/Button/button';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { toast } from 'react-toastify';
 import defaultIcon from '@assets/defaultIcon.png';
+import { UserContext } from '../../user-context'; 
 
 export function CardPersonal({
   size,
@@ -19,17 +20,17 @@ export function CardPersonal({
   usuario,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, loading, error} = useContext(UserContext);
 
   function modalInteract() {
     setIsModalOpen(!isModalOpen);
   }
 
   function postContact() {
-    const loginResponse = getLoginResponse();
+
 
     const contratoDto = {
-      usuarioId: loginResponse.id,
-
+      usuarioId: user.id,
       personalId: personal.idPersonal,
       inicioContrato: getDataAtual(),
     };
