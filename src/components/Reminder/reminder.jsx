@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { api } from "../../api";
-import { getLoginResponse } from "@utils/globalFunc";
+import { UserContext } from "../../user-context";
 
 export function ReminderMessage({ texto, data }) {
   function formatISODateToDDMM(isoDateString) {
@@ -25,10 +25,11 @@ export function Reminder() {
   const [reminders, setReminders] = useState(null);
   const [textAreaValue, setTextAreaValue] = useState("");
   const [textAreaVisible, setTextAreaVisible] = useState(false);
+  const {user} = useContext(UserContext);
 
   useEffect(() => {
     fetchReminders();
-  }, []);
+  }, [user]);
 
   function createReminder() {
     setTextAreaVisible(true);
@@ -36,6 +37,7 @@ export function Reminder() {
 
   async function salveReminder() {
     if (textAreaValue.length > 0) {
+      const user = get
       const response = await postReminder(bodyRequest);
       console.log(response);
 
@@ -57,7 +59,7 @@ export function Reminder() {
   const bodyRequest = {
     conteudo: textAreaValue,
     dataLembrete: new Date().toISOString(),
-    usuarioId: getLoginResponse().id,
+    usuarioId: 3,
   };
 
   const postReminder = async (bodyRequest) => {
@@ -74,9 +76,9 @@ export function Reminder() {
   };
 
   const fetchReminders = async () => {
-    const login = getLoginResponse();
+    // usar id do usuario certo
     try {
-      const response = await api.get(`/lembretes/${login.id}`);
+      const response = await api.get(`/lembretes/${3}`);
       setReminders(response.data);
     } catch (e) {
       console.error("Error in GET request:", e);

@@ -1,20 +1,13 @@
 import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
 import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
-import { useEffect, useState } from "react";
-import { getLoginResponse } from "@utils/globalFunc";
+import { useContext, useEffect, useState } from "react";
 import { api } from "../../api";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
+import { UserContext } from "../../user-context";
 
 export function Activities({ onClickFunction }) {
-  const [activityId, setActivityId] = useState("");
-  const [activityType, setActivityType] = useState("");
   const [activitiesDay, setActivitiesDay] = useState([]);
-  const [activityCompleteded, setActivityCompleteded] = useState("");
-
   const [activitiesWeek, setActivitiesWeek] = useState(null);
-
-  const [listFood, setListFood] = useState(null);
-  const [listFoodName, setListFoodName] = useState(null);
 
   const [totalAmountDays, setTotalAmountDays] = useState(0);
   const [totalAmountMeals, setTotalAmountMeals] = useState(0);
@@ -24,19 +17,20 @@ export function Activities({ onClickFunction }) {
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
+  const { activitySelected } = useContext(UserContext);
+
   useEffect(() => {
     fetchAtividadesPorSemana();
-
-    // const loginResponse = getLoginResponse();
   }, []);
 
-  useEffect (() => {
+  useEffect(() => {
     // arrumar a lógica para pegar cada dia
     // setActivitiesDay(activitiesWeek[1]);
-    if (activitiesWeek !== null ) {
-      setActivitiesDay(activitiesWeek[1])
+    if (activitiesWeek !== null) {
+      setActivitiesDay(activitiesWeek[1]);
+      console.log("alo")
     }
-  }, [activitiesWeek])
+  }, [activitiesWeek, activitySelected]);
 
   const fetchAtividadesPorSemana = async () => {
     try {
@@ -46,14 +40,17 @@ export function Activities({ onClickFunction }) {
         responseRefeicao.data,
         "Refeição"
       );
-      
+
       const responseExercicio = await api.get(`/treinos/por-semana/1`);
       const listaTreinosDaSemana = agruparPorDia(
         responseExercicio.data,
         "Exercício"
       );
-      
-      const rotinasMescladas = mesclarRotinas(listaRefeicoesDaSemana, listaTreinosDaSemana);
+
+      const rotinasMescladas = mesclarRotinas(
+        listaRefeicoesDaSemana,
+        listaTreinosDaSemana
+      );
       setActivitiesWeek(rotinasMescladas);
     } catch (e) {
       console.error("Error in GET request:", e);
@@ -81,45 +78,68 @@ export function Activities({ onClickFunction }) {
     const merged = {};
 
     for (const dia in refeicoes) {
-        if (!merged[dia]) {
-            merged[dia] = [];
-        }
-        merged[dia].push(...refeicoes[dia]);
+      if (!merged[dia]) {
+        merged[dia] = [];
+      }
+      merged[dia].push(...refeicoes[dia]);
     }
 
     for (const dia in exercicios) {
-        if (!merged[dia]) {
-            merged[dia] = [];
-        }
-        merged[dia].push(...exercicios[dia]);
+      if (!merged[dia]) {
+        merged[dia] = [];
+      }
+      merged[dia].push(...exercicios[dia]);
     }
 
     return merged;
-}
-  // useEffect(() => {
-  //   const loginResponse = getLoginResponse();
+  }
 
-  //   api.get(`/usuarios/${loginResponse.id}`).then((response) => {
-  //     const loginResponse = getLoginResponse();
-  //     setNicknameUser(loginResponse.nome);
-  //   });
-  // }, []);
+  function handleTotalAmount(activity) {
+    const response = activitiesDay.filter((element) => {
+      return element.type == activity;
+    });
+    return response;
+  }
 
-  // useEffect(() => {
-  //   generateActivitiesDay();
-  // }, [activitiesWeek]);
+  function generateTotalAmountExercises() {
+    const totalAmountExercises = handleTotalAmount("Exercício").length;
+    // console.log("Total de exercícios: " + totalAmountExercises);
+    setTotalAmountExercises(totalAmountExercises);
+  }
 
-  // useEffect(() => {
-  //   if (activitiesWeek !== null) {
-  //     generateCurrentyAmountExercises();
-  //     generateCurrentyAmountMeals();
-  //     generateCurrentyAmountDays();
+  function generateTotalAmountMeals() {
+    const totalAmountMeals = handleTotalAmount("Refeição").length;
+    // console.log("Total de refeições: " + totalAmountMeals);
+    setTotalAmountMeals(totalAmountMeals);
+  }
 
-  //     generateTotalAmountExercises();
-  //     generateTotalAmountMeals();
-  //     generateTotalAmountDays();
-  //   }
-  // }, [activitiesDay]);
+   function handleCurrentyAmount(activity) {
+    const array = handleTotalAmount(activity);
+    const response = array.filter((element) => element.concluido == true);
+    return response;
+  }
+
+  function generateCurrentyAmountExercises() {
+    const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
+    setCurrentyAmountExercises(currentyAmountExercises);
+  }
+
+  function generateCurrentyAmountMeals() {
+    const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
+    setCurrentyAmountMeals(currentyAmountMeals);
+  }
+
+  useEffect(() => {
+    if (activitiesDay !== null) {
+      generateCurrentyAmountExercises();
+      generateCurrentyAmountMeals();
+      // generateCurrentyAmountDays();
+
+      generateTotalAmountExercises();
+      generateTotalAmountMeals();
+      // generateTotalAmountDays();
+    }
+  }, [activitiesDay]);
 
   // useEffect(() => {
   //   if (
@@ -168,42 +188,14 @@ export function Activities({ onClickFunction }) {
   // }, [listFood]);
 
   // useEffect(() => {
-  //   if (activitiesDay != null) {
-  //     console.log("gerando");
-  //     generateActivitiesDay();
-  //   }
-  // }, [activityInformation, completedActivity]);
-
-  // // useEffect(() => {
-  // //   const url = `/treinos/concluir/${activityId}`
-  // //   axios.patch(url)
-  // //   .then((response) => {
-  // //     response.data
-  // //   })
-  // // })
+  //   const url = `/treinos/concluir/${activityId}`
+  //   axios.patch(url)
+  //   .then((response) => {
+  //     response.data
+  //   })
+  // })
 
   // // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
-
-  // function handleTotalAmount(activity) {
-  //   const response = activitiesDay.filter((element) => {
-  //     // console.log(element.type);
-  //     return element.type == activity;
-  //   });
-  //   // console.log("Lista de " + activity + ": " + response);
-  //   return response;
-  // }
-
-  // function generateTotalAmountExercises() {
-  //   const totalAmountExercises = handleTotalAmount("Exercício").length;
-  //   // console.log("Total de exercícios: " + totalAmountExercises);
-  //   setTotalAmountExercises(totalAmountExercises);
-  // }
-
-  // function generateTotalAmountMeals() {
-  //   const amountMealsTotal = handleTotalAmount("Refeição").length;
-  //   // console.log("Total de refeições: " + amountMealsTotal);
-  //   setTotalAmountMeals(amountMealsTotal);
-  // }
 
   // function generateTotalAmountDays() {
   //   const totalDays = Object.keys(activitiesWeek).length;
@@ -258,37 +250,6 @@ export function Activities({ onClickFunction }) {
   //   }
   // }
 
-  // // GERAR ATIVIDADES DO DIA
-  // function generateActivitiesDay() {
-  //   if (activitiesWeek !== null && activitiesWeek !== undefined) {
-  //     for (let i = 1; i <= Object.keys(activitiesWeek).length; i++) {
-  //       const element = activitiesWeek[i];
-  //       console.log(element);
-
-  //       setActivitiesDay(element);
-  //       return;
-  //       if (activitiesWeek[i] !== null && activitiesWeek[i] !== undefined) {
-  //         // console.log(element.length);
-
-  //         let quantidadeExerciciosConcluidos = 0;
-  //         for (let j = 0; j < element.length; j++) {
-  //           const elemento = activitiesWeek[i][j];
-  //           console.log(elemento);
-
-  //           if (elemento.concluido === 1) {
-  //             quantidadeExerciciosConcluidos++;
-  //           }
-  //         }
-
-  //         // if (quantidadeExerciciosConcluidos !== element.length) {
-  //         //   return setActivitiesDay(element);
-  //         // }
-  //       }
-  //     }
-  //   }
-
-  //   console.log("Não há itens com concluido == false.");
-  // }
 
   // // MARCAR ATIVIDADE COMO CONCLUÍDA
   // function completedActivity() {

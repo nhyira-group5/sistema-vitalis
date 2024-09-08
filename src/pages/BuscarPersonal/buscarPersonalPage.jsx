@@ -13,7 +13,6 @@ import { UserContext } from '../../user-context';
 import {
   validateLogin,
   validateUsuario,
-  getLoginResponse,
 } from "@utils/globalFunc";
 import { api } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
