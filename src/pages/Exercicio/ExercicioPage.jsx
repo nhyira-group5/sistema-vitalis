@@ -3,7 +3,8 @@ import { Check, X } from '@phosphor-icons/react';
 import { SideBar } from '@components/SideBar/sideBar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@components/Button/button';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../user-context'; 
 import ReactPlayer from 'react-player';
 import { Tag } from '../../components/Tag/tag';
 import { api } from '../../api';
@@ -12,7 +13,7 @@ import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 export function ExercicioPage() {
   const [treino, setTreino] = useState(null);
-
+  const { updateUser, user, loading, error } = useContext(UserContext);
   const { idTreino } = useParams();
 
   const navigate = useNavigate();
@@ -55,8 +56,8 @@ export function ExercicioPage() {
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
       try {
         api.get(`/treinos/buscarIdTreinos/${idTreino}`).then((response) => {
@@ -82,15 +83,15 @@ export function ExercicioPage() {
           <div className="flex gap-1">
             <Link
               to={'/rotinas_semanais'}
-              className="text-primary-green400 font-bold"
+              className="text-primary-green400 font-bold hover:text-primary-green300"
             >
               Rotinas
             </Link>
-            <span className="text-primary-green400 font-extrabold"></span>
+            <span className="text-primary-green400 font-extrabold">•</span>
             {treino ? (
               <Link
                 to={`/rotinas_semanais/diaria/${treino.rotinaDiariaId.idRotinaDiaria}`}
-                className="text-primary-green400 font-bold"
+                className="text-primary-green400 font-bold hover:text-primary-green300"
               >
                 Treino {treino.idTreino}
               </Link>
@@ -98,7 +99,7 @@ export function ExercicioPage() {
               '...'
             )}
 
-            <span className="text-primary-green400 font-extrabold"></span>
+            <span className="text-primary-green400 font-extrabold">•</span>
             <span className="text-primary-green400 font-bold">
               {treino ? treino.exercicioId.nome : '...'}
             </span>

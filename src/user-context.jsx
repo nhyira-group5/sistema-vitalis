@@ -12,21 +12,9 @@ export const UserStorage = ({ children }) => {
       setUser(userData);
     };
 
-  const fetchUserById = async (userId) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`/usuarios/${userId}`);
-      setUser(response.data);
-      localStorage.setItem('userData', JSON.stringify(response.data));
-    } catch (err) {
-      setError('deu erro');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
-    <UserContext.Provider value={{ user, loading, error, fetchUserById, updateUser }}>
+    <UserContext.Provider value={{ user, loading, error, updateUser }}>
       {children}
     </UserContext.Provider>
   );

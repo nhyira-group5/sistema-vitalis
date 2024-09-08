@@ -1,8 +1,13 @@
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 
 
 export function RefeicaoCard({ refeicao }){
     
+    useEffect(()=>{
+        console.log(refeicao)
+        }, [])
+
     return(
         <Link to={`/refeicoes/${refeicao.idRefeicao}`}>
             <div className=" group flex flex-col px-3 py-4  h-fit gap-2 rounded-xl  transition-all duration-100 ease-in-out hover:bg-gray200/70">
@@ -12,7 +17,6 @@ export function RefeicaoCard({ refeicao }){
                     ) : (
                     <div className="flex h-full w-full items-center justify-center">
                         <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                        <p className="text-gray-700 ">Carregando...</p>
                     </div>
                     )}
                     

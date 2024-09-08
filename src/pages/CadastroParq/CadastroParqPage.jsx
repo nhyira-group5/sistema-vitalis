@@ -3,11 +3,10 @@ import { Button } from '@components/Button/button';
 import { DisplayInput, Input } from '@components/Input/input';
 import { api } from '../../api';
 import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 import {
-  getLoginResponse,
   formatarCPF,
   converterDataFormato,
 } from '@utils/globalFunc';
@@ -18,7 +17,7 @@ import { validatePeso, validateAltura } from '@utils/validacoes';
 
 import { Ruler, Barbell } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
-
+import { UserContext } from '../../user-context'; 
 
 function fichaDtoCriacao(userFormInfo) {
   const fichaDto = {
@@ -47,13 +46,14 @@ function rotinaUsuarioDtoCriacao(userFormInfo) {
 
 export function CadastroParqPage() {
   const navigate = useNavigate();
-
+  const {updateUser, user, loading, error} = useContext(UserContext);
+  console.log(user)
   const redirecionarLogin = () => {
     navigate('/login');
   };
 
   const [metas, setMetas] = useState([]);
-  const [usuarioData, setUsuarioData] = useState({});
+  // const [usuarioData, setUsuarioData] = useState({});
 
   const [isMetaSelecionado, setIsMetaSelecionado] = useState(true);
 
@@ -66,7 +66,7 @@ export function CadastroParqPage() {
     altura: '',
     metaId: null,
     metaNome: null,
-    idUsuario: usuarioData.id,
+    idUsuario: user.userData.id,
 
     problemasCardiacos: 0,
     dorPeitoAtividade: 0,
@@ -77,7 +77,7 @@ export function CadastroParqPage() {
   });
 
   const [splashActive, setSplashActive] = useState(false);
-
+  
 
   function getMetas() {
     api
@@ -92,18 +92,18 @@ export function CadastroParqPage() {
       });
   }
 
-  function getUsuarioResponse(id) {
-    api
-      .get(`/usuarios/${id}`)
-      .then((response) => {
-        setUsuarioData(response.data);
-      })
-      .catch((error) => {
-        error.response.data.errors.forEach((erroMsg) => {
-          console.log(erroMsg.defaultMessage);
-        });
-      });
-  }
+  // function getUsuarioResponse(id) {
+  //   api
+  //     .get(`/usuarios/${id}`)
+  //     .then((response) => {
+  //       setUsuarioData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       error.response.data.errors.forEach((erroMsg) => {
+  //         console.log(erroMsg.defaultMessage);
+  //       });
+  //     });
+  // }
 
   const encontrarMetaPeloId = (id, lista) => {
     const metaEncontrada = lista.find((meta) => meta.id === id);
@@ -112,16 +112,17 @@ export function CadastroParqPage() {
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
-      const loginResponse = getLoginResponse();
+
       setFormData((prevState) => ({
         ...prevState,
-        idUsuario: loginResponse.id,
+        idUsuario: user.userData.id,
       }));
 
-      getUsuarioResponse(loginResponse.id);
+      // getUsuarioResponse(user.userData.id);
       getMetas();
     };
 
@@ -150,19 +151,24 @@ export function CadastroParqPage() {
         const fichaDto = fichaDtoCriacao(formData);
         const rotinaUsuarioDto = rotinaUsuarioDtoCriacao(formData);
 
-        await api.post(`/rotinaUsuarios`, rotinaUsuarioDto);
-        await api.post(`/fichas`, fichaDto);
+        const rotinaUsuarioResponse = await api.post(`/rotinaUsuarios`, rotinaUsuarioDto);
+        const fichaUsuarioResponse = await api.post(`/fichas`, fichaDto);
+
+        let userData = JSON.parse(JSON.stringify(user))
+        userData.userData.meta = rotinaUsuarioResponse.data.metaId;
+        userData.userFicha = fichaUsuarioResponse.data;
+
+        updateUser(userData);
 
         toast.success('Ficha criada com sucesso');
-        setSplashActive(false)
         navigate('/home');
       } catch (error) {
-        setSplashActive(false)
         console.log(error);
-
         error.response.data.errors.forEach((erroMsg) => {
           toast.error(erroMsg.defaultMessage);
         });
+      } finally {
+        setSplashActive(false)
       }
     }
   };
@@ -347,7 +353,7 @@ export function CadastroParqPage() {
                 nome={'nomeCompletoUsuario'}
                 onChangeFunction={''}
                 inputType={'text'}
-                value={usuarioData.nome ?? ''}
+                value={user.userData.nome ?? ''}
                 disabled={true}
               />
             </fieldset>
@@ -359,7 +365,7 @@ export function CadastroParqPage() {
                 nome={'cpfUsuario'}
                 onChangeFunction={''}
                 inputType={'text'}
-                value={formatarCPF(usuarioData.cpf) ?? ''}
+                value={formatarCPF(user.userData.cpf) ?? ''}
                 disabled={true}
               />
             </fieldset>
@@ -371,7 +377,7 @@ export function CadastroParqPage() {
                 nome={'dtNascimentoUsuario'}
                 onChangeFunction={''}
                 inputType={'text'}
-                value={converterDataFormato(usuarioData.dtNasc) ?? ''}
+                value={converterDataFormato(user.userData.dtNasc) ?? ''}
                 disabled={true}
               />
             </fieldset>
@@ -384,9 +390,9 @@ export function CadastroParqPage() {
                 onChangeFunction={''}
                 inputType={'text'}
                 value={
-                  usuarioData.sexo === 'F'
+                  user.userData.sexo === 'F'
                     ? 'Feminino'
-                    : usuarioData.sexo === 'M'
+                    : user.userData.sexo === 'M'
                       ? 'Masculino'
                       : ''
                 }
@@ -401,7 +407,7 @@ export function CadastroParqPage() {
                 nome={'emailUsuario'}
                 onChangeFunction={''}
                 inputType={'Email'}
-                value={usuarioData.email ?? ''}
+                value={user.userData.email ?? ''}
                 disabled={true}
               />
             </fieldset>

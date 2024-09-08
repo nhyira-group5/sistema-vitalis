@@ -2,7 +2,7 @@ import { AtividadeOption } from "../../components/AtividadeOption/atividadeOptio
 import { ExercicioBoard } from "../../components/ExercicioBoard/exercicioBoard";
 import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
 import { SideBar } from "../../components/SideBar/sideBar";
-import { useState } from "react";
+import { useState, useContext, useEffect} from "react";
 import {
   BowlSteam,
   Barbell,
@@ -11,13 +11,16 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  getLoginResponse,
   validateLogin,
   validateUsuario,
   formatarCPF,
   converterDataFormato,
 } from "@utils/globalFunc";
 import { Reminder } from "../../components/Reminder/reminder";
+
+import { UserContext } from '../../user-context'; 
+import { useNavigate } from 'react-router-dom';
+
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
@@ -48,7 +51,12 @@ export function HomePage() {
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
-
+  const { user, loading, error} = useContext(UserContext);
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    console.log(user)
+  })
   // useEffect(() => {
   //   const url = "http://localhost:8080/refeicoes/por-semana/1";
   //   axios
@@ -456,6 +464,16 @@ export function HomePage() {
   //     console.log(response.data)
   //   })
   // }
+
+  useEffect(() => {
+    const validarLoginEUsuario = async () => {
+      
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
+    };
+
+    validarLoginEUsuario();
+  }, []);
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">

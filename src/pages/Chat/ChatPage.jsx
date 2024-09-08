@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext} from 'react';
 import { Message } from '../../components/Message/message';
 import { SideBar } from '../../components/SideBar/sideBar';
 import { Siren } from '@phosphor-icons/react';
@@ -9,8 +9,9 @@ import { format } from 'date-fns';
 import {
   validateLogin,
   validateUsuario,
-  getLoginResponse,
 } from '@utils/globalFunc';
+import { UserContext } from '../../user-context'; 
+import { useNavigate } from 'react-router-dom';
 
 export function ChatPage() {
   const [inputValue, setInputValue] = useState('');
@@ -18,47 +19,44 @@ export function ChatPage() {
   const [personal, setPersonal] = useState(null);
   const [personalId, setPersonalId] = useState(null);
   const [chatId, setChatId] = useState(null);
+  const { user, loading, error} = useContext(UserContext);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const isInitialRender = useRef(true); // Flag para identificar o primeiro render
 
-  const [user, setUser] = useState({});
 
-  function getUsuario() {
-    const loginResponse = getLoginResponse();
-    try {
-      api.get(`usuarios/${loginResponse.id}`).then((response) => {
-        // response.data.pagamentoAtivo = true;
-        setUser(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // function getUsuario() {
+  //   const loginResponse = getLoginResponse();
+  //   try {
+  //     api.get(`usuarios/${loginResponse.id}`).then((response) => {
+  //       // response.data.pagamentoAtivo = true;
+  //       setUser(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
-
-      getUsuario();
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
     };
 
     validarLoginEUsuario();
   }, []);
 
   useEffect(() => {
-    const usuario = JSON.parse(sessionStorage.getItem('loginResponse'));
     let chatIdRes;
 
     const fetchData = async () => {
       try {
         const chatRes = await axios.get(
-          `http://localhost:3001/messages/usuario/${usuario.id}`,
+          `http://localhost:3001/messages/usuario/${user.userData.id}`,
         );
         const personalRes = await axios.get(
-          `http://localhost:8080/usuarios/personal/${usuario.id}`,
+          `http://localhost:8080/usuarios/personal/${user.userData.id}`,
         );
         chatIdRes = chatRes.data[0].id_chat;
 
@@ -74,7 +72,7 @@ export function ChatPage() {
           socket.auth = {
             chats: [chatIdRes],
             user: {
-              id: usuario.id,
+              id: user.userData.id,
             },
           };
           socket.connect();
@@ -123,10 +121,10 @@ export function ChatPage() {
   const sendMessage = () => {
     const text = inputValue.trim();
     if (text === '') return;
-    const usuario = JSON.parse(sessionStorage.getItem('loginResponse'));
+   
     socket.emit('ttm', {
       chatId,
-      remetenteId: usuario.id,
+      remetenteId: user.userData.id,
       destinatarioId: personalId,
       assunto: text,
     });

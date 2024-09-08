@@ -54,26 +54,15 @@ export function LoginPage() {
     const myForm = document.getElementById('myForm');
     const dadosFormulario = new FormData(myForm);
     const userLoginDto = userDtoCriacao(dadosFormulario);
-
+    let userFichaResponse;
+    let userLoginResponse 
+    let userDataResponse;
+    
     try {
-      const response = await api.post(`/login/usuario`, userLoginDto);
-      
-      updateUser(response.data);
-      await api.get(`/fichas/${response.data.id}`);
-
-      switch (response.data.tipo) {
-        case 'USUARIO':
-          redirecionarHome();
-          break;
-        case 'PERSONAL':
-          redirecionarHomePersonal();
-          break;
-      }
+      userLoginResponse = await api.post('/login/usuario', userLoginDto);
+      userDataResponse = await api.get(`/usuarios/${userLoginResponse.data.id}`);
     } catch (error) {
       switch (error.response.data.status) {
-        case 404:
-          navigate('/cadastroParq');
-          break;
         case 401:
           toast.error('Nickname e/ou senha inválidos!');
           break;
@@ -86,10 +75,43 @@ export function LoginPage() {
           );
           break;
       }
-    } finally {
-      setLoginSplash(false);
-    }
+    } 
+
+  try{
+      userFichaResponse = await api.get(`/fichas/${userLoginResponse.data.id}`);
+   } catch(error) {
+    console.log(error)
+   } finally{
+    setLoginSplash(false);
+   }
+
+   const userData = {
+     userData: userDataResponse.data,
+     userFicha: userFichaResponse ? userFichaResponse.data : null 
+   }
+
+
+      updateUser(userData);
+      console.log(userData)
+      
+      if(userData.userFicha === null){
+        navigate('/cadastroParq');
+        return;
+     }
+  
+     switch (userData.userData.tipo) {
+       case 'USUARIO':
+         redirecionarHome();
+         break;
+       case 'PERSONAL':
+         redirecionarHomePersonal();
+         break;
+     }
   };
+
+
+
+
 
   return (
     <div className="bg-[#F7FBFC]">

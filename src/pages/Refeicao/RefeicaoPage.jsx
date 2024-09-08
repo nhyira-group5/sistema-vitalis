@@ -2,7 +2,8 @@ import { SideBar } from '@components/SideBar/sideBar';
 import { IngredienteCard } from '@components/IngredienteCard/ingredienteCard';
 import { Button } from '@components/Button/button';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../user-context'; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
 
@@ -11,14 +12,16 @@ import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 export function RefeicaoPage() {
   const navigate = useNavigate();
+  const {updateUser, user, loading, error} = useContext(UserContext);
 
   const { idRefeicao } = useParams();
   const [refeicao, setRefeicao] = useState({});
 
   useEffect(() => {
+    
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
       try {
         api.get(`/refeicoes/${idRefeicao}`).then((response) => {
@@ -32,35 +35,30 @@ export function RefeicaoPage() {
     validarLoginEUsuario();
   }, []);
 
+
   function abreviarMetrica(metrica) {
     switch (metrica) {
       case 'gramas':
         return 'g';
-        break;
+        
       case 'quilogramas':
         return 'Kg';
-        break;
+        
       case 'miligramas':
         return 'Ml';
-        break;
       case 'litros':
         return 'l';
-        break;
+
       case 'mililitros':
         return 'Ml';
-        break;
       case 'xícaras':
         return 'x';
-        break;
       case 'colheres de sopa':
         return 'cs';
-        break;
       case 'colheres de chá':
         return 'cc';
-        break;
       case 'unidade':
         return 'u';
-        break;
     }
   }
 
