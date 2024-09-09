@@ -1,7 +1,7 @@
 import { LockKey } from '@phosphor-icons/react';
 import { SideBar } from '../../components/SideBar/sideBar';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useNavigate} from 'react-router-dom';
+import { useEffect, useState, useContext} from 'react';
 import { CloudinaryButtonPerfil } from '@components/Button/button';
 
 import defaultIcon from '@assets/defaultIcon.png';
@@ -11,64 +11,65 @@ import { api } from '../../api';
 import {
   validateLogin,
   validateUsuario,
-  getLoginResponse,
   formatarCPF,
   converterDataFormato,
 } from '@utils/globalFunc';
 
+import { UserContext } from '../../user-context'; 
+
 export function PerfilPage() {
-  const [user, setUser] = useState(null);
+  
+  const { user, loading, error} = useContext(UserContext);
+
   const [personal, setPersonal] = useState(null);
 
-  const [fichaUsuario, setFichaUsuario] = useState({});
-  const [rotinaUsuario, setRotinaUsuario] = useState({});
+  const [fichaUsuario, setFichaUsuario] = useState(user.userFicha);
+  const [rotinaUsuario, setRotinaUsuario] = useState({usuarioId: user.userData.id, metaId: user.userData.meta.id});
 
   const [fichaIsLoading, setFichaIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  function getUsuario() {
-    const loginResponse = getLoginResponse();
-    api.get(`/usuarios/${loginResponse.id}`).then((response) => {
-      // response.data.pagamentoAtivo = true;
-      setUser(response.data);
-    });
-  }
+  // function getUsuario() {
+  //   const loginResponse = getLoginResponse();
+  //   api.get(`/usuarios/${loginResponse.id}`).then((response) => {
+  //     // response.data.pagamentoAtivo = true;
+  //     setUser(response.data);
+  //   });
+  // }
 
-  function getUsuarioFicha() {
-    const loginResponse = getLoginResponse();
-    setFichaIsLoading(true);
-    try {
-      api.get(`/fichas/${loginResponse.id}`).then((response) => {
-        setFichaUsuario(response.data);
-        setFichaIsLoading(false);
-      });
-    } catch (error) {
-      console.log(error);
-      setFichaIsLoading(false);
-    }
-  }
+  // function getUsuarioFicha() {
+  //   const loginResponse = getLoginResponse();
+  //   setFichaIsLoading(true);
+  //   try {
+  //     api.get(`/fichas/${loginResponse.id}`).then((response) => {
+  //       setFichaUsuario(response.data);
+  //       setFichaIsLoading(false);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     setFichaIsLoading(false);
+  //   }
+  // }
 
-  function getRotinaUsuario() {
-    const loginResponse = getLoginResponse();
-
-    try {
-      api.get(`/rotinaUsuarios/${loginResponse.id}`).then((response) => {
-        setRotinaUsuario(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // function getRotinaUsuario() {
+  //   try {
+  //     api.get(`/rotinaUsuarios/${loginResponse.id}`).then((response) => {
+  //       setRotinaUsuario(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
-      getUsuario();
-      getUsuarioFicha();
-      getRotinaUsuario();
+      // getUsuario();
+      // getUsuarioFicha();
+      // getRotinaUsuario();
     };
 
     validarLoginEUsuario();
@@ -77,45 +78,37 @@ export function PerfilPage() {
   function insertImage(cloudObject) {
     const { url, original_filename, format } = cloudObject;
 
-    const loginResponse = getLoginResponse();
 
-    const midiaDto = {
-      nome: original_filename,
-      caminho: url,
-      extensao: format,
-    };
-    const muralItemDto = {
-      usuarioId: loginResponse.id,
-      midiaId: null,
-      dtPostagem: getDataAtual(),
-    };
 
-    try {
-      api.post('/midias/salvarMidia', midiaDto).then((response) => {
-        muralItemDto.midiaId = response.data.idMidia;
+  //   const midiaDto = {
+  //     nome: original_filename,
+  //     caminho: url,
+  //     extensao: format,
+  //   };
+  //   const muralItemDto = {
+  //     usuarioId: user.userData.id,
+  //     midiaId: null,
+  //     dtPostagem: getDataAtual() o cabaço cade o getDataAtual
+  //   };
 
-        api.post(`/murais`, muralItemDto).then((response) => {
-          toast.success('Imagem carregada com sucesso!');
+  //   try {
+  //     api.post('/midias/salvarMidia', midiaDto).then((response) => {
+  //       muralItemDto.midiaId = response.data.idMidia;
 
-          setMuralItens((prevItems) => [...prevItems, response.data]);
-        });
-      });
-    } catch (error) {
-      toast.error('Falha no envio da imagem!');
-    }
-  }
+  //       api.post(`/murais`, muralItemDto).then((response) => {
+  //         toast.success('Imagem carregada com sucesso!');
+
+  //         setMuralItens((prevItems) => [...prevItems, response.data]);
+  //       });
+  //     });
+  //   } catch (error) {
+  //     toast.error('Falha no envio da imagem!');
+  //   }
+  // }
 
   useEffect(() => {
-    if (user !== null && user.pagamentoAtivo == true) {
-      setPersonal({
-        idUsuario: 2,
-        nickname: 'marC@SSilV4',
-        nome: 'Marcos Silva Oliveira Pinto Santos',
-        dtNasc: '1980-12-05',
-        sexo: 'M',
-        email: 'marcos@gmail.com',
-        especialidade: { nome: 'Peso Corporal' },
-      });
+    if (user && user.userData.pagamentoAtivo == true) {
+      setPersonal(user.personalId);
     }
   }, [user]);
 
@@ -337,4 +330,5 @@ export function PerfilPage() {
       </div>
     </div>
   );
+}
 }

@@ -1,6 +1,6 @@
 import { SideBar } from '@components/SideBar/sideBar';
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../user-context'; 
 import { ExercicioImageCard } from '@components/ImageCard/imageCard';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import { api } from '../../api';
 
 export function TreinoPage() {
   const [treinosRotinaDiaria, setTreinosRotinaDiaria] = useState([]);
-
+  const { updateUser, user, loading, error } = useContext(UserContext);
   const [isTreinosRotinaDiariaLoading, setIsTreinosRotinaDiariaLoading] =
     useState(false);
 
@@ -21,17 +21,18 @@ export function TreinoPage() {
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
-
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
       setIsTreinosRotinaDiariaLoading(true);
       try {
+
         api.get(`/treinos/por-dia/${idRotinaDiaria}`).then((response) => {
           setTreinosRotinaDiaria([...treinosRotinaDiaria, ...response.data]);
-          setIsTreinosRotinaDiariaLoading(false);
+          
         });
       } catch (error) {
         console.log(error);
+      } finally {
         setIsTreinosRotinaDiariaLoading(false);
       }
     };

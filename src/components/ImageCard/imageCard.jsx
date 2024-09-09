@@ -14,7 +14,7 @@ export function ExercicioImageCard({exercicio, URI}){
                         ) : (
                             <div className="flex h-full w-full gap-2 items-center justify-center">
                                 <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                <p className="text-gray-700 ">Carregando...</p>
+                                
                             </div>
                         )}
                         

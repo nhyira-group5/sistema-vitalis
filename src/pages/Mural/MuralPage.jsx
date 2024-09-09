@@ -1,5 +1,5 @@
 import { SideBar } from '@components/SideBar/sideBar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext} from 'react';
 import { Input } from '@components/Input/input';
 import { MuralItem } from '@components/MuralItem/muralItem';
 import { CloudinaryButton } from '@components/Button/button';
@@ -7,12 +7,12 @@ import { CloudinaryButton } from '@components/Button/button';
 import { toast } from 'react-toastify';
 import { api } from '../../api';
 import {
-  getLoginResponse,
   validateLogin,
   validateUsuario,
   getDataAtual,
 } from '@utils/globalFunc';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../user-context'; 
 
 import { CalendarDots } from '@phosphor-icons/react';
 
@@ -27,21 +27,20 @@ export function MuralPage() {
 
   const timeoutIdRef = useRef(null);
 
+  const { user, loading, error} = useContext(UserContext);
+
   const handleOnChange = (event) => {
     setDataSelecionada(event.target.value);
   };
 
   function getMuralItensByData() {
-    const loginResponse = getLoginResponse();
-    console.log(dataSelecionada);
-
     const params = {
       date: dataSelecionada,
     };
 
     try {
       api
-        .get(`/murais/por-data/usuario/${loginResponse.id}`, { params })
+        .get(`/murais/por-data/usuario/${user.userData.id}`, { params })
         .then((response) => {
           setMuralItens(response.data);
           setIsLoading(false);
@@ -68,15 +67,13 @@ export function MuralPage() {
   function insertImage(cloudObject) {
     const { url, original_filename, format } = cloudObject;
 
-    const loginResponse = getLoginResponse();
-
     const midiaDto = {
       nome: original_filename,
       caminho: url,
       extensao: format,
     };
     const muralItemDto = {
-      usuarioId: loginResponse.id,
+      usuarioId: user.userData.id,
       midiaId: null,
       dtPostagem: getDataAtual(),
     };
@@ -97,11 +94,9 @@ export function MuralPage() {
   }
 
   function getMuralItem() {
-    const loginResponse = getLoginResponse();
+    
     try {
-      api.get(`/murais/por-usuario/${loginResponse.id}`).then((response) => {
-        console.log(response);
-
+      api.get(`/murais/por-usuario/${user.userData.id}`).then((response) => {
         setMuralItens(response.data);
         setIsLoading(false);
       });
