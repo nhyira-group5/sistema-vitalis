@@ -15,7 +15,6 @@ export function CardPersonal({
   haveDots,
   haveShadow,
   isUser,
-
   personal,
   usuario,
 }) {
@@ -27,10 +26,8 @@ export function CardPersonal({
   }
 
   function postContact() {
-
-
     const contratoDto = {
-      usuarioId: user.id,
+      usuarioId: user.userData.id,
       personalId: personal.idPersonal,
       inicioContrato: getDataAtual(),
     };
@@ -67,7 +64,7 @@ export function CardPersonal({
           isUserFiliado() ? 'bg-primary-green100' : 'bg-white ',
         )}
       >
-        <div className="flex gap-5">
+        <div className="flex gap-5 w-full">
           <img
             className={twMerge(
               'size-10 rounded-full object-cover self-center',
@@ -77,7 +74,7 @@ export function CardPersonal({
             alt=""
           />
 
-          <div className="h-full flex flex-col justify-between self-center ">
+          <div className="h-full w-full flex flex-col justify-between self-center ">
             <h2
               className={twMerge(
                 'font-semibold text-[#2B6E36]',
@@ -94,44 +91,20 @@ export function CardPersonal({
               <span className="font-semibold"> {''}</span>
             </span>
 
-            {/* {personal.academiaId.cidade != null && personal.academiaId.estado != null ? (
-            <span className="text-sm font-semibold">
-              {personal.academiaId.cidade}, {personal.academiaId.estado}
-            </span>
-          ) : (
-            <span className="text-sm font-semibold text-transparent">sas</span>
-          )} */}
-          </div>
-        </div>
 
-        {haveDots && isUserFiliado ? (
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <button className="absolute right-2 top-0 outline-none">
-                <DotsThree size={32} color={'#000000'} />
-              </button>
-            </DropdownMenu.Trigger>
-
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="min-w-[220px] bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
-                sideOffset={5}
-                side={'left'}
+            {haveDots && isUserFiliado ? (
+            <button
+                to="/buscar-personal"
+                className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
+                onClick={modalInteract}
               >
-                <DropdownMenu.Item
-                  onClick={modalInteract}
-                  className=" group text-[13px] leading-none text-primary-green300 rounded-[3px] flex pl-5  h-[25px] px-[5px] relative select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-primary-green200 data-[highlighted]:text-white"
-                >
-                  <button className="w-full flex justify-start items-center">
-                    Se afiliar ao personal
-                  </button>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+                  Afiliar-se!
+              </button>
         ) : (
           <></>
         )}
+          </div>
+        </div>
       </div>
 
       {isModalOpen ? (

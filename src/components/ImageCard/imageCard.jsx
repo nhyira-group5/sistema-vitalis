@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import {
     Check
   } from "@phosphor-icons/react";
-
+import { useEffect } from "react";
+import { ImageBroken } from '@phosphor-icons/react';
 
 export function ExercicioImageCard({exercicio, URI}){
+    useEffect(()=>{
+        console.log(exercicio)
+    })
     return(
         <Link to={URI} className="h-[80%]">
                 <div className="group overflow-hidden shadow-sombra-padrao rounded-xl h-full w-80 flex flex-col items-center justify-end ">
@@ -13,8 +17,7 @@ export function ExercicioImageCard({exercicio, URI}){
                             <img className="object-contain w-full h-full group-hover:scale-110 transition-all duration-300 ease-in-out" src={exercicio.midia.caminho} alt="" />
                         ) : (
                             <div className="flex h-full w-full gap-2 items-center justify-center">
-                                <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
-                                
+                                <ImageBroken size={32} color="black"/>
                             </div>
                         )}
                         
