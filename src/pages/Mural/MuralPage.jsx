@@ -71,19 +71,23 @@ export function MuralPage() {
       nome: original_filename,
       caminho: url,
       extensao: format,
+      tipo: "Imagem"
     };
     const muralItemDto = {
       usuarioId: user.userData.id,
       midiaId: null,
       dtPostagem: getDataAtual(),
     };
-
+       console.log(midiaDto)
+       console.log(muralItemDto)
     try {
       api.post('/midias/salvarMidia', midiaDto).then((response) => {
         muralItemDto.midiaId = response.data.idMidia;
 
         api.post(`/murais`, muralItemDto).then((response) => {
           toast.success('Imagem carregada com sucesso!');
+
+          console.log("socorro",response)
 
           setMuralItens((prevItems) => [...prevItems, response.data]);
         });
@@ -94,7 +98,6 @@ export function MuralPage() {
   }
 
   function getMuralItem() {
-    
     try {
       api.get(`/murais/por-usuario/${user.userData.id}`).then((response) => {
         setMuralItens(response.data);
@@ -121,8 +124,8 @@ export function MuralPage() {
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
       getMuralItem();
     };
@@ -180,7 +183,7 @@ export function MuralPage() {
             </div>
           ) : (
             muralItens.map((muralItem) =>
-              muralItem.midiaId && muralItem.midiaId.caminho ? (
+              muralItem.midia && muralItem.midia.caminho ? (
                 <MuralItem
                   key={muralItem.idMural}
                   muralItem={muralItem}

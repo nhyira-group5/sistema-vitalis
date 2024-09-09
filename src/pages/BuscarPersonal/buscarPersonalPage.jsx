@@ -19,10 +19,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Splash } from "@components/Splash/splash";
 import { twMerge } from "tailwind-merge";
 
+
 export function BuscarPersonalPage() {
   const { user, loading, error} = useContext(UserContext);
   const [carregando, setCarregando] = useState(false);
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
 
   const [cep, setCep] = useState("");
   const [infoEndereco, setInfoEndereco] = useState(null);
@@ -108,7 +109,7 @@ export function BuscarPersonalPage() {
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
 
-      {!user.pagamentoAtivo && !loadingPage && (
+      {!user.userData.pagamentoAtivo && (
         <div className="absolute bg-white mx-auto my-0 max-w-prose p-4 rounded-xl z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4">
           <h3 className="font-medium text-xl col-span-full">
             Acesso Exclusivo para Usuários Premium
@@ -130,8 +131,7 @@ export function BuscarPersonalPage() {
 
       <div
         className={twMerge(
-          'w-[90vw] h-full flex justify-between',
-          !user.pagamentoAtivo && 'blur-sm',
+          'w-[90vw] h-full flex justify-between'
         )}
       >
         <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
@@ -213,60 +213,50 @@ export function BuscarPersonalPage() {
             />
           )}
         </div>
-      </div>
 
-      {!usuario.pagamentoAtivo && !loadingPage && (
-        <div className="absolute bg-white right-12 max-w-lg p-4 rounded-xl border z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4">
-          <h3 className="font-medium text-lg col-span-full">
-            Acesso Exclusivo para Usuários Premium
-          </h3>
-          <p className="text-sm">
-            Esta funcionalidade está disponível apenas para assinantes premium.
-            Para continuar e aproveitar todos os recursos do nosso site, você
-            precisará atualizar sua assinatura.
-          </p>
+        <div className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col">
+          <h1 className="text-[#2B6E36] font-semibold text-2xl">
+            Encontre um personal
+          </h1>
 
-          <Link
-            className="block py-2 px-4 max-w-max rounded-md bg-[#2B6E36] uppercase font-medium text-base text-white mx-auto my-0 place-self-end"
-            to="/planos"
-          >
-            Ver Planos
-          </Link>
-        </div>
-      )}
-
-      <div
-        className={twMerge(
-          "w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col justify-between",
-          !usuario.pagamentoAtivo && "blur-sm relative"
-        )}
-      >
-        <h1 className="text-[#2B6E36] font-semibold text-2xl">
-          Encontre um personal
-        </h1>
 
           {isUsuarioLoading ? (
             <Splash />
-          ) : (
+          ) : user.userData.pagamentoAtivo ? (
             <div className="m-auto w-full h-5/6 flex flex-col gap-2.5 overflow-y-auto items-center">
               {personais.length > 0 ? (
-                personais.map((personal, index) => {
-                  return (
-                    <CardPersonal
-                      key={index}
-                      haveDots
-                      haveShadow
-                      personal={personal}
-                      usuario={user}
-                    />
-                  );
-                })
+                personais.map((personal, index) => (
+                  <CardPersonal
+                    key={index}
+                    haveDots
+                    haveShadow
+                    personal={personal}
+                    usuario={user.userData}
+                  />
+                ))
               ) : (
                 <div>Nenhum personal encontrado</div>
               )}
             </div>
+          ) : (
+            <div className="w-full flex-col bg-white rounded-2xl p-4 flex justify-between">
+              <span className="font-semibold text-base text-[#2B6E36]">
+                Personal não encontrado!
+              </span>
+              <span className="font-semibold text-sm">
+                Parece que você ainda não é filiado a um personal!
+              </span>
+              <Link
+
+                to="/buscar-personal"
+                className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
+              >
+                Buscar personal
+              </Link>
+            </div>
           )}
         </div>
+
       </div>
     </div>
   );
