@@ -1,3 +1,5 @@
+import { Activities } from "./Home/activities";
+
 export function TesteSilva() {
-  return <div>oi</div>
+  return <Activities />
 }

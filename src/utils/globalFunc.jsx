@@ -1,4 +1,3 @@
-
 export function validateLogin(navigate, user) {
   if (!user) {
     navigate('/login');

@@ -90,7 +90,7 @@ export function LoginPage() {
      userFicha: userFichaResponse ? userFichaResponse.data : null 
    }
 
-
+      localStorage.setItem('user', JSON.stringify(userData))
       updateUser(userData);
       console.log(userData)
       

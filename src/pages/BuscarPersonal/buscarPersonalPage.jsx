@@ -13,18 +13,19 @@ import { UserContext } from '../../user-context';
 import {
   validateLogin,
   validateUsuario,
-} from '@utils/globalFunc';
-import { api } from '../../api';
-import { Link, useNavigate } from 'react-router-dom';
-import { Splash } from '@components/Splash/splash';
-import { twMerge } from 'tailwind-merge';
+} from "@utils/globalFunc";
+import { api } from "../../api";
+import { Link, useNavigate } from "react-router-dom";
+import { Splash } from "@components/Splash/splash";
+import { twMerge } from "tailwind-merge";
+
 
 export function BuscarPersonalPage() {
   const { user, loading, error} = useContext(UserContext);
   const [carregando, setCarregando] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
 
-  const [cep, setCep] = useState('');
+  const [cep, setCep] = useState("");
   const [infoEndereco, setInfoEndereco] = useState(null);
   const [academias, setAcademias] = useState(null);
   const [infoDistance, setInfoDistance] = useState(null);
@@ -138,16 +139,16 @@ export function BuscarPersonalPage() {
             Encontre uma academia
           </h1>
 
-          <div className="w-full flex justify-between  text-sm">
-            <InputAcad
-              label="CEP"
-              placeholder="00000-000"
-              type="text"
-              width={'w-1/5'}
-              valueOption={cep}
-              onChangeFunction={handleInputCep}
-            />
-            {/* <InputAcad
+        <div className="w-full flex justify-between  text-sm">
+          <InputAcad
+            label="CEP"
+            placeholder="00000-000"
+            type="text"
+            width={"w-1/5"}
+            valueOption={cep}
+            onChangeFunction={handleInputCep}
+          />
+          {/* <InputAcad
               label="Logradouro"
               placeholder="Ex: Rua das Araras"
               type="text"
@@ -163,60 +164,61 @@ export function BuscarPersonalPage() {
               // valueFunction={}
               // onChangeFunction={}
             /> */}
-            <button
-              className="h-fit px-2.5 py-2.5 rounded-full shadow-lg text-white bg-[#48B75A] flex gap-2 items-center self-end"
-              onClick={handleClickSearch}
-            >
-              <MagnifyingGlass color="white" />
-            </button>
-          </div>
-
-          <div className="w-full h-[55%] bg-gray-500/20 flex items-center justify-center">
-            {carregando && <span>Carregando...</span>}
-            <Mapa
-              infoEndereco={infoEndereco}
-              setAcademias={setAcademias}
-              setCarregando={setCarregando}
-            />
-          </div>
-
-          <div className="h-[22%] flex justify-between">
-            {!academias ? (
-              <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
-                <QuestionMark size={30} color="black" />
-              </div>
-            ) : (
-              <CardAcad
-                title={academias[0].nome}
-                rating={academias[0].classificacao}
-                address={academias[0].endereco}
-                cep={cep}
-                lat={academias[0].latitude}
-                lon={academias[0].longitude}
-                onClickFunction={handleClickCard}
-              />
-            )}
-            {!academias ? (
-              <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
-                <QuestionMark size={30} color="black" />
-              </div>
-            ) : (
-              <CardAcad
-                title={academias[1].nome}
-                rating={academias[1].classificacao}
-                address={academias[1].endereco}
-                cep={cep}
-                lat={academias[1].latitude}
-                lon={academias[1].longitude}
-                onClickFunction={handleClickCard}
-              />
-            )}
-          </div>
+          <button
+            className="h-fit px-2.5 py-2.5 rounded-full shadow-lg text-white bg-[#48B75A] flex gap-2 items-center self-end"
+            onClick={handleClickSearch}
+          >
+            <MagnifyingGlass color="white" />
+          </button>
         </div>
+
+        <div className="w-full h-[55%] bg-gray-500/20 flex items-center justify-center">
+          {carregando && <span>Carregando...</span>}
+          <Mapa
+            infoEndereco={infoEndereco}
+            setAcademias={setAcademias}
+            setCarregando={setCarregando}
+          />
+        </div>
+
+        <div className="h-[22%] flex justify-between">
+          {!academias ? (
+            <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
+              <QuestionMark size={30} color="black" />
+            </div>
+          ) : (
+            <CardAcad
+              title={academias[0].nome}
+              rating={academias[0].classificacao}
+              address={academias[0].endereco}
+              cep={cep}
+              lat={academias[0].latitude}
+              lon={academias[0].longitude}
+              onClickFunction={handleClickCard}
+            />
+          )}
+          {!academias ? (
+            <div className="w-[48%] h-full rounded-xl shadow-xl p-4 flex items-center justify-center cursor-pointer">
+              <QuestionMark size={30} color="black" />
+            </div>
+          ) : (
+            <CardAcad
+              title={academias[1].nome}
+              rating={academias[1].classificacao}
+              address={academias[1].endereco}
+              cep={cep}
+              lat={academias[1].latitude}
+              lon={academias[1].longitude}
+              onClickFunction={handleClickCard}
+            />
+          )}
+        </div>
+
         <div className="w-[38%] h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre um personal
           </h1>
+
 
           {isUsuarioLoading ? (
             <Splash />

@@ -10,6 +10,7 @@ import {
   validateLogin,
   validateUsuario,
 } from '@utils/globalFunc';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../../user-context'; 
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -146,12 +147,12 @@ export function ChatPage() {
             precisará atualizar sua assinatura.
           </p>
 
-          <a
+          <Link
             className="block py-2 px-4 max-w-max rounded-md bg-[#2B6E36] uppercase font-medium text-lg text-white mx-auto my-0 place-self-center"
-            href=""
+            to="/planos"
           >
             Ver Planos
-          </a>
+          </Link>
         </div>
       )}
       <div
@@ -237,7 +238,6 @@ export function ChatPage() {
           
         </div>
       </div>
-         
     </div>
   );
 }
