@@ -18,16 +18,12 @@ export const UserStorage = ({ children }) => {
     }
   }, [])
 
-  const aumentaContador = () => {
-    setActivitySelected((prev) => prev + 1)
-  }
-
   const updateUser = (userData) => {
     setUser(userData);
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, error, updateUser, activitySelected, setActivitySelected, aumentaContador }}>
+    <UserContext.Provider value={{ user, loading, error, updateUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -10,11 +10,13 @@ import { UserContext } from "../../user-context";
 import { useNavigate } from "react-router-dom";
 
 import { Activities } from "./activities";
+import { toast } from "react-toastify";
 
 export function HomePage() {
   const [nicknameUser, setNicknameUser] = useState("");
 
   const [activityId, setActivityId] = useState("");
+  const [activityIdPatch, setActivityIdPatch] = useState("");
   const [activityType, setActivityType] = useState("");
   const [activityName, setActivityName] = useState("");
   const [activityMedia, setActivityMedia] = useState("");
@@ -23,7 +25,8 @@ export function HomePage() {
   const [activityDescription, setActivityDescription] = useState("");
   const [activityRepetitions, setActivityRepetitions] = useState("");
   const [activityInformation, setActivityInformation] = useState({});
-  const [activityCompleteded, setActivityCompleteded] = useState("");
+  const [activityCompleteded, setActivityCompleteded] = useState(0);
+  const [activitySelected, setActivitySelected] = useState(false);
 
   const [listFood, setListFood] = useState(null);
   const [listFoodName, setListFoodName] = useState(null);
@@ -31,8 +34,7 @@ export function HomePage() {
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
-  const { user, loading, error, activitySelected, setActivitySelected, aumentaContador } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user !== null) {
@@ -49,7 +51,6 @@ export function HomePage() {
       api
         .get(`/refeicoes/${activityId}`)
         .then((response) => {
-          console.log(response.data);
           setListFood(response.data);
         })
         .catch((error) => {
@@ -59,20 +60,17 @@ export function HomePage() {
   }, [activityInformation]);
 
   function handleSelectActivity(e) {
-    setActivitySelected(false);
-    aumentaContador();
-
+    console.log(e)
     setActivityType(e.type);
     setActivityName(e.nome);
 
-    if (e.type === "Refeição") {
-      setActivityId(e.idRefeicao);
-      setActivityDescription(e.preparo);
-    } else {
-      setActivityId(e.idExercicio);
-      setActivityDescription(e.descricao);
-    }
+    const id = e.type === "Refeição" ? e.idRefeicao : e.idExercicio;
+    const idPatch = e.type === "Refeição" ? e.preparo : e.idTreino;
+    const description = e.type === "Refeição" ? e.preparo : e.descricao;
 
+    setActivityId(id);
+    setActivityIdPatch(idPatch)
+    setActivityDescription(description);
     if (e.midia !== null) {
       setActivityMedia(e.midia.caminho);
     }
@@ -96,18 +94,12 @@ export function HomePage() {
     }
   }, [listFood]);
 
-  // useEffect(() => {
-  //   const url = `/treinos/concluir/${activityId}`
-  //   axios.patch(url)
-  //   .then((response) => {
-  //     response.data
-  //   })
-  // })
+  
 
   // MARCAR ATIVIDADE COMO CONCLUÍDA
   function completedActivity() {
     console.log(activityInformation);
-    if (activityCompleteded == 0) {
+    if (activityCompleteded === 0) {
       if (activityType === "Refeição") {
         setCurrentyAmountMeals(currentyAmountMeals + 1);
         setarParaConcluidoRefeicao();
@@ -124,7 +116,7 @@ export function HomePage() {
   function setarParaConcluidoTreino() {
     console.log(activityId);
     api
-      .patch(`/treinos/concluir/${activityId}?concluido=1`)
+      .patch(`/treinos/concluir/${activityIdPatch}?concluido=1`)
       .then((response) => {
         console.log(response.data);
       });
@@ -157,7 +149,7 @@ export function HomePage() {
             <h1>Bem-vindo(a), {nicknameUser}</h1>
           </div>
 
-          <Activities onClickFunction={handleSelectActivity} activitySelected={activitySelected}/>
+          <Activities onClickFunction={handleSelectActivity} activityInformation={activityInformation} activityCompleteded={activityCompleteded}/>
 
           <div className="w-full h-[16%] bg-white text-sm shadow-lg flex justify-between items-center rounded-xl p-4">
             <h1 className="w-[60%] text-wrap ">

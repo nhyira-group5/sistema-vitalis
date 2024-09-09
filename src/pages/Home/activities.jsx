@@ -5,7 +5,7 @@ import { api } from "../../api";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
 import { UserContext } from "../../user-context";
 
-export function Activities({ onClickFunction }) {
+export function Activities({ onClickFunction, activityInformation, activityCompleteded }) {
   const [activitiesDay, setActivitiesDay] = useState([]);
   const [activitiesWeek, setActivitiesWeek] = useState(null);
 
@@ -21,16 +21,16 @@ export function Activities({ onClickFunction }) {
 
   useEffect(() => {
     fetchAtividadesPorSemana();
-  }, []);
+  }, [activityCompleteded]);
 
   useEffect(() => {
     // arrumar a lógica para pegar cada dia
     // setActivitiesDay(activitiesWeek[1]);
     if (activitiesWeek !== null) {
       setActivitiesDay(activitiesWeek[1]);
-      console.log("alo")
+      console.log("oiiii")
     }
-  }, [activitiesWeek, activitySelected]);
+  }, [activitiesWeek, activityInformation, activityCompleteded]);
 
   const fetchAtividadesPorSemana = async () => {
     try {

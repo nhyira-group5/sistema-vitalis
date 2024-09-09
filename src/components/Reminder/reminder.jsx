@@ -25,7 +25,7 @@ export function Reminder() {
   const [reminders, setReminders] = useState(null);
   const [textAreaValue, setTextAreaValue] = useState("");
   const [textAreaVisible, setTextAreaVisible] = useState(false);
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     fetchReminders();
@@ -37,7 +37,12 @@ export function Reminder() {
 
   async function salveReminder() {
     if (textAreaValue.length > 0) {
-      const user = get
+      const bodyRequest = {
+        conteudo: textAreaValue,
+        dataLembrete: new Date().toISOString(),
+        usuarioId: user.userData.id,
+      };
+
       const response = await postReminder(bodyRequest);
       console.log(response);
 
@@ -56,12 +61,6 @@ export function Reminder() {
     setTextAreaVisible(false);
   }
 
-  const bodyRequest = {
-    conteudo: textAreaValue,
-    dataLembrete: new Date().toISOString(),
-    usuarioId: 3,
-  };
-
   const postReminder = async (bodyRequest) => {
     let json;
     try {
@@ -76,9 +75,9 @@ export function Reminder() {
   };
 
   const fetchReminders = async () => {
-    // usar id do usuario certo
+    if (user == null) return;
     try {
-      const response = await api.get(`/lembretes/${3}`);
+      const response = await api.get(`/lembretes/${user.userData.id}`);
       setReminders(response.data);
     } catch (e) {
       console.error("Error in GET request:", e);
@@ -97,7 +96,8 @@ export function Reminder() {
             setTextAreaValue={setTextAreaValue}
           />
         )}
-        {reminders !== null && reminders.length > 0 || textAreaVisible === true  ? (
+        {(reminders !== null && reminders.length > 0) ||
+        textAreaVisible === true ? (
           reminders.map((r, index) => {
             return (
               <ReminderMessage

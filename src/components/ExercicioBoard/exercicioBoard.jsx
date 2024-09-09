@@ -41,7 +41,7 @@ export function ExercicioBoard({
       {type == "Refeição" && listFoodName !== null ? (
         <div className="w-full h-[18%] flex justify-around overflow-x-auto gap-4 scrollbar-thin">
           {listFoodName.map((foodName, index) => {
-            return <CardBoard textInfo={foodName} />;
+            return <CardBoard key={index} textInfo={foodName} />;
           })}
         </div>
       ) : (
