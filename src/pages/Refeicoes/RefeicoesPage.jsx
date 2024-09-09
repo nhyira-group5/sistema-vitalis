@@ -27,7 +27,7 @@ export function RefeicoesPage() {
         setRefeicoesIsLoading(true);
         api.get(`/refeicoes`).then((response) => {
           setRefeicoes([...refeicoes, ...response.data]);
-          
+          console.log("nois come bossta", response) 
         });
       } catch (error) {
         console.log(error);
@@ -65,17 +65,22 @@ export function RefeicoesPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-5  auto-rows-min gap-x-7 gap-y-7 h-full overflow-auto p-5">
-            {refeicoesIsLoading ? (
-              <div className="w-full h-full col-span-5">
-                <Splash />
-              </div>
-            ) : (
-              refeicoes.map((refeicao) => (
-                <RefeicaoCard key={refeicao.idRefeicao} refeicao={refeicao} />
-              ))
-            )}
-          </div>
+          <div className="grid grid-cols-5 auto-rows-min gap-x-7 gap-y-7 h-full overflow-auto p-5">
+              {refeicoesIsLoading ? (
+                <div className="w-full h-full col-span-5">
+                  <Splash />
+                </div>
+              ) : (
+                refeicoes.map((refeicao) => {
+                  return (
+                    <RefeicaoCard
+                      key={refeicao.idRefeicao}
+                      refeicao={refeicao}
+                    />
+                  );
+                })
+              )}
+            </div>
         </div>
       </div>
     </>

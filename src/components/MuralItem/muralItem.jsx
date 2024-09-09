@@ -5,6 +5,7 @@ import {
   } from "@phosphor-icons/react";
 
   import {formatarData} from "@utils/globalFunc"
+import { useEffect } from "react";
 
 export function MuralItem({muralItem, onDelete}){
 
@@ -40,7 +41,7 @@ export function MuralItem({muralItem, onDelete}){
 
          <img className="absolute" src={muralPin} alt="" />
 
-          <img className="w-full h-full object-cover " src={muralItem.midiaId.caminho} alt="" />
+          <img className="w-full h-full object-cover " src={muralItem.midia.caminho} alt="" />
 
         
         <span className="font-semibold">{formatarData(muralItem.dtPostagem)}</span>

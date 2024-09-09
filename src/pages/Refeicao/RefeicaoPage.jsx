@@ -6,6 +6,7 @@ import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../user-context'; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
+import { ImageBroken } from '@phosphor-icons/react';
 
 import { api } from '../../api';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
@@ -26,6 +27,7 @@ export function RefeicaoPage() {
       try {
         api.get(`/refeicoes/${idRefeicao}`).then((response) => {
           setRefeicao(response.data);
+          console.log(response.data)
         });
       } catch (error) {
         console.log(error);
@@ -96,7 +98,7 @@ export function RefeicaoPage() {
                     alt={refeicao.nome}
                   />
                 ) : (
-                  <Splash />
+                  <ImageBroken size={32} color="white"/>
                 )}
               </div>
             </div>
