@@ -27,7 +27,7 @@ export function AtividadeOption({
 
   return (
     <div
-      className={`h-20 w-full flex items-center justify-between pl-4 bg-${
+      className={`h-20 w-full flex items-center justify-between pl-4 hover:opacity-85 bg-${
         done !== 0 ? "[#48B75A]" : "[#FFFFFF]"
       } rounded-xl shadow-md cursor-pointer`}
       onClick={onClickFunction}
