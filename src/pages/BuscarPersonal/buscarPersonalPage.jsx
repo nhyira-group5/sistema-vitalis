@@ -108,26 +108,6 @@ export function BuscarPersonalPage() {
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
 
-      {!user.userData.pagamentoAtivo && (
-        <div className="absolute bg-white mx-auto my-0 max-w-prose p-4 rounded-xl z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4">
-          <h3 className="font-medium text-xl col-span-full">
-            Acesso Exclusivo para Usuários Premium
-          </h3>
-          <p className="text-base">
-            Esta funcionalidade está disponível apenas para assinantes premium.
-            Para continuar e aproveitar todos os recursos do nosso site, você
-            precisará atualizar sua assinatura.
-          </p>
-
-          <a
-            className="block py-2 px-4 max-w-max rounded-md bg-[#2B6E36] uppercase font-medium text-lg text-white mx-auto my-0 place-self-center"
-            href=""
-          >
-            Ver Planos
-          </a>
-        </div>
-      )}
-
       <div
         className={twMerge(
           'w-[90vw] h-full flex justify-between'
@@ -239,17 +219,16 @@ export function BuscarPersonalPage() {
           ) : (
             <div className="w-full flex-col bg-white rounded-2xl p-4 flex justify-between">
               <span className="font-semibold text-base text-[#2B6E36]">
-                Personal não encontrado!
+                Parece que você não é premium ainda!  
               </span>
               <span className="font-semibold text-sm">
-                Parece que você ainda não é filiado a um personal!
+                Faça agora sua assinatura premium!
               </span>
               <Link
-
-                to="/buscar-personal"
+                to="/planos"
                 className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
               >
-                Buscar personal
+                Ver planos
               </Link>
             </div>
           )}
