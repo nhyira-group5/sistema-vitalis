@@ -1,11 +1,14 @@
-import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
-import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
-import { useContext, useEffect, useState } from "react";
-import { api } from "../../api";
 import { AtividadeOption } from "../../components/AtividadeOption/atividadeOption";
-import { UserContext } from "../../user-context";
+import { AtividadeCard } from "../../components/AtividadeCard/atividadeCard";
+import { Barbell, BowlSteam, CalendarCheck } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
+import { api } from "../../api";
 
-export function Activities({ onClickFunction, activityInformation, activityCompleteded }) {
+export function Activities({
+  onClickFunction,
+  activityInformation,
+  activityCompleteded,
+}) {
   const [activitiesDay, setActivitiesDay] = useState([]);
   const [activitiesWeek, setActivitiesWeek] = useState(null);
 
@@ -17,8 +20,6 @@ export function Activities({ onClickFunction, activityInformation, activityCompl
   const [currentyAmountMeals, setCurrentyAmountMeals] = useState(0);
   const [currentyAmountExercises, setCurrentyAmountExercises] = useState(0);
 
-  const { activitySelected } = useContext(UserContext);
-
   useEffect(() => {
     fetchAtividadesPorSemana();
   }, [activityCompleteded]);
@@ -28,9 +29,20 @@ export function Activities({ onClickFunction, activityInformation, activityCompl
     // setActivitiesDay(activitiesWeek[1]);
     if (activitiesWeek !== null) {
       setActivitiesDay(activitiesWeek[1]);
-      console.log("oiiii")
     }
   }, [activitiesWeek, activityInformation, activityCompleteded]);
+
+  useEffect(() => {
+    if (activitiesDay !== null) {
+      generateCurrentyAmountExercises();
+      generateCurrentyAmountMeals();
+      generateCurrentyAmountDays();
+
+      generateTotalAmountExercises();
+      generateTotalAmountMeals();
+      generateTotalAmountDays();
+    }
+  }, [activitiesDay]);
 
   const fetchAtividadesPorSemana = async () => {
     try {
@@ -51,6 +63,7 @@ export function Activities({ onClickFunction, activityInformation, activityCompl
         listaRefeicoesDaSemana,
         listaTreinosDaSemana
       );
+      console.log(rotinasMescladas);
       setActivitiesWeek(rotinasMescladas);
     } catch (e) {
       console.error("Error in GET request:", e);
@@ -103,17 +116,22 @@ export function Activities({ onClickFunction, activityInformation, activityCompl
 
   function generateTotalAmountExercises() {
     const totalAmountExercises = handleTotalAmount("Exercício").length;
-    // console.log("Total de exercícios: " + totalAmountExercises);
     setTotalAmountExercises(totalAmountExercises);
   }
 
   function generateTotalAmountMeals() {
     const totalAmountMeals = handleTotalAmount("Refeição").length;
-    // console.log("Total de refeições: " + totalAmountMeals);
     setTotalAmountMeals(totalAmountMeals);
   }
 
-   function handleCurrentyAmount(activity) {
+  function generateTotalAmountDays() {
+    if (activitiesWeek !== null) {
+      const totalDays = Object.keys(activitiesWeek).length;
+      setTotalAmountDays(totalDays);
+    }
+  }
+
+  function handleCurrentyAmount(activity) {
     const array = handleTotalAmount(activity);
     const response = array.filter((element) => element.concluido == true);
     return response;
@@ -129,162 +147,14 @@ export function Activities({ onClickFunction, activityInformation, activityCompl
     setCurrentyAmountMeals(currentyAmountMeals);
   }
 
-  useEffect(() => {
-    if (activitiesDay !== null) {
-      generateCurrentyAmountExercises();
-      generateCurrentyAmountMeals();
-      // generateCurrentyAmountDays();
-
-      generateTotalAmountExercises();
-      generateTotalAmountMeals();
-      // generateTotalAmountDays();
+  function generateCurrentyAmountDays() {
+    if (activitiesWeek !== null) {
+      const diaCompleto = activitiesDay.every(
+        (objeto) => objeto.concluido === 1
+      );
+      if (diaCompleto) setCurrentyAmountDays(1);
     }
-  }, [activitiesDay]);
-
-  // useEffect(() => {
-  //   if (
-  //     activityInformation.type === "Refeição" &&
-  //     activityId !== "" &&
-  //     activityId !== null
-  //   ) {
-  //     console.log(activityId);
-
-  //     api
-  //       .get(`/refeicoes/${activityId}`)
-  //       .then((response) => {
-  //         console.log(response.data);
-  //         setListFood(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, [activityInformation]);
-
-  // // useEffect(
-  // //   () => {
-  // //     console.log("AQUELE LA ")
-  // //     generateCurrentyAmountExercises();
-  // //     generateCurrentyAmountMeals();
-  // //     generateCurrentyAmountDays();
-
-  // //     generateActivitiesDay();
-  // //   },
-  // //   [activitySelected],
-  // //   [activityInformation]
-  // // );
-
-  // useEffect(() => {
-  //   if (listFood !== null && listFood !== undefined) {
-  //     let vetorAux = [];
-  //     for (let i = 0; i < listFood.alimentoPorRefeicao.length; i++) {
-  //       const element = listFood.alimentoPorRefeicao[i];
-  //       console.log(element.alimento.nome);
-  //       vetorAux.push(element.alimento.nome);
-  //     }
-  //     console.log(vetorAux);
-  //     setListFoodName(vetorAux);
-  //   }
-  // }, [listFood]);
-
-  // useEffect(() => {
-  //   const url = `/treinos/concluir/${activityId}`
-  //   axios.patch(url)
-  //   .then((response) => {
-  //     response.data
-  //   })
-  // })
-
-  // // QUANTIDADES TOTAIS DE EXERCÍCIOS, REFEIÇÕES E DIAS SEMANAIS
-
-  // function generateTotalAmountDays() {
-  //   const totalDays = Object.keys(activitiesWeek).length;
-  //   setTotalAmountDays(totalDays);
-  // }
-
-  // // QUANTIDADES ATUAIS DE EXERCÍCIO, REFEIÇÕES E DIAS SEMANAIS
-
-  // function handleCurrentyAmount(activity) {
-  //   const array = handleTotalAmount(activity);
-  //   const response = array.filter((element) => element.concluido == true);
-  //   // console.log("Lista de " + activity + " concluídos: " + response);
-  //   return response;
-  // }
-
-  // function generateCurrentyAmountExercises() {
-  //   const currentyAmountExercises = handleCurrentyAmount("Exercício").length;
-  //   // console.log("Exercícios concluídos: " + currentyAmountExercises);
-  //   setCurrentyAmountExercises(currentyAmountExercises);
-  // }
-
-  // function generateCurrentyAmountMeals() {
-  //   const currentyAmountMeals = handleCurrentyAmount("Refeição").length;
-  //   // console.log("Refeições concluídas: " + currentyAmountMeals);
-  //   setCurrentyAmountMeals(currentyAmountMeals);
-  // }
-
-  // function generateCurrentyAmountDays() {
-  //   console.log(activitiesWeek[1]);
-
-  //   let qtdConcluido = 0;
-  //   for (let i = 0; i <= activitiesWeek[1].length; i++) {
-  //     const element = activitiesWeek[1];
-  //     if (element[i] !== undefined && element[i] !== null) {
-  //       if (element[i].concluido == 1) {
-  //         qtdConcluido++;
-  //       }
-  //     }
-  //     // const currentyDays = element.filter(
-  //     //   (element) => element.concluido == true
-  //     // ).length;
-
-  //     // if (currentyDays === Object.keys(activitiesWeek).length) {
-  //     //   setCurrentyAmountDays((prev) => prev);
-  //     // }
-  //   }
-
-  //   console.log(qtdConcluido);
-  //   console.log(activitiesWeek[1].length);
-  //   if (qtdConcluido === activitiesWeek[1].length) {
-  //     setCurrentyAmountDays(1);
-  //   }
-  // }
-
-
-  // // MARCAR ATIVIDADE COMO CONCLUÍDA
-  // function completedActivity() {
-  //   console.log(activityInformation);
-  //   if (activityCompleteded == 0) {
-  //     if (activityType === "Refeição") {
-  //       setCurrentyAmountMeals(currentyAmountMeals + 1);
-  //       setarParaConcluidoRefeicao();
-  //     } else {
-  //       setCurrentyAmountExercises(currentyAmountExercises + 1);
-  //       setarParaConcluidoTreino();
-  //     }
-  //     setActivityCompleteded(1);
-  //   } else {
-  //     toast.error("Atividade já concluída!");
-  //   }
-  // }
-
-  // function setarParaConcluidoTreino() {
-  //   console.log(activityId);
-  //   api
-  //     .patch(`/treinos/concluir/${activityId}?concluido=1`)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     });
-  // }
-
-  // function setarParaConcluidoRefeicao() {
-  //   console.log(activityId);
-  //   api
-  //     .patch(`/refeicaoDiarias/concluir/${activityId}?concluido=1`)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     });
-  // }
+  }
 
   return (
     <div className="w-full h-[72%] bg-white shadow-lg flex flex-col justify-between items-center rounded-xl p-4">

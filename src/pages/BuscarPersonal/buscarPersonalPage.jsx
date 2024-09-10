@@ -19,8 +19,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
 import { twMerge } from 'tailwind-merge';
 
+
 export function BuscarPersonalPage() {
-  const { user, loading, error} = useContext(UserContext);
+  const { user, loading, error } = useContext(UserContext);
   const [carregando, setCarregando] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
 
@@ -32,7 +33,6 @@ export function BuscarPersonalPage() {
   const [personais, setPersonais] = useState([]);
 
   const [isUsuarioLoading, setIsUsuarioLoading] = useState(false);
-
 
   const navigate = useNavigate();
 
@@ -113,6 +113,8 @@ export function BuscarPersonalPage() {
           'w-[90vw] h-full flex justify-between'
         )}
       >
+
+
         <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre uma academia
@@ -123,7 +125,9 @@ export function BuscarPersonalPage() {
               label="CEP"
               placeholder="00000-000"
               type="text"
+
               width={'w-1/5'}
+
               valueOption={cep}
               onChangeFunction={handleInputCep}
             />
@@ -226,6 +230,7 @@ export function BuscarPersonalPage() {
               </span>
               <Link
                 to="/planos"
+
                 className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
               >
                 Ver planos
@@ -233,7 +238,6 @@ export function BuscarPersonalPage() {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
