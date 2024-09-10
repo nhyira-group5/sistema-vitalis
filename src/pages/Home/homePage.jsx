@@ -59,30 +59,6 @@ export function HomePage() {
     }
   }, [activityInformation]);
 
-  function handleSelectActivity(e) {
-    console.log(e)
-    setActivityType(e.type);
-    setActivityName(e.nome);
-
-    const id = e.type === "Refeição" ? e.idRefeicao : e.idExercicio;
-    const idPatch = e.type === "Refeição" ? e.preparo : e.idTreino;
-    const description = e.type === "Refeição" ? e.preparo : e.descricao;
-
-    setActivityId(id);
-    setActivityIdPatch(idPatch)
-    setActivityDescription(description);
-    if (e.midia !== null) {
-      setActivityMedia(e.midia.caminho);
-    }
-    setActivityDuration(e.tempo);
-    setActivityRepetitions(e.repeticao);
-    setActivitySeries(e.serie);
-    setActivityInformation(e);
-    setActivityCompleteded(e.concluido);
-
-    setActivitySelected(true);
-  }
-
   useEffect(() => {
     if (listFood !== null && listFood !== undefined) {
       let vetorAux = [];
@@ -94,9 +70,32 @@ export function HomePage() {
     }
   }, [listFood]);
 
+  function handleSelectActivity(e) {
+    console.log(e)
+    setActivityType(e.type);
+    setActivityName(e.nome);
+
+    const id = e.type === "Refeição" ? e.idRefeicao : e.idExercicio;
+    const idPatch = e.type === "Refeição" ? e.idRefeicaoDiaria : e.idTreino;
+    const description = e.type === "Refeição" ? e.preparo : e.descricao;
+
+    setActivityId(id);
+    setActivityIdPatch(idPatch)
+    setActivityDescription(description);
+    if (e.midia !== null) {
+      setActivityMedia(e.midia[0].caminho);
+    }
+    setActivityDuration(e.tempo);
+    setActivityRepetitions(e.repeticao);
+    setActivitySeries(e.serie);
+    setActivityInformation(e);
+    setActivityCompleteded(e.concluido);
+
+    setActivitySelected(true);
+  }
+
   
 
-  // MARCAR ATIVIDADE COMO CONCLUÍDA
   function completedActivity() {
     console.log(activityInformation);
     if (activityCompleteded === 0) {
@@ -109,7 +108,7 @@ export function HomePage() {
       }
       setActivityCompleteded(1);
     } else {
-      toast.error("Atividade já concluída!");
+      toast.error("Atividade já concluída!"); 
     }
   }
 
@@ -125,7 +124,7 @@ export function HomePage() {
   function setarParaConcluidoRefeicao() {
     console.log(activityId);
     api
-      .patch(`/refeicaoDiarias/concluir/${activityId}?concluido=1`)
+      .patch(`/refeicaoDiarias/concluir/${activityIdPatch}?concluido=1`)
       .then((response) => {
         console.log(response.data);
       });

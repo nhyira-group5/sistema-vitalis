@@ -22,8 +22,15 @@ export const UserStorage = ({ children }) => {
     setUser(userData);
   };
 
+  const git = () => {
+    setUsuario((prevUsuario) => ({
+      ...prevUsuario,
+      pagamentoAtivo: true,
+    }));
+  };
+
   return (
-    <UserContext.Provider value={{ user, loading, error, updateUser }}>
+    <UserContext.Provider value={{ user, loading, error, updateUser, updatePagamento }}>
       {children}
     </UserContext.Provider>
   );

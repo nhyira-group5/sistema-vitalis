@@ -10,7 +10,6 @@ import {
   validateLogin,
   validateUsuario,
 } from '@utils/globalFunc';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../../user-context'; 
 import { Link, useNavigate } from 'react-router-dom';
 

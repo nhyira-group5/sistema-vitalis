@@ -103,8 +103,8 @@ function insertImage(cloudObject) {
                 <h3 className="font-semibold text-sm">Meta</h3>
                 <p>{user && user.userData.meta.nome}</p>
               </div>
-              <div className="px-2 py-2">
-                <h3 className="font-semibold text-sm">Peso</h3>
+              <div className="px-2 py-2 border-r">
+                <h3 className="font-semibold text-sm ">Peso</h3>
                 <p>{fichaUsuario.peso ? `${fichaUsuario.peso}kg` : ''}</p>
               </div>
               <div className="px-2 py-2">
@@ -125,20 +125,20 @@ function insertImage(cloudObject) {
                       alt=""
                     />
                   </div>
-                  <div className="grid grid-cols-4 gap-2 bg-white p-2 rounded-xl">
-                    <div className="px-2 py-2 col-span-2 border">
+                  <div className="grid grid-cols-4 bg-white p-2 rounded-xl">
+                    <div className="px-2 py-2 col-span-2 border-r border-b ">
                       <h3 className="font-semibold text-sm">Nome Completo</h3>
                       <p>{personal.nome ? personal.nome : 'xtop'}</p>
                     </div>
-                    <div className="px-2 py-2 col-span-2">
+                    <div className="px-2 py-2 col-span-2 border-b">
                       <h3 className="font-semibold text-sm">E-mail</h3>
                       <p>{personal.email ? personal.email : 'caue@gmail.com'}</p>
                     </div>
-                    <div className="px-2 py-2 col-span-2 border">
+                    <div className="px-2 py-2 col-span-2 border-r">
                       <h3 className="font-semibold text-sm">Meta</h3>
-                      <p>{personal.especialidade ? personal.especialidade.nome : ''}</p>
+                      <p>{user.userData.meta.nome || ''}</p>
                     </div>
-                    <div className="px-2 py-2">
+                    <div className="px-2 py-2 border-r">
                       <h3 className="font-semibold text-sm">Data de Nasc.</h3>
                       <p>{personal.dtNasc ? converterDataFormato(personal.dtNasc) : '25/01/2004'}</p>
                     </div>
