@@ -14,36 +14,25 @@ import { UserContext } from '../../user-context';
 import { Link, useNavigate } from 'react-router-dom';
 
 export function ChatPage() {
+  const { user, loading, error} = useContext(UserContext);
+
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState([]);
-  const [personal, setPersonal] = useState(null);
+  const [personal, setPersonal] = useState(user.userData.personalId ? user.userData.personalId : null);
   const [personalId, setPersonalId] = useState(null);
   const [chatId, setChatId] = useState(null);
-  const { user, loading, error} = useContext(UserContext);
+  
 
   const navigate = useNavigate();
 
-  const isInitialRender = useRef(true); // Flag para identificar o primeiro render
-
-
-  // function getUsuario() {
-  //   const loginResponse = getLoginResponse();
-  //   try {
-  //     api.get(`usuarios/${loginResponse.id}`).then((response) => {
-  //       // response.data.pagamentoAtivo = true;
-  //       setUser(response.data);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
       await validateLogin(navigate, user);
       await validateUsuario(navigate, user);
     };
-    console.log("socorro jesus", user)
+
     validarLoginEUsuario();
   }, []);
 
@@ -54,9 +43,6 @@ export function ChatPage() {
         const chatRes = await axios.get(
           `http://localhost:3001/messages/usuario/${user.userData.id}`,
         );
-        const personalRes = await axios.get(
-          `http://localhost:8080/usuarios/personal/${user.userData.personalId.id}`,
-        );
 
         chatIdRes = chatRes.data[0].id_chat;
 
@@ -66,8 +52,7 @@ export function ChatPage() {
 
         setMessages(messagesRes.data);
         setChatId(chatIdRes);
-        setPersonalId(personalRes.data.id);
-        setPersonal(personalRes.data.nickname);
+
 
         if (!socket.connected) {
           socket.auth = {
@@ -99,7 +84,6 @@ export function ChatPage() {
       isInitialRender.current = false;
       return;
     }
-
     // Lógica adicional para impedir duplicação se necessário
   }, [messages]);
 

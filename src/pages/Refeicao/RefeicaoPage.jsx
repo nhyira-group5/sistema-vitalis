@@ -27,7 +27,6 @@ export function RefeicaoPage() {
       try {
         api.get(`/refeicoes/${idRefeicao}`).then((response) => {
           setRefeicao(response.data);
-          console.log(response.data)
         });
       } catch (error) {
         console.log(error);
@@ -81,7 +80,7 @@ export function RefeicaoPage() {
               >
                 Refeições
               </Link>
-              <span className="text-primary-green400 font-extrabold"></span>
+              <span className="text-primary-green400 font-extrabold">•</span>
               <span className="text-primary-green400 font-bold">
                 {refeicao.nome}
               </span>
@@ -91,10 +90,10 @@ export function RefeicaoPage() {
           <div className="flex w-full h-3/5 max-h-3/5 py-5 gap-10">
             <div className="w-3/5 p-5 bg-white shadow-sombra-padrao rounded-xl">
               <div className="h-full w-full rounded-lg flex items-center justify-center">
-                {refeicao.midia && refeicao.midia.caminho ? (
+                {refeicao.midia && refeicao.midia[0].caminho ? (
                   <img
                     className="w-full h-full bg-gray500 object-cover rounded-lg"
-                    src={refeicao.midia.caminho}
+                    src={refeicao.midia[0].caminho}
                     alt={refeicao.nome}
                   />
                 ) : (

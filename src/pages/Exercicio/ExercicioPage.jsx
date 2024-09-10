@@ -1,5 +1,5 @@
 import { InfoCard } from '@components/HorizontalCard/horizontalCard';
-import { Check, X } from '@phosphor-icons/react';
+import { Check, X, ImageBroken } from '@phosphor-icons/react';
 import { SideBar } from '@components/SideBar/sideBar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@components/Button/button';
@@ -8,12 +8,11 @@ import { UserContext } from '../../user-context';
 import ReactPlayer from 'react-player';
 import { Tag } from '../../components/Tag/tag';
 import { api } from '../../api';
-
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 export function ExercicioPage() {
   const [treino, setTreino] = useState(null);
-  const { updateUser, user, loading, error } = useContext(UserContext);
+  const { user, loading, error } = useContext(UserContext);
   const { idTreino } = useParams();
 
   const navigate = useNavigate();
@@ -61,6 +60,7 @@ export function ExercicioPage() {
 
       try {
         api.get(`/treinos/buscarIdTreinos/${idTreino}`).then((response) => {
+          console.log("treino", response.data)
           setTreino(response.data);
         });
       } catch (error) {
@@ -108,29 +108,25 @@ export function ExercicioPage() {
 
         <div className="flex w-full h-3/5 max-h-3/5 py-5 gap-10 p-5">
           <div className="w-3/5 p-5 bg-white shadow-sombra-padrao rounded-xl">
-            <ReactPlayer
-              url={'https://youtu.be/GOj4TMPVuZg?si=oOY0c63n1bEW2v6M '}
+            {/* <ReactPlayer
+              url={'https://youtu.be/GOj4TMPVuZg?si=oOY0c63n1bEW2v6M'}
               controls={true}
               width="100%"
               height="100%"
-            />
-            {/* {treino ? (
-              treino.exercicioId.midiaCaminho ? (
+            /> */}
+            {treino && treino.exercicioId && treino.exercicioId.midiaCaminho ? (
                 <ReactPlayer
-                url={treino.exercicioId.midiaCaminho}
-                controls={true}
-                width="100%"
-                height="100%"
-              />
-              ):(
-                <div className="h-full w-full flex items-center justify-center">
-                    <span>Sem mídia :(</span>
+                    url={treino.exercicioId.midiaCaminho}
+                    controls={true}
+                    width="100%"
+                    height="100%"
+                />
+            ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                    <ImageBroken size={32} color="black"/>
                 </div>
-              )
+            )}
 
-            ):(
-              "..."
-            )} */}
           </div>
 
           <div className="w-2/5 h-full flex flex-col  rounded-xl gap-5 justify-between items-center">

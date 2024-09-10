@@ -9,8 +9,8 @@ export function IngredienteCard({ingrediente}){
     <div className="group p-5 flex flex-col justify-end items-center bg-gray500 rounded-xl h-full min-w-48 overflow-hidden gap-2 relative">
         
         {
-           ingrediente.alimento.midia ? (
-             <img className="transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:brightness-[.6] absolute w-full h-full object-cover rounded-lg top-0 left-0 brightness-[.5] bg-gray500" src={ingrediente.alimento.midiaId ? ingrediente.alimento.midia.caminho ? ingrediente.alimento.midia.caminho : null : null} alt={ingrediente.alimento.nome} />
+           ingrediente.alimento.midia && ingrediente.alimento.midia[0].caminho ? (
+             <img className="transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:brightness-[.6] absolute w-full h-full object-cover rounded-lg top-0 left-0 brightness-[.5] bg-gray500" src={ingrediente.alimento.midia[0].caminho ? ingrediente.alimento.midia[0].caminho ? ingrediente.alimento.midia[0].caminho : null : null} alt={ingrediente.alimento.nome} />
                                 ) : (
                                 <div className="flex h-full w-full items-center justify-center">
                                     <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
