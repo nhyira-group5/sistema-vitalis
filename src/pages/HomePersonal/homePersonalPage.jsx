@@ -66,6 +66,7 @@ export function HomePersonalPage() {
       api
         .get(`/usuarios/usuario-afiliado/${user.userData.id}`)
         .then((response) => {
+          
           setUsuariosFiliados(response.data);
           
         });

@@ -53,7 +53,7 @@ export function Activities({
         "Refeição"
       );
 
-      const responseExercicio = await api.get(`/treinos/por-dia/106`);
+      const responseExercicio = await api.get(`/treinos/por-dia/1`);
       const listaTreinosDaSemana = agruparPorDia(
         responseExercicio.data,
         "Exercício"

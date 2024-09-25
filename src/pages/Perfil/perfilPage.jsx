@@ -14,7 +14,7 @@ import {
 import { UserContext } from '../../user-context';
 
 export function PerfilPage() {
-  const { user, loading, error } = useContext(UserContext);
+  const { user, loading, error, updateUser} = useContext(UserContext);
   const [personal, setPersonal] = useState(null);
   const [fichaUsuario, setFichaUsuario] = useState(user.userFicha);
   const [rotinaUsuario, setRotinaUsuario] = useState({ usuarioId: user.userData.id, metaId: user.userData.meta.id });
@@ -40,20 +40,25 @@ function insertImage(cloudObject) {
       tipo: "Imagem"
     };
 
-    console.log(midiaDto)
-    // try {
-    //   api.post('/midias/salvarMidia', midiaDto).then((response) => {
-    //     muralItemDto.midiaId = response.data.idMidia;
+    let userUpdate = JSON.parse(JSON.stringify(user));
 
-    //     api.post(/murais, muralItemDto).then((response) => {
-    //       toast.success('Imagem carregada com sucesso!');
+    try {
+      const midiaResponse =  api.post('/midias/salvarMidia', midiaDto);
+      const reqBody = {
+          midia: midiaResponse.data,
+      };
+      
+      api.put(`/usuarios/${user.userData.id}`, reqBody).then((res =>{
+        console.log("foi");
+      }));
+      
+      userUpdate.midia = midiaResponse;
 
-    //       setMuralItens((prevItems) => [...prevItems, response.data]);
-    //     });
-    //   });
-    // } catch (error) {
-    //   toast.error('Falha no envio da imagem!');
-    // }
+      updateUser(userUpdate);
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -72,11 +77,13 @@ function insertImage(cloudObject) {
             <h2 className="text-xl font-semibold text-[#2B6E36]">Informações pessoais</h2>
             <div className="max-w-40 rounded my-0 mx-auto relative">
               <img
-                className="object-cover h-full py-4 rounded-full block"
-                src={personal && personal.midia ? personal.midia.caminho : defaultIcon}
+                className="object-cover h-full  rounded-full block"
+                src={user && user.userData.midia.caminho ? user.userData.midia.caminho : defaultIcon}
                 alt=""
               />
-              <CloudinaryButtonPerfil uploadFunction={insertImage} />
+              
+               <CloudinaryButtonPerfil uploadFunction={insertImage} /> 
+            
             </div>
             <div className="grid grid-cols-4">
               <div className="px-2 py-2 col-span-2 border-r border-b">
@@ -113,6 +120,7 @@ function insertImage(cloudObject) {
               </div>
             </div>
           </div>
+
           <div className="w-[48%] flex justify-center items-center">
             {user && user.userData.pagamentoAtivo ? (
               personal ? (

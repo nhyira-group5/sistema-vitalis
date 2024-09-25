@@ -14,6 +14,7 @@ export function ExercicioPage() {
   const [treino, setTreino] = useState(null);
   const { user, loading, error } = useContext(UserContext);
   const { idTreino } = useParams();
+  const [videoTreino, setVideoTreino] = useState(null);
 
   const navigate = useNavigate();
 
@@ -62,6 +63,8 @@ export function ExercicioPage() {
         api.get(`/treinos/buscarIdTreinos/${idTreino}`).then((response) => {
           console.log("treino", response.data)
           setTreino(response.data);
+
+          findVideoTreino(response.data)
         });
       } catch (error) {
         console.log(error);
@@ -70,6 +73,29 @@ export function ExercicioPage() {
 
     validarLoginEUsuario();
   }, []);
+
+  const findVideoTreino = (treino) => {
+    console.log(treino)
+    if (!treino.exercicioId.idMidia || !Array.isArray(treino.exercicioId.idMidia)) {
+      console.error("Propriedade idMidia não encontrada ou não é um array");
+      return;
+    }
+    
+    const video = treino.exercicioId.idMidia.find(midia => midia.tipo === 'Video');
+  
+    console.log(video)
+   
+    if (!video) {
+      console.warn("Nenhum vídeo encontrado para este treino");
+      return;
+    }
+    
+    const videoPath = video.caminho;
+  
+    
+    setVideoTreino(videoPath);
+  };
+
 
   return (
     <div className="flex items-center justify-center w-screen h-screen px-10 py-10 gap-5">
@@ -114,9 +140,9 @@ export function ExercicioPage() {
               width="100%"
               height="100%"
             /> */}
-            {treino && treino.exercicioId && treino.exercicioId.midiaCaminho ? (
+            {treino && videoTreino ? (
                 <ReactPlayer
-                    url={treino.exercicioId.midiaCaminho}
+                    url={videoTreino}
                     controls={true}
                     width="100%"
                     height="100%"
@@ -193,14 +219,23 @@ export function ExercicioPage() {
             </div>
           </div>
 
-          <div className="w-2/5 h-full flex flex-wrap rounded-xl p-5 gap-5">
-            {treino
-              ? treino.exercicioId.tagExercicioDtos &&
-              treino.exercicioId.tagExercicioDtos.map((tag, index) => (
-                <Tag key={index} text={tag.tagId.nome} />
-              ))
-              : '...'}
+          <div className="w-2/5 h-full flex flex-col  rounded-xl gap-5 justify-between">
+            <div className="h-5/6  flex flex-col gap-5">
+              <span className="text-2xl font-semibold">Grupos musculares</span>
+                <div className="w-2/5 h-full w-full flex flex-wrap rounded-xl gap-5">
+                {treino
+                  ? treino.exercicioId.tagExercicioDtos &&
+                  treino.exercicioId.tagExercicioDtos.map((tag, index) => (
+                    <Tag key={index} text={tag.tagId.nome} />
+                  ))
+                  : '...'}
+              </div>
+            </div>
+
           </div>
+      
+          
+
         </div>
       </div>
     </div>

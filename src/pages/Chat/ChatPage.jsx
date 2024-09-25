@@ -6,20 +6,24 @@ import axios from 'axios';
 import { socket } from '../../utils/Socket';
 import { twMerge } from 'tailwind-merge';
 import { format } from 'date-fns';
+import defaultIcon from '@assets/defaultIcon.png';
 import {
   validateLogin,
   validateUsuario,
 } from '@utils/globalFunc';
 import { UserContext } from '../../user-context'; 
 import { Link, useNavigate } from 'react-router-dom';
+import { CardPersonal } from '../../components/CardPersonal/cardPersonal';
 
 export function ChatPage() {
   const { user, loading, error} = useContext(UserContext);
 
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState([]);
+
   const [personal, setPersonal] = useState(user.userData.personalId ? user.userData.personalId : null);
-  const [personalId, setPersonalId] = useState(null);
+
+  const [personalAtivo, setPersonalAtivo] = useState(null);
   const [chatId, setChatId] = useState(null);
   
 
@@ -37,6 +41,39 @@ export function ChatPage() {
   }, []);
 
   useEffect(() => {
+    // Certificar-se de que as mensagens não são duplicadas na inicialização
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Lógica adicional para impedir duplicação se necessário
+  }, [messages]);
+
+  const handleMessageReceived = (m) => {
+   
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        assunto: m.assunto,
+        destinatario_id: m.destinatario_id,
+        remetente_id: m.remetente_id,
+        data_hora: m.dataHora,
+      },
+    ]);
+  };
+
+  const handleChangeInput = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  function selecionarPersonal(event){
+    // const idPersonal = event.currentTarget.dataset.personalId
+    setPersonalAtivo(personal)
+
+    setChat();
+  }
+
+  function setChat(){
     let chatIdRes;
     const fetchData = async () => {
       try {
@@ -52,7 +89,6 @@ export function ChatPage() {
 
         setMessages(messagesRes.data);
         setChatId(chatIdRes);
-
 
         if (!socket.connected) {
           socket.auth = {
@@ -76,41 +112,19 @@ export function ChatPage() {
     return () => {
       socket.off('ttm', handleMessageReceived); // Remover a inscrição no evento ao desmontar o componente
     };
-  }, []);
+  }
 
-  useEffect(() => {
-    // Certificar-se de que as mensagens não são duplicadas na inicialização
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-    // Lógica adicional para impedir duplicação se necessário
-  }, [messages]);
-
-  const handleMessageReceived = (m) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        assunto: m.assunto,
-        destinatarioId: m.destinatarioId,
-        remetenteId: m.remetenteId,
-        data_hora: m.dataHora,
-      },
-    ]);
-  };
-
-  const handleChangeInput = (e) => {
-    setInputValue(e.target.value);
-  };
 
   const sendMessage = () => {
     const text = inputValue.trim();
     if (text === '') return;
-   
+
+    console.log(user.userData.id, personal.idUsuario  , text, chatId)
+    
     socket.emit('ttm', {
       chatId,
-      remetenteId: user.userData.id,
-      destinatarioId: personalId,
+      remetente_id: user.userData.id,
+      destinatario_id: personal.idUsuario,
       assunto: text,
     });
     setInputValue('');
@@ -144,16 +158,17 @@ export function ChatPage() {
           !user.userData.pagamentoAtivo && 'blur-sm',
         )}
       >
+
         <div className="w-full flex justify-between items-center ">
           <h1 className="text-[#737673] font-semibold text-2xl">Chat</h1>
         </div>
 
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#48B75A] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
-            <h1 className="text-white text-base font-medium">
-              Personal afiliado
+            <h1 className="text-white text-base font-medium text-center">
+              Personal
             </h1>
-
+            <hr className="border" />
             {!user.userData.personalId && (
                           <div className="w-full flex-col  bg-white rounded-2xl shadow-xl p-4 flex justify-between">
                               <span className="font-semibold text-base text-[#2B6E36]">
@@ -168,29 +183,45 @@ export function ChatPage() {
                                 Buscar personal
                               </Link>
                         </div>
+            ) || (
+              <div                   
+              className={twMerge(
+                'bg-white rounded-md flex gap-4 w-full p-4 items-center cursor-pointer',
+                personalAtivo && personalAtivo.id === personal.id ? 'ring-2 ring-offset-2 ring-primary-green200' : ''
+              )} data-personal-id={personal.idUsuario} onClick={(event)=>{selecionarPersonal(event)}}>
+                {!personal.midia && (
+                  <img src={defaultIcon} alt="" className='rounded-full w-10 h-10 ring-1 ring-black'/>
+                ) || (
+                  <img src={personal.midia[0].caminho} alt="" />
+                )}
+
+                <div className='flex flex-col'>
+                  <span className='font-semibold'>{personal.nome}</span>
+                  <span className=' text-sm'>@{personal.nickname}</span>
+                </div>
+              </div>
             )}
 
-            <hr className="border" />
+           
           </div>
 
-          {!personal ? (
+          {!personalAtivo ? (
             <></> 
           ) : (
             <div className="w-[70%] h-full flex flex-col justify-between">
               <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">
-                <hr className="w-full border border-black" />
                 <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-auto scrollbar-thin">
                   {messages.length > 0 ? (
                     messages.map((m, index) => (
+                      
                       <Message
                         key={index}
-                        message={m.assunto}
+                        menssagem={m}
                         time={format(
                           new Date(m.data_hora),
                           'dd/MM/yyyy HH:mm:ss',
                         )}
-                        remetente={m.remetenteId}
-                        destinatario={m.destinatarioId}
+                        user={user.userData}
                       />
                     ))
                   ) : (
@@ -202,7 +233,7 @@ export function ChatPage() {
               </div>
               <div className="w-full h-1/6 flex items-center justify-between py-6">
                 <input
-                  className="w-[88%] border-[1.5px] border-black rounded-lg rounded-es-none rounded-se-none px-3 py-1.5 text-base"
+                  className="w-[88%] border-[1.5px] border-gray-200 focus:outline-gray-400 rounded-lg rounded-es-none rounded-se-none px-3 py-1.5 text-base"
                   type="text"
                   placeholder="Envie sua mensagem"
                   value={inputValue}

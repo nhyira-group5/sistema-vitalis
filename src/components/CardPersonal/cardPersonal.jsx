@@ -53,6 +53,7 @@ export function CardPersonal({
 
   useEffect(() => {
     isUserFiliado();
+    console.log(personal, usuario)
   }, []);
 
   return (

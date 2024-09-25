@@ -22,8 +22,8 @@ export const UserStorage = ({ children }) => {
     setUser(userData);
   };
 
-  const git = () => {
-    setUsuario((prevUsuario) => ({
+  const updatePagamento = () => {
+    setUser((prevUsuario) => ({
       ...prevUsuario,
       pagamentoAtivo: true,
     }));

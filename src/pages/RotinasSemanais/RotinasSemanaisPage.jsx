@@ -40,6 +40,7 @@ export function RotinasSemanaisPage() {
       api
         .get(`/rotinaSemanais/buscarUsuario/${user.userData.id}`)
         .then((response) => {
+          console.log(response.data)
           setRotinas([...rotinas, ...response.data]);
         })
       } catch(error){
@@ -88,8 +89,9 @@ export function RotinasSemanaisPage() {
           <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
             {rotinasSemanaisSplash ? (
               <Splash />
-            ) : rotinas ? (
+            ) : rotinas.length > 0 ? (
               rotinas.map((rotina) => (
+                
                 <RotinaCard
                   key={rotina.id}
                   rotina={rotina}
@@ -111,7 +113,7 @@ export function RotinasSemanaisPage() {
           >
             {!rotinaSelecionada ? (
               <div className="h-full w-full flex items-center justify-center">
-                {!rotinasSemanaisSplash ? (
+                {!rotinasSemanaisSplash && rotinas.length > 0 ? (
                   <span>Selecione uma rotina!</span>
                 ) : null}
               </div>

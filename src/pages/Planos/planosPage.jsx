@@ -6,6 +6,8 @@ import { id, ptBR } from "date-fns/locale";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { api } from "../../api";
+import { toast } from 'react-toastify';
+
 
 import { UserContext } from "../../user-context";
 
@@ -17,7 +19,7 @@ export function PlanosPage() {
   const [assinatura, setAssinatura] = useState({});
   const [paymentId, setPaymentId] = useState(null);
   const [situacao, setSituacao] = useState("pending");
-  const { user, updatePagamento } = useContext(UserContext);
+  const { user, updatePagamento, updateUser } = useContext(UserContext);
 
   const [loadingPage, setLoadingPage] = useState(null);
 
@@ -47,6 +49,13 @@ export function PlanosPage() {
         setSituacao(status);
         console.log(status)
         if (status === "approved") {
+          
+          let updatedUser = JSON.parse(JSON.stringify(user))
+
+          updatedUser.userData.pagamentoAtivo = true;
+          updateUser(updatedUser)
+          toast.success('Pagamento efetuado com sucesso!');
+
           console.log('redirecionando...')
           clearInterval(intervalId);
           navigate('/home');
@@ -222,7 +231,7 @@ export function PlanosPage() {
               </h1>
               <span className="text-sm">Vencimento: {dateExpiration}</span>
               <span className="text-sm">
-                Pague R$ {assinatura.valor.toFixed(2)} via Pix
+                Pague R$ {assinatura.valor.toFixed(2) || ""} via Pix
               </span>
               <img
                 className="w-44"
