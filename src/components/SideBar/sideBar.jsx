@@ -35,7 +35,7 @@ export function SideBar() {
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />
 
-      <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} />
+      {/* <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} /> */}
 
       <SideBarItem URI={"/buscar-personal"} Icon={<Users size={28} />} />
 
