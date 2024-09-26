@@ -27,6 +27,7 @@ export function ChatPage() {
   const [chatId, setChatId] = useState(null);
   
 
+  
   const navigate = useNavigate();
 
   const isInitialRender = useRef(true);
