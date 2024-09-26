@@ -30,6 +30,7 @@ const SiteInstitucional = () => {
             className="pt-3 rounded-t-lg text-primary-green300 font-medium text-lg hover:bg-primary-green300/50 hover:text-gray100"
           >
             P r o j e t o
+            
           </a>
 
           <a
