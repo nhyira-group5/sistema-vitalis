@@ -28,6 +28,7 @@ export function ChatPage() {
   
   const messagesContainerRef = useRef(null);
 
+  
   const navigate = useNavigate();
 
   const isInitialRender = useRef(true);
