@@ -26,6 +26,7 @@ export function ChatPage() {
   const [personalAtivo, setPersonalAtivo] = useState(null);
   const [chatId, setChatId] = useState(null);
   
+  const messagesContainerRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -40,30 +41,26 @@ export function ChatPage() {
     validarLoginEUsuario();
   }, []);
 
-  useEffect(() => {
-    // Certificar-se de que as mensagens não são duplicadas na inicialização
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-    // Lógica adicional para impedir duplicação se necessário
-  }, [messages]);
 
   const handleMessageReceived = (m) => {
-   
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        assunto: m.assunto,
-        destinatario_id: m.destinatario_id,
-        remetente_id: m.remetente_id,
-        data_hora: m.dataHora,
-      },
-    ]);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          assunto: m.assunto,
+          destinatario_id: m.destinatario_id,
+          remetente_id: m.remetente_id,
+          data_hora: m.dataHora,
+        },
+      ]);
+    
   };
 
   const handleChangeInput = (e) => {
     setInputValue(e.target.value);
+    if (e.key === "Enter") {
+      sendMessage();
+    }
   };
 
   function selecionarPersonal(event){
@@ -129,6 +126,21 @@ export function ChatPage() {
     });
     setInputValue('');
   };
+
+
+  useEffect(() => {
+    // Define o scroll para o fundo ao carregar
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
 
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
@@ -210,7 +222,8 @@ export function ChatPage() {
           ) : (
             <div className="w-[70%] h-full flex flex-col justify-between">
               <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">
-                <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-auto scrollbar-thin">
+                <div className="w-full h-full scroll-auto p-4 flex flex-col gap-3 overflow-y-auto "
+                ref={messagesContainerRef}>
                   {messages.length > 0 ? (
                     messages.map((m, index) => (
                       
@@ -238,6 +251,7 @@ export function ChatPage() {
                   placeholder="Envie sua mensagem"
                   value={inputValue}
                   onChange={handleChangeInput}
+                  onKeyDown={handleChangeInput}
                 />
                 <button
                   className="px-5 py-2 rounded-2xl shadow-lg text-white bg-[#48B75A]"

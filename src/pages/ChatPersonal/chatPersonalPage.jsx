@@ -11,51 +11,49 @@ import defaultIcon from '@assets/defaultIcon.png';
 import { api } from '../../api';
 
 export function ChatPersonalPage() {
-
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
-
-  const { user, loading, error} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [alunosFiliados, setAlunosFiliados] = useState([]);
-
   const [alunoAtivo, setAlunoAtivo] = useState(null);
-
   const [chatId, setChatId] = useState(null);
-
   const [typingUser, setTypingUser] = useState("");
 
-
-
-useEffect(()=>{
-  getFiliados()
-}, [])
+  const messagesContainerRef = useRef(null);
+  
+  useEffect(() => {
+    getFiliados();
+  }, []);
 
   function getFiliados() {
     try {
-      api
-        .get(`/usuarios/usuario-afiliado/${user.userData.id}`)
-        .then((response) => {
-          console.log(response.data)
-          setAlunosFiliados(response.data);
-          
-        });
+      api.get(`/usuarios/usuario-afiliado/${user.userData.id}`).then((response) => {
+        setAlunosFiliados(response.data);
+      });
     } catch (error) {
-      console.log(error)
-    } 
-
+      console.log(error);
+    }
   }
 
+  useEffect(() => {
+    socket.on("ttm", handleMessageReceived);
+    return () => {
+      socket.off("ttm", handleMessageReceived);
+    };
+  }, [chatId]);
 
   const handleMessageReceived = (m) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        assunto: m.assunto,
-        destinatario_id: m.destinatario_id,
-        remetente_id: m.remetente_id,
-        data_hora: m.dataHora,
-      },
-    ]);
+    if (m.chatId === chatId) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          assunto: m.assunto,
+          destinatario_id: m.destinatario_id,
+          remetente_id: m.remetente_id,
+          data_hora: m.dataHora,
+        },
+      ]);
+    }
   };
 
   const handleTypingReceived = (username) => {
@@ -65,65 +63,46 @@ useEffect(()=>{
 
   const handleChangeInput = (e) => {
     setInputValue(e.target.value);
-    const usuario = JSON.parse(sessionStorage.getItem("loginResponse"));
-    socket.emit("typing", { username: usuario.username });
+    if (e.key === "Enter") {
+      sendMessage();
+    }
   };
 
-  function selecionarAluno(event){
+  function selecionarAluno(event) {
     const alunoId = Number(event.currentTarget.dataset.alunoId);
-    let alunoSelecionado = alunosFiliados.find(aluno => aluno.id === alunoId);
-    
-    setAlunoAtivo(alunoSelecionado)
+    const alunoSelecionado = alunosFiliados.find((aluno) => aluno.id === alunoId);
+    setAlunoAtivo(alunoSelecionado);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setChat();
-  }, [alunoAtivo])
+  }, [alunoAtivo]);
 
-  function setChat(){
+  function setChat() {
     let chatIdRes;
     const fetchData = async () => {
       try {
-        const chatRes = await axios.get(
-          `http://localhost:3001/messages/usuario/${user.userData.id}`,
-        );
-
-
-        chatIdRes = chatRes.data.find(chat => chat.usuario_id === alunoAtivo.id);
-
-
-        const messagesRes = await axios.get(
-          `http://localhost:3001/messages/chat/${chatIdRes.id_chat}`,
-        );
-
-        console.log(messagesRes.data)
-        setMessages(messagesRes.data);
-        setChatId(chatIdRes.id_chat);
-
-        if (!socket.connected) {
-          socket.auth = {
-            chats: [chatIdRes],
-            user: {
-              id: user.userData.id,
-            },
-          };
-          socket.connect();
+        const chatRes = await axios.get(`http://localhost:3001/messages/usuario/${user.userData.id}`);
+        chatIdRes = chatRes.data.find((chat) => chat.usuario_id === alunoAtivo.id);
+        if (chatIdRes) {
+          setMessages([]);
+          const messagesRes = await axios.get(`http://localhost:3001/messages/chat/${chatIdRes.id_chat}`);
+          setMessages([...messagesRes.data]);
+          setChatId(chatIdRes.id_chat);
+          if (!socket.connected) {
+            socket.auth = {
+              chats: [chatIdRes],
+              user: { id: user.userData.id },
+            };
+            socket.connect();
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
-
-    // Inscrição ao evento de recebimento de mensagens
-    socket.on('ttm', handleMessageReceived);
-
-    return () => {
-      socket.off('ttm', handleMessageReceived); // Remover a inscrição no evento ao desmontar o componente
-    };
   }
-
 
   const sendMessage = () => {
     const text = inputValue.trim();
@@ -139,78 +118,72 @@ useEffect(()=>{
     setInputValue("");
   };
 
+  useEffect(() => {
+    // Define o scroll para o fundo ao carregar
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+
   return (
     <div className="w-full h-screen flex justify-evenly items-center bg-[#F7FBFC]">
       <SideBarPersonal />
-
-
-      <div
-        className={twMerge(
-          'w-[88%] h-[90%] flex flex-col justify-between'
-        )}
-      >
-        
+      <div className={twMerge('w-[88%] h-[90%] flex flex-col justify-between')}>
         <div className="w-full flex justify-between items-center ">
           <h1 className="text-[#737673] font-semibold text-2xl">Chat</h1>
         </div>
 
         <div className="w-full h-[90%] flex justify-between items-center">
           <div className="w-1/4 h-full bg-[#8656A9] rounded-2xl shadow-xl p-6 flex flex-col gap-4">
-            <h1 className="text-white text-base font-medium text-center">
-              Alunos
-            </h1>
+            <h1 className="text-white text-base font-medium text-center">Alunos</h1>
             <hr className="border" />
             {alunosFiliados.length === 0 ? (
-                <div className="w-full flex-col bg-white rounded-2xl shadow-xl p-4 flex justify-between">
-                  <span className="font-semibold text-base text-[#2B6E36]">
-                    Nenhum aluno afiliado ainda! :(
-                  </span>
-                  <span className="font-semibold text-sm">
-                    Parece que você ainda não possui nenhum filiado ainda...!
-                  </span>
-                </div>
-              ) : (
-                alunosFiliados.map((aluno, index) => (
-                  <div 
+              <div className="w-full flex-col bg-white rounded-2xl shadow-xl p-4 flex justify-between">
+                <span className="font-semibold text-base text-[#2B6E36]">Nenhum aluno afiliado ainda! :(</span>
+                <span className="font-semibold text-sm">Parece que você ainda não possui nenhum filiado ainda...!</span>
+              </div>
+            ) : (
+              alunosFiliados.map((aluno, index) => (
+                <div
                   className={twMerge(
                     'bg-white rounded-md flex gap-4 w-full p-4 items-center cursor-pointer',
                     alunoAtivo && alunoAtivo.id === aluno.id ? 'ring-2 ring-offset-2 ring-primary-green200' : ''
                   )}
-                    data-aluno-id={aluno.id}
-                    onClick={(event)=>{selecionarAluno(event)}}
-                  >
-                    {aluno.midia && aluno.midia ? (
-                      <img src={aluno.midia.caminho} alt="" className='rounded-full w-10 h-10 ring-1 ring-black'/>
-                    ) : (
-                      <img src={defaultIcon} alt="" className='rounded-full w-10 h-10 ring-1 ring-black'/>
-                    )}
-                    
-                    <div className='flex flex-col'>
-                      <span className='font-semibold'>{aluno.nome}</span>
-                      <span className='text-sm'>@{aluno.nickname}</span>
-                    </div>
+                  data-aluno-id={aluno.id}
+                  onClick={(event) => { selecionarAluno(event) }}
+                >
+                  {aluno.midia ? (
+                    <img src={aluno.midia.caminho} alt="" className='rounded-full w-10 h-10 ring-1 ring-black' />
+                  ) : (
+                    <img src={defaultIcon} alt="" className='rounded-full w-10 h-10 ring-1 ring-black' />
+                  )}
+                  <div className='flex flex-col'>
+                    <span className='font-semibold'>{aluno.nome}</span>
+                    <span className='text-sm'>@{aluno.nickname}</span>
                   </div>
-                ))
-              )}
-
+                </div>
+              ))
+            )}
           </div>
 
-          {!alunoAtivo ? (
-            <></> 
-          ) : (
+          {alunoAtivo ? (
             <div className="w-[70%] h-full flex flex-col justify-between">
               <div className="w-full h-[80%] min-h-max p-6 flex flex-col justify-between items-center bg-white rounded-2xl shadow-lg">
-                <div className="w-full h-5/6 p-4 flex flex-col gap-3 overflow-y-auto scrollbar-thin">
+                <div className="w-full h-full scroll-auto p-4 flex flex-col gap-3 overflow-y-auto"
+                ref={messagesContainerRef}>
                   {messages.length > 0 ? (
                     messages.map((m, index) => (
-                      
                       <Message
                         key={index}
                         menssagem={m}
-                        time={format(
-                          new Date(m.data_hora),
-                          'dd/MM/yyyy HH:mm:ss',
-                        )}
+                        time={format(new Date(m.data_hora), 'dd/MM/yyyy HH:mm:ss')}
                         user={user.userData}
                       />
                     ))
@@ -219,6 +192,7 @@ useEffect(()=>{
                       Sem mensagens...
                     </div>
                   )}
+
                 </div>
               </div>
               <div className="w-full h-1/6 flex items-center justify-between py-6">
@@ -228,6 +202,7 @@ useEffect(()=>{
                   placeholder="Envie sua mensagem"
                   value={inputValue}
                   onChange={handleChangeInput}
+                  onKeyDown={handleChangeInput}
                 />
                 <button
                   className="px-5 py-2 rounded-2xl shadow-lg text-white bg-[#8656A9]"
@@ -237,10 +212,11 @@ useEffect(()=>{
                 </button>
               </div>
             </div>
+          ) : (
+            <></>
           )}
-
-        </div>
         </div>
       </div>
+    </div>
   );
 }
