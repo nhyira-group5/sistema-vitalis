@@ -56,6 +56,8 @@ export function AlunoFormCadastro() {
   const [isIdadeValid, setIsIdadeValid] = useState(true);
   const [isSexoSelecionado, setIsSexoSelecionado] = useState(true);
   const [isFormValid, setIsFormValid] = useState(true);
+  const [splashActive, setSplashActive] = useState(false);
+
   const [formData, setFormData] = useState({
     tipo: 'USUARIO',
     nome: '',
@@ -68,6 +70,7 @@ export function AlunoFormCadastro() {
     sexo: '',
   });
 
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -105,25 +108,27 @@ export function AlunoFormCadastro() {
 
     if (isFormValid) {
       try {
+        setSplashActive(true)
         const userBody = createUserBody(formData);
 
         const response = await api.post(`/usuarios`, userBody);
 
         toast.success('Usuário cadastrado com sucesso!');
+        setSplashActive(false)
         redirecionarLogin();
       } catch (error) {
-        console.log(error);
-
+        setSplashActive(false)
         if (error.response && error.response.data) {
+
           if (error.response.data.errors) {
             error.response.data.errors.forEach((erroMsg) => {
               toast.error(erroMsg.defaultMessage);
             });
-          } else {
-            toast.error('Erro ao efetuar cadastro.');
-          }
-        } else {
-          toast.error('Erro ao efetuar cadastro.');
+          } 
+
+          if (error.response.data.error) {
+              toast.error(error.response.data.message);
+          } 
         }
       }
     }
@@ -345,8 +350,9 @@ export function AlunoFormCadastro() {
 
         <fieldset className="col-span-2 grid justify-center items-center">
           <Button
-            content={'Criar conta'}
+            content={splashActive ? <div className="animate-pulse rounded-full w-5 h-5 bg-white"></div> : "Criar conta!"}
             type={'submit'}
+            iconVisibility={false}
             buttonStyle={
               'text-gray100 bg-primary-green300 rounded-full font-bold px-5 py-4 hover:bg-primary-green400 transition-all flex items-center gap-1 w-[16rem] justify-center flex-row-reverse'
             }

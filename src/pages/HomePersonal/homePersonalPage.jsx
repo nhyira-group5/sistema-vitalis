@@ -3,9 +3,9 @@ import { CardUsuario } from '../../components/CardUsuario/cardUsuario';
 import {
   validateLogin,
   validatePersonal,
-  getLoginResponse,
 } from '@utils/globalFunc';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../user-context'; 
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../api';
 
@@ -20,7 +20,8 @@ import { toast } from 'react-toastify';
 export function HomePersonalPage() {
   const navigate = useNavigate();
 
-  const [usuario, setUsuario] = useState({});
+  const { user, loading, error} = useContext(UserContext);
+
   const [usuariosFiliados, setUsuariosFiliados] = useState([]);
   const [contratosUsuarios, setContratosUsuarios] = useState([]);
 
@@ -30,48 +31,52 @@ export function HomePersonalPage() {
   const [aceitarContratoLoading, setAceitarContratoLoading] = useState(false);
   const [negarContratoLoading, setNegarContratoLoading] = useState(false);
 
-  function getUsuario() {
-    const loginResponse = getLoginResponse();
-    try {
-      api.get(`/usuarios/${loginResponse.id}`).then((response) => {
-        setUsuario(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // function getUsuario() {
+  //   const loginResponse = getLoginResponse();
+  //   try {
+  //     api.get(`/usuarios/${loginResponse.id}`).then((response) => {
+  //       setUsuario(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   function getContratos() {
     setContratosLoading(true);
-    const loginResponse = getLoginResponse();
 
     try {
       api
-        .get(`/contratos/por-personal/${loginResponse.id}`)
+        .get(`/contratos/por-personal/${user.userData.id}`)
         .then((response) => {
           setContratosUsuarios(response.data);
-          setContratosLoading(false);
+         
         });
     } catch (error) {
       console.log(error);
+    } finally {
       setContratosLoading(false);
     }
   }
 
   function getFiliados() {
     setUsuariosFiliadosLoading(true);
-    const loginResponse = getLoginResponse();
+    
     try {
       api
-        .get(`/usuarios/usuario-afiliado/${loginResponse.id}`)
+        .get(`/usuarios/usuario-afiliado/${user.userData.id}`)
         .then((response) => {
+          
           setUsuariosFiliados(response.data);
-          setUsuariosFiliadosLoading(false);
+          
         });
     } catch (error) {
       console.log(error);
+
+    } finally {
       setUsuariosFiliadosLoading(false);
     }
+
   }
 
   function aceitarContrato(contrato) {
@@ -92,7 +97,7 @@ export function HomePersonalPage() {
     try {
       api.put(`/contratos/${contrato.idContrato}`, reqBody).then((response) => {
         toast.success('Usuario filiado com sucesso!');
-        setAceitarContratoLoading(false);
+        
 
         setContratosUsuarios((prevContratos) =>
           prevContratos.filter(
@@ -106,6 +111,7 @@ export function HomePersonalPage() {
       });
     } catch (error) {
       console.log(error);
+    } finally {
       setAceitarContratoLoading(false);
     }
   }
@@ -120,7 +126,7 @@ export function HomePersonalPage() {
     try {
       api.put(`/contratos/${contrato.idContrato}`, reqBody).then((response) => {
         toast.success('Usuário negado com sucesso!');
-        setNegarContratoLoading(false);
+        
 
         setContratosUsuarios((prevContratos) =>
           prevContratos.filter(
@@ -130,19 +136,17 @@ export function HomePersonalPage() {
       });
     } catch (error) {
       console.log(error);
-      setNegarContratoLoading(false);
+      
+    } finally {
+      setAceitarContratoLoading(false);
     }
   }
 
   useEffect(() => {
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validatePersonal(navigate);
+      await validateLogin(navigate, user);
+      await validatePersonal(navigate, user);
 
-      await validateLogin(navigate);
-      await validatePersonal(navigate);
-
-      getUsuario();
       getFiliados();
       getContratos();
     };
@@ -150,8 +154,7 @@ export function HomePersonalPage() {
     validarLoginEUsuario();
   }, []);
 
-  //     validarLoginEUsuario();
-  // }, [])
+
 
   return (
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
@@ -160,7 +163,7 @@ export function HomePersonalPage() {
         <h1 className="text-[#503465] font-semibold text-2xl">Home</h1>
 
         <h1 className="w-full h-[5%] font-semibold text-xl flex rounded-xl">
-          Bem-vindo(a), {usuario.nome}
+          Bem-vindo(a), {user.userData.nome}
         </h1>
 
         <div className="w-full h-[82%] flex justify-between items-center">

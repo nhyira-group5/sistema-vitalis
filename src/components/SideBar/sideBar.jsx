@@ -4,7 +4,6 @@ import {
   HouseLine,
   Barbell,
   CookingPot,
-  Notepad,
   Users,
   Chat,
   Images,
@@ -12,15 +11,9 @@ import {
   CurrencyCircleDollar,
 } from "@phosphor-icons/react";
 import * as Separator from "@radix-ui/react-separator";
-import { space } from "postcss/lib/list";
 import { SideBarItemPersonal } from "./sideBarItem";
 
 export function SideBar() {
-  // const location = useLocation();
-  // const path = location.pathname;
-  // if(path = "/home") {
-
-  // }
   return (
     <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center overflow-hidden">
       <SideBarItem URI={"/perfil"} Icon={<UserCircle size={28} />} />
@@ -35,7 +28,7 @@ export function SideBar() {
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />
 
-      <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} />
+      {/* <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} /> */}
 
       <SideBarItem URI={"/buscar-personal"} Icon={<Users size={28} />} />
 

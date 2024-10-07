@@ -2,23 +2,27 @@ import { SideBar } from '@components/SideBar/sideBar';
 import { IngredienteCard } from '@components/IngredienteCard/ingredienteCard';
 import { Button } from '@components/Button/button';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../user-context'; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Splash } from '@components/Splash/splash';
+import { ImageBroken } from '@phosphor-icons/react';
 
 import { api } from '../../api';
 import { validateLogin, validateUsuario } from '@utils/globalFunc';
 
 export function RefeicaoPage() {
   const navigate = useNavigate();
+  const {updateUser, user, loading, error} = useContext(UserContext);
 
   const { idRefeicao } = useParams();
   const [refeicao, setRefeicao] = useState({});
 
   useEffect(() => {
+    
     const validarLoginEUsuario = async () => {
-      await validateLogin(navigate);
-      await validateUsuario(navigate);
+      await validateLogin(navigate, user);
+      await validateUsuario(navigate, user);
 
       try {
         api.get(`/refeicoes/${idRefeicao}`).then((response) => {
@@ -32,35 +36,30 @@ export function RefeicaoPage() {
     validarLoginEUsuario();
   }, []);
 
+
   function abreviarMetrica(metrica) {
     switch (metrica) {
       case 'gramas':
         return 'g';
-        break;
+        
       case 'quilogramas':
         return 'Kg';
-        break;
+        
       case 'miligramas':
         return 'Ml';
-        break;
       case 'litros':
         return 'l';
-        break;
+
       case 'mililitros':
         return 'Ml';
-        break;
       case 'xícaras':
         return 'x';
-        break;
       case 'colheres de sopa':
         return 'cs';
-        break;
       case 'colheres de chá':
         return 'cc';
-        break;
       case 'unidade':
         return 'u';
-        break;
     }
   }
 
@@ -81,7 +80,7 @@ export function RefeicaoPage() {
               >
                 Refeições
               </Link>
-              <span className="text-primary-green400 font-extrabold"></span>
+              <span className="text-primary-green400 font-extrabold">•</span>
               <span className="text-primary-green400 font-bold">
                 {refeicao.nome}
               </span>
@@ -91,14 +90,14 @@ export function RefeicaoPage() {
           <div className="flex w-full h-3/5 max-h-3/5 py-5 gap-10">
             <div className="w-3/5 p-5 bg-white shadow-sombra-padrao rounded-xl">
               <div className="h-full w-full rounded-lg flex items-center justify-center">
-                {refeicao.midia && refeicao.midia.caminho ? (
+                {refeicao.midia && refeicao.midia[0].caminho ? (
                   <img
                     className="w-full h-full bg-gray500 object-cover rounded-lg"
-                    src={refeicao.midia.caminho}
+                    src={refeicao.midia[0].caminho}
                     alt={refeicao.nome}
                   />
                 ) : (
-                  <Splash />
+                  <ImageBroken size={32} color="white"/>
                 )}
               </div>
             </div>
