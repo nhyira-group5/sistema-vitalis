@@ -1,24 +1,21 @@
-import { SideBar } from '@components/SideBar/sideBar';
+import { SideBar } from "@components/SideBar/sideBar";
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from "react";
 import {
   RotinaCard,
   RotinaDiariaCard,
-} from '@components/HorizontalCard/horizontalCard';
-import { Splash } from '@components/Splash/splash';
+} from "@components/HorizontalCard/horizontalCard";
+import { Splash } from "@components/Splash/splash";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { api } from '../../api';
-import {
-  validateLogin,
-  validateUsuario,
-} from '@utils/globalFunc';
+import { api } from "../../api";
 
-import { UserContext } from '../../user-context'; 
+import { UserContext } from "../../user-context";
+import { Template } from "../template";
 
 export function RotinasSemanaisPage() {
-  const { user, loading, error} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [rotinas, setRotinas] = useState([]);
   const [treinosRotina, setTreinosRotina] = useState([]);
 
@@ -31,26 +28,23 @@ export function RotinasSemanaisPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const validarLoginEUsuario = async () => {
+    const fetchCore = async () => {
       setRotinasSemanaisSplash(true);
 
-      await validateLogin(navigate, user);
-      await validateUsuario(navigate, user);
-    try{
-      api
-        .get(`/rotinaSemanais/buscarUsuario/${user.userData.id}`)
-        .then((response) => {
-          console.log(response.data)
-          setRotinas([...rotinas, ...response.data]);
-        })
-      } catch(error){
-        console.log(error)
+      try {
+        const response = await api.get(
+          `/rotinaSemanais/buscarUsuario/${user.userData.id}`
+        );
+        console.log(response.data);
+        setRotinas([...rotinas, ...response.data]);
+      } catch (error) {
+        console.log(error);
       } finally {
         setRotinasSemanaisSplash(false);
       }
     };
 
-    validarLoginEUsuario();
+    fetchCore();
   }, []);
 
   function handleClick(rotinaId) {
@@ -76,64 +70,54 @@ export function RotinasSemanaisPage() {
   }
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen px-10 py-10 gap-5">
-      <SideBar />
-
-      <div className="w-[90vw] h-full flex flex-col">
-        <div className="flex flex-col gap-3 p-5">
-          <span className="text-[#2B6E36] font-semibold text-2xl">
-            Rotinas semanais
-          </span>
+    <Template name="Rotinas Semanais">
+      <div className="flex h-full overflow-hidden">
+        <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
+          {rotinasSemanaisSplash ? (
+            <Splash />
+          ) : rotinas.length > 0 ? (
+            rotinas.map((rotina) => (
+              <RotinaCard
+                key={rotina.id}
+                rotina={rotina}
+                onClickFunction={() => {
+                  handleClick(rotina.id);
+                }}
+                rotinaSelecionada={rotinaSelecionada}
+              />
+            ))
+          ) : (
+            <div className="h-full w-full flex items-center justify-center">
+              <span>Sem rotinas :(</span>
+            </div>
+          )}
         </div>
-        <div className="flex h-full overflow-hidden">
-          <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
-            {rotinasSemanaisSplash ? (
-              <Splash />
-            ) : rotinas.length > 0 ? (
-              rotinas.map((rotina) => (
-                
-                <RotinaCard
-                  key={rotina.id}
-                  rotina={rotina}
-                  onClickFunction={() => {
-                    handleClick(rotina.id);
-                  }}
-                  rotinaSelecionada={rotinaSelecionada}
-                />
-              ))
-            ) : (
-              <div className="h-full w-full flex items-center justify-center">
-                <span>Sem rotinas :(</span>
-              </div>
-            )}
-          </div>
 
-          <div
-            className={`relative w-1/2 h-full overflow-auto flex flex-col gap-5 p-5 rounded-xl`}
-          >
-            {!rotinaSelecionada ? (
-              <div className="h-full w-full flex items-center justify-center">
-                {!rotinasSemanaisSplash && rotinas.length > 0 ? (
-                  <span>Selecione uma rotina!</span>
-                ) : null}
-              </div>
-            ) : rotinasDiariasSplash ? (
-              <Splash />
-            ) : treinosRotina && treinosRotina.length > 0 ? (
-              treinosRotina.map((treino) => (
-                <RotinaDiariaCard
-                  key={treino.idRotinaDiaria}
-                  rotinaDiaria={treino}
-                />
-              ))
-            ) : (
-              <div className="h-full w-full flex items-center justify-center">
-                <span>Nenhuma rotina diaria aqui :( Tente outra semana!</span>
-              </div>
-            )}
-          </div>
+        <div
+          className={`relative w-1/2 h-full overflow-auto flex flex-col gap-5 p-5 rounded-xl`}
+        >
+          {!rotinaSelecionada ? (
+            <div className="h-full w-full flex items-center justify-center">
+              {!rotinasSemanaisSplash && rotinas.length > 0 ? (
+                <span>Selecione uma rotina!</span>
+              ) : null}
+            </div>
+          ) : rotinasDiariasSplash ? (
+            <Splash />
+          ) : treinosRotina && treinosRotina.length > 0 ? (
+            treinosRotina.map((treino) => (
+              <RotinaDiariaCard
+                key={treino.idRotinaDiaria}
+                rotinaDiaria={treino}
+              />
+            ))
+          ) : (
+            <div className="h-full w-full flex items-center justify-center">
+              <span>Nenhuma rotina diaria aqui :( Tente outra semana!</span>
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </Template>
   );
 }

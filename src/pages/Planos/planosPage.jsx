@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 
 import { UserContext } from "../../user-context";
 
-import { validateLogin, validateUsuario } from "@utils/globalFunc";
 
 export function PlanosPage() {
   const [qrCode, setQRCode] = useState("");
@@ -28,15 +27,6 @@ export function PlanosPage() {
   useEffect(() => {
     if (user) fetchAssinaturas();
   }, [user]);
-
-  useEffect(() => {
-    const validarLoginEUsuario = async () => {
-      await validateLogin(navigate, user);
-      await validateUsuario(navigate, user);
-    };
-
-    validarLoginEUsuario();
-  }, []);
 
   useEffect(() => {
     const verificarStatus = async () => {
@@ -74,7 +64,7 @@ export function PlanosPage() {
   const fetchAssinaturas = async () => {
     try {
       const response = await api.get(`/assinaturas/2`);
-      setAssinatura(response.data);
+      setAssinatura(response.data.valor.toFixed(2));
     } catch (e) {
       console.error("Error in GET request:", e);
     }
@@ -231,7 +221,7 @@ export function PlanosPage() {
               </h1>
               <span className="text-sm">Vencimento: {dateExpiration}</span>
               <span className="text-sm">
-                Pague R$ {assinatura.valor.toFixed(2) || ""} via Pix
+                Pague R$ {assinatura || ""} via Pix
               </span>
               <img
                 className="w-44"

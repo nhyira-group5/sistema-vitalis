@@ -1,20 +1,21 @@
-import { SideBar } from '@components/SideBar/sideBar';
-import { useEffect, useRef, useState, useContext} from 'react';
-import { Input } from '@components/Input/input';
-import { MuralItem } from '@components/MuralItem/muralItem';
-import { CloudinaryButton } from '@components/Button/button';
+import { SideBar } from "@components/SideBar/sideBar";
+import { useEffect, useRef, useState, useContext } from "react";
+import { Input } from "@components/Input/input";
+import { MuralItem } from "@components/MuralItem/muralItem";
+import { CloudinaryButton } from "@components/Button/button";
 
-import { toast } from 'react-toastify';
-import { api } from '../../api';
+import { toast } from "react-toastify";
+import { api } from "../../api";
 import {
   validateLogin,
   validateUsuario,
   getDataAtual,
-} from '@utils/globalFunc';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../user-context'; 
+} from "@utils/globalFunc";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../user-context";
 
-import { CalendarDots } from '@phosphor-icons/react';
+import { CalendarDots } from "@phosphor-icons/react";
+import { Template } from "../template";
 
 export function MuralPage() {
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ export function MuralPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [itensCarregados, setItensCarregados] = useState(false);
 
-  const [dataSelecionada, setDataSelecionada] = useState('');
+  const [dataSelecionada, setDataSelecionada] = useState("");
 
   const timeoutIdRef = useRef(null);
 
-  const { user, loading, error} = useContext(UserContext);
+  const { user, loading, error } = useContext(UserContext);
 
   const handleOnChange = (event) => {
     setDataSelecionada(event.target.value);
@@ -54,13 +55,13 @@ export function MuralPage() {
   const deleteMuralItem = (itemId) => {
     try {
       api.delete(`/murais/${itemId}`).then(() => {
-        toast.success('Imagem excluida com sucesso');
+        toast.success("Imagem excluida com sucesso");
         setMuralItens((currentMuralItens) =>
-          currentMuralItens.filter((item) => item.idMural !== itemId),
+          currentMuralItens.filter((item) => item.idMural !== itemId)
         );
       });
     } catch (error) {
-      toast.error('Erro ao excluir imagem.');
+      toast.error("Erro ao excluir imagem.");
     }
   };
 
@@ -71,29 +72,29 @@ export function MuralPage() {
       nome: original_filename,
       caminho: url,
       extensao: format,
-      tipo: "Imagem"
+      tipo: "Imagem",
     };
     const muralItemDto = {
       usuarioId: user.userData.id,
       midiaId: null,
       dtPostagem: getDataAtual(),
     };
-       console.log(midiaDto)
-       console.log(muralItemDto)
+    console.log(midiaDto);
+    console.log(muralItemDto);
     try {
-      api.post('/midias/salvarMidia', midiaDto).then((response) => {
+      api.post("/midias/salvarMidia", midiaDto).then((response) => {
         muralItemDto.midiaId = response.data.idMidia;
 
         api.post(`/murais`, muralItemDto).then((response) => {
-          toast.success('Imagem carregada com sucesso!');
+          toast.success("Imagem carregada com sucesso!");
 
-          console.log("socorro",response)
+          console.log("socorro", response);
 
           setMuralItens((prevItems) => [...prevItems, response.data]);
         });
       });
     } catch (error) {
-      toast.error('Falha no envio da imagem!');
+      toast.error("Falha no envio da imagem!");
     }
   }
 
@@ -110,7 +111,7 @@ export function MuralPage() {
   }
 
   useEffect(() => {
-    if (dataSelecionada == '') {
+    if (dataSelecionada == "") {
       getMuralItem();
     } else {
       setIsLoading(true);
@@ -123,14 +124,11 @@ export function MuralPage() {
   }, [dataSelecionada]);
 
   useEffect(() => {
-    const validarLoginEUsuario = async () => {
-      await validateLogin(navigate, user);
-      await validateUsuario(navigate, user);
-
+    const fetchCore = async () => {
       getMuralItem();
     };
 
-    validarLoginEUsuario();
+    fetchCore();
   }, []);
 
   useEffect(() => {
@@ -140,15 +138,9 @@ export function MuralPage() {
   }, [isLoading, muralItens]);
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen px-10 py-10 gap-5">
-      <SideBar />
-
-      <div className="w-[90vw] h-full flex flex-col relative">
+    <Template name="Mural">
         <div className="flex gap-3 p-5 justify-between">
           <div className="flex flex-col gap-2">
-            <span className="text-[#2B6E36] font-semibold text-2xl">
-              Mural de imagens
-            </span>
             <span>
               Poste aqui sua evolução durante a sua jordana para uma vida mais
               saudável!
@@ -156,10 +148,10 @@ export function MuralPage() {
           </div>
 
           <Input
-            inputType={'Date'}
-            labelContent={'Data de pesquisa'}
-            id={'dataPesquisaMural'}
-            name={'dataPesquisaMural'}
+            inputType={"Date"}
+            labelContent={"Data de pesquisa"}
+            id={"dataPesquisaMural"}
+            name={"dataPesquisaMural"}
             icon={<CalendarDots size={32} />}
             onChangeFunction={handleOnChange}
             value={dataSelecionada}
@@ -195,13 +187,12 @@ export function MuralPage() {
                     <div className="animate-bounce rounded-full w-5 h-5 bg-primary-green300"></div>
                   </div>
                 </div>
-              ),
+              )
             )
           )}
         </div>
 
         <CloudinaryButton uploadFunction={insertImage} />
-      </div>
-    </div>
+    </Template>
   );
 }

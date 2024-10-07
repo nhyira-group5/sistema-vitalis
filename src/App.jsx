@@ -35,7 +35,6 @@ export function App() {
           <Route path="relatorio" element={<RelatorioPage />} />
           <Route path="home" element={<HomePage />} />
           <Route path="rotinas_semanais" element={<RotinasSemanaisPage />} />
-          <Route path="rotinas_semanais" element={<RotinasSemanaisPage />} />
           <Route
             path="rotinas_semanais/diaria/:idRotinaDiaria"
             element={<TreinoPage />}
