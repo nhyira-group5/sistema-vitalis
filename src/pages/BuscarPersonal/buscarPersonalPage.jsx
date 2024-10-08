@@ -1,27 +1,26 @@
-import { CardPersonal } from "../../components/CardPersonal/cardPersonal";
-import { MagnifyingGlass } from "@phosphor-icons/react";
-import { InputAcad } from "../../components/InputAcad/inputAcad";
-import { CardAcad } from "../../components/CardAcad/cardAcad";
-import { SideBar } from "../../components/SideBar/sideBar";
-import { Mapa } from "../../components/Mapa/mapa";
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import { QuestionMark } from "@phosphor-icons/react/dist/ssr";
-import defaultIcon from "@assets/defaultIcon.png";
-import { UserContext } from "../../user-context";
+import { CardPersonal } from '../../components/CardPersonal/cardPersonal';
+import { MagnifyingGlass } from '@phosphor-icons/react';
+import { InputAcad } from '../../components/InputAcad/inputAcad';
+import { CardAcad } from '../../components/CardAcad/cardAcad';
+import { SideBar } from '../../components/SideBar/sideBar';
+import { Mapa } from '../../components/Mapa/mapa';
+import { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import { QuestionMark } from '@phosphor-icons/react/dist/ssr';
+import defaultIcon from '@assets/defaultIcon.png';
+import { UserContext } from '../../user-context'; 
+import { api } from '../../api';
+import { Link, useNavigate } from 'react-router-dom';
+import { Splash } from '@components/Splash/splash';
+import { twMerge } from 'tailwind-merge';
 
-import { validateLogin, validateUsuario } from "@utils/globalFunc";
-import { api } from "../../api";
-import { Link, useNavigate } from "react-router-dom";
-import { Splash } from "@components/Splash/splash";
-import { twMerge } from "tailwind-merge";
 
 export function BuscarPersonalPage() {
   const { user } = useContext(UserContext);
   const [carregando, setCarregando] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
 
-  const [cep, setCep] = useState("");
+  const [cep, setCep] = useState('');
   const [infoEndereco, setInfoEndereco] = useState(null);
   const [academias, setAcademias] = useState(null);
   const [infoDistance, setInfoDistance] = useState(null);
@@ -38,7 +37,7 @@ export function BuscarPersonalPage() {
   //   const loginResponse = getLoginResponse();
   //   try {
   //     api.get(`usuarios/${loginResponse.id}`).then((response) => {
-  //       // response.data.pagamentoAtivo = true;
+  //       // response.data. = true;
   //       setUsuario(response.data);
 
   //       setIsUsuarioLoading(false);
@@ -60,9 +59,10 @@ export function BuscarPersonalPage() {
 
   useEffect(() => {
     const fetchCore = async () => {
+      // getUsuario();
       try {
-        const response = await api.get(`/usuarios/personais`);
-        setPersonais(response.data);
+        const response = await api.get(`/usuarios/personais`)
+          setPersonais(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -93,12 +93,18 @@ export function BuscarPersonalPage() {
     console.log(e);
   }
 
-  if (!user) return  <h1>Loading...</h1>;
+  if (!user) return <h1>Loading...</h1>;
   return (
     <div className="flex items-center justify-center  w-screen h-screen px-10 py-10 gap-5">
       <SideBar />
 
-      <div className={twMerge("w-[90vw] h-full flex justify-between")}>
+      <div
+        className={twMerge(
+          'w-[90vw] h-full flex justify-between'
+        )}
+      >
+
+
         <div className="w-3/5 h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between">
           <h1 className="text-[#2B6E36] font-semibold text-2xl">
             Encontre uma academia
@@ -109,7 +115,9 @@ export function BuscarPersonalPage() {
               label="CEP"
               placeholder="00000-000"
               type="text"
-              width={"w-1/5"}
+
+              width={'w-1/5'}
+
               valueOption={cep}
               onChangeFunction={handleInputCep}
             />
@@ -205,13 +213,14 @@ export function BuscarPersonalPage() {
           ) : (
             <div className="w-full flex-col bg-white rounded-2xl p-4 flex justify-between">
               <span className="font-semibold text-base text-[#2B6E36]">
-                Parece que você não é premium ainda!
+                Parece que você não é premium ainda!  
               </span>
               <span className="font-semibold text-sm">
                 Faça agora sua assinatura premium!
               </span>
               <Link
                 to="/planos"
+
                 className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
               >
                 Ver planos

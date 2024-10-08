@@ -21,6 +21,7 @@ import { ChatPersonalPage } from './pages/ChatPersonal/chatPersonalPage.jsx';
 import { UserStorage } from './user-context.jsx';
 import { SiteInst } from './pages/Site-institucional/site-paralelo.jsx';
 import { TesteSilva } from './pages/Teste.jsx';
+import { NotFound } from './pages/NotFound.jsx';
 
 export function App() {
   return (
@@ -54,7 +55,7 @@ export function App() {
           <Route path="perfil-personal" element={<PerfilPersonalPage />} />
           <Route path="chat-personal" element={<ChatPersonalPage />} />
           <Route path="teste" element={<TesteSilva />} />
-          <Route path="*" element={<p>nao encontrada</p>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserStorage>
     </BrowserRouter>

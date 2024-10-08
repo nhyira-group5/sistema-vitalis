@@ -32,7 +32,8 @@ export function ChatPersonalPage() {
   }, []);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3001");
+    // socket.current = io("http://localhost:3001");
+    socket.current = io("http://44.196.0.230:3001");
 
     socket.current.on("receive_message", (data) => {
       handleMessageReceived(data);
