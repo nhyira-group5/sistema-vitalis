@@ -10,7 +10,7 @@ export function RotinaCard({ rotina, onClickFunction, rotinaSelecionada }) {
       key={rotina.id}
       className={`${rotinaSelecionada === rotina.id ? 'w-[100%]' : 'w-[90%]'} ${
         rotina.concluido == 1 ? 'bg-primary-green200' : 'bg-white'
-      } justify-between transition-all duration-300 ease-in-out  overflow-hidden group cursor-pointer relative flex items-center p-3  rounded-xl shadow-sombra-padrao min-h-28`}
+      } justify-between transition-all duration-300 ease-in-out  overflow-hidden group cursor-pointer relative flex items-center p-3  rounded-xl shadow-lg min-h-28`}
     >
       <div
         className={`${

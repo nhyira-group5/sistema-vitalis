@@ -77,7 +77,7 @@ export function PerfilPage() {
             <img
               className="object-cover h-full  rounded-full block"
               // src={user?.userData.midia.caminho || defaultIcon}
-              src={defaultIcon}
+              src={user.userData?.midia?.caminho || defaultIcon}
               alt=""
             />
 

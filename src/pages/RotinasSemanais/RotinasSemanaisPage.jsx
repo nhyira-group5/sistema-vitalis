@@ -1,13 +1,9 @@
-import { SideBar } from "@components/SideBar/sideBar";
-
 import { useEffect, useState, useContext } from "react";
 import {
   RotinaCard,
   RotinaDiariaCard,
 } from "@components/HorizontalCard/horizontalCard";
 import { Splash } from "@components/Splash/splash";
-
-import { useNavigate } from "react-router-dom";
 
 import { api } from "../../api";
 
@@ -23,9 +19,6 @@ export function RotinasSemanaisPage() {
   const [rotinasSemanaisSplash, setRotinasSemanaisSplash] = useState(false);
 
   const [rotinaSelecionada, setRotinaSelecionada] = useState(null);
-  const [userData, setUserData] = useState(user);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCore = async () => {
@@ -72,7 +65,7 @@ export function RotinasSemanaisPage() {
   return (
     <Template name="Rotinas Semanais">
       <div className="flex h-full overflow-hidden">
-        <div className="w-1/2 h-full flex flex-col gap-5 p-5 overflow-auto">
+        <div className="w-1/2 h-full flex flex-col gap-5 p-1 overflow-auto">
           {rotinasSemanaisSplash ? (
             <Splash />
           ) : rotinas.length > 0 ? (

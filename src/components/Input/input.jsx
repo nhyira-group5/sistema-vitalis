@@ -5,35 +5,64 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Label from "@radix-ui/react-label";
 import { useState } from "react";
 
-export function Input({inputType, inputStyle, labelContent, labelStyle, separatorStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, contentStyle}) {
-  
-
+export function Input({
+  inputType,
+  inputStyle,
+  labelContent,
+  labelStyle,
+  separatorStyle,
+  placeholder,
+  onChangeFunction,
+  onBlurFunction,
+  value,
+  id,
+  nome,
+  icon,
+  invalidMessage,
+  valid,
+  disabled = false,
+  contentStyle,
+}) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
     <div className="relative group h-fit">
       <Label.Root
-
-        className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' group-focus-within:text-primary-green300 text-lg font-bold pl-[5%]'}`}
+        className={`${valid ? "text-errorRed" : ""} ${
+          labelStyle
+            ? labelStyle
+            : " group-focus-within:text-primary-green300 text-lg font-bold pl-[5%]"
+        }`}
         htmlFor={id}
       >
         {labelContent}
       </Label.Root>
 
-
-      <div className={`${valid ? '  !ring-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : ' group-focus-within:!ring-primary-green300 h-14 px-5 relative flex w-full bg-white border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500'} `}>
-      
+      <div
+        className={`${valid ? "  !ring-errorRed " : ""} ${
+          inputStyle
+            ? `${inputStyle}`
+            : " group-focus-within:!ring-primary-green300 h-14 px-5 relative flex w-full bg-white border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
+        } `}
+      >
         <div className="flex items-center py-3">
-              {icon}
-              <Separator.Root
-                className={`${valid ? '!bg-errorRed' : ''} ${separatorStyle ? ` ${separatorStyle}` : ' group-focus-within:!bg-primary-green300'} bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
-                decorative
-                orientation="vertical"
-              />
+          {icon}
+          <Separator.Root
+            className={`${valid ? "!bg-errorRed" : ""} ${
+              separatorStyle
+                ? ` ${separatorStyle}`
+                : " group-focus-within:!bg-primary-green300"
+            } bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
+            decorative
+            orientation="vertical"
+          />
         </div>
 
         <input
-          className={` ${valid ? '  !text-errorRed ' : ''} ${contentStyle ? ` ${contentStyle}` : 'appearance-none font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500 '}`}
-          
+          className={` ${valid ? "  !text-errorRed " : ""} ${
+            contentStyle
+              ? ` ${contentStyle}`
+              : "appearance-none font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500 "
+          }`}
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChangeFunction}
@@ -80,7 +109,7 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
               </Tooltip.Trigger>
 
               {invalidMessage ? (
-                <Tooltip.Portal>  
+                <Tooltip.Portal>
                   <Tooltip.Content
                     side={"top"}
                     className={`data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-gray100 px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]`}
@@ -101,38 +130,64 @@ export function Input({inputType, inputStyle, labelContent, labelStyle, separato
       </div>
     </div>
   );
-
 }
 
-export function AltInput({inputType, inputStyle, labelContent, labelStyle, separatorStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, variant}) {
-  
-
+export function AltInput({
+  inputType,
+  inputStyle,
+  labelContent,
+  labelStyle,
+  separatorStyle,
+  placeholder,
+  onChangeFunction,
+  onBlurFunction,
+  value,
+  id,
+  nome,
+  icon,
+  invalidMessage,
+  valid,
+  disabled = false,
+  variant,
+}) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
     <div className="relative group h-fit">
       <Label.Root
-
-        className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : 'group-focus-within:text-alt-purple300 text-lg font-bold pl-[5%]'}`}
+        className={`${valid ? "text-errorRed" : ""} ${
+          labelStyle
+            ? labelStyle
+            : "group-focus-within:text-alt-purple300 text-lg font-bold pl-[5%]"
+        }`}
         htmlFor={id}
       >
         {labelContent}
       </Label.Root>
 
-
-      <div className={`${valid ? '  !ring-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : 'group-focus-within:!ring-alt-purple300  h-14 px-5  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500'} `}>
-      
+      <div
+        className={`${valid ? "  !ring-errorRed " : ""} ${
+          inputStyle
+            ? `${inputStyle}`
+            : "group-focus-within:!ring-alt-purple300  h-14 px-5  relative flex w-full  bg-gray100 border-gray100 border-2 rounded-full outline-none ring-1 ring-gray500"
+        } `}
+      >
         <div className="flex items-center py-3">
-              {icon}
-              <Separator.Root
-                className={`${valid ? '!bg-errorRed' : ''} ${separatorStyle ? ` ${separatorStyle}` : ' group-focus-within:!bg-alt-purple300'}group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
-                decorative
-                orientation="vertical"
-              />
+          {icon}
+          <Separator.Root
+            className={`${valid ? "!bg-errorRed" : ""} ${
+              separatorStyle
+                ? ` ${separatorStyle}`
+                : " group-focus-within:!bg-alt-purple300"
+            }group-focus-within:!bg-alt-purple300 bg-gray500 data-[orientation=vertical]:w-[1.1px] h-full rounded-full mx-[10px]`}
+            decorative
+            orientation="vertical"
+          />
         </div>
 
         <input
-          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
-          
+          className={` ${
+            valid ? "  !text-errorRed " : ""
+          } appearance-none  font-mavenPro text-xl outline-none  w-full rounded-e-full text-gray500`}
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChangeFunction}
@@ -179,7 +234,7 @@ export function AltInput({inputType, inputStyle, labelContent, labelStyle, separ
               </Tooltip.Trigger>
 
               {invalidMessage ? (
-                <Tooltip.Portal>  
+                <Tooltip.Portal>
                   <Tooltip.Content
                     side={"top"}
                     className={`data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-gray100 px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]`}
@@ -200,30 +255,48 @@ export function AltInput({inputType, inputStyle, labelContent, labelStyle, separ
       </div>
     </div>
   );
-
 }
 
-
-export function DisplayInput({inputType, inputStyle, labelContent, labelStyle, placeholder, onChangeFunction, onBlurFunction, value, id, nome, icon, invalidMessage, valid, disabled = false, variant}) {
-  
-
+export function DisplayInput({
+  inputType,
+  inputStyle,
+  labelContent,
+  labelStyle,
+  placeholder,
+  onChangeFunction,
+  onBlurFunction,
+  value,
+  id,
+  nome,
+  icon,
+  invalidMessage,
+  valid,
+  disabled = false,
+  variant,
+}) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
     <div className="relative group h-fit">
       <Label.Root
-
-        className={`${valid ? 'text-errorRed' : ''} ${labelStyle ? labelStyle : ' text-gray500 text-md font-bold'}`}
+        className={`${valid ? "text-errorRed" : ""} ${
+          labelStyle ? labelStyle : " text-gray500 text-md font-bold"
+        }`}
         for={id}
       >
         {labelContent}
       </Label.Root>
 
-
-      <div className={`${valid ? '  !border-errorRed ' : ''} ${inputStyle ? `${inputStyle}` : '  h-fit py-1 relative flex w-full border-b-[1px] border-gray500 outline-none '} `}>
-      
-
+      <div
+        className={`${valid ? "  !border-errorRed " : ""} ${
+          inputStyle
+            ? `${inputStyle}`
+            : "  h-fit py-1 relative flex w-full border-b-[1px] border-gray500 outline-none "
+        } `}
+      >
         <input
-          className={` ${valid ? '  !text-errorRed ' : ''} appearance-none  font-mavenPro text-lg bg-white outline-none  w-full rounded-e-full text-gray500`}
+          className={` ${
+            valid ? "  !text-errorRed " : ""
+          } appearance-none  font-mavenPro text-lg bg-white outline-none  w-full rounded-e-full text-gray500`}
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChangeFunction}
@@ -259,12 +332,7 @@ export function DisplayInput({inputType, inputStyle, labelContent, labelStyle, p
         ) : (
           ""
         )}
-
-
       </div>
     </div>
   );
-
 }
-
-
