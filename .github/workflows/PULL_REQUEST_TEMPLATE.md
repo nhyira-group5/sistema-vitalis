@@ -29,7 +29,7 @@
 
 ---
 
-## 🧪 Como Testar o Código Commitado
+## 🧪 Como Testar o Código Commitado na PR
 1️⃣ Passo 1:
 [________] [Descreva o primeiro passo]
 
