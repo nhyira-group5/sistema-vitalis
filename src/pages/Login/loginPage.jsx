@@ -1,31 +1,30 @@
-import { User, Lock } from '@phosphor-icons/react';
-import { Input } from '../../components/Input/input';
-import { Link } from 'react-router-dom';
-import { useEffect, useContext, useState } from 'react';
-import { api } from '../../api';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../user-context'; 
-
-
+import { User, Lock } from "@phosphor-icons/react";
+import { Input } from "../../components/Input/input";
+import { Link } from "react-router-dom";
+import { useEffect, useContext, useState } from "react";
+import { api } from "../../api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../user-context";
 
 export function LoginPage() {
-  const { updateUser, user, loading, error } = useContext(UserContext);
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
+
   const redirecionarHome = () => {
-    navigate('/home');
+    navigate("/home");
   };
 
   const redirecionarHomePersonal = () => {
-    navigate('/home-personal');
+    navigate("/home-personal");
   };
 
   useEffect(() => {
     sessionStorage.clear();
   }, []);
 
-  const [nicknname, setNicknname] = useState('');
-  const [senha, setSenha] = useState('');
+  const [nicknname, setNicknname] = useState("");
+  const [senha, setSenha] = useState("");
 
   const [loginSplash, setLoginSplash] = useState(false);
 
@@ -39,8 +38,8 @@ export function LoginPage() {
 
   function userDtoCriacao(dadosFormulario) {
     const userLoginDto = {
-      login: dadosFormulario.get('nickname'),
-      senha: dadosFormulario.get('senha'),
+      login: dadosFormulario.get("nickname"),
+      senha: dadosFormulario.get("senha"),
     };
 
     return userLoginDto;
@@ -51,67 +50,65 @@ export function LoginPage() {
 
     setLoginSplash(true);
 
-    const myForm = document.getElementById('myForm');
+    const myForm = document.getElementById("myForm");
     const dadosFormulario = new FormData(myForm);
     const userLoginDto = userDtoCriacao(dadosFormulario);
     let userFichaResponse;
-    let userLoginResponse 
+    let userLoginResponse;
     let userDataResponse;
-    
+
     try {
-      userLoginResponse = await api.post('/login/usuario', userLoginDto);
-      userDataResponse = await api.get(`/usuarios/${userLoginResponse.data.id}`);
+      userLoginResponse = await api.post("/login/usuario", userLoginDto);
+      userDataResponse = await api.get(
+        `/usuarios/${userLoginResponse.data.id}`
+      );
     } catch (error) {
       switch (error.response.data.status) {
         case 401:
-          toast.error('Nickname e/ou senha inválidos!');
+          toast.error("Nickname e/ou senha inválidos!");
           break;
         case 400:
-          toast.error('Nickname e/ou senha inválidos!');
+          toast.error("Nickname e/ou senha inválidos!");
           break;
         case 500:
           toast.error(
-            'Tivemos problemas ao efetuar seu login! tente novamente daqui a pouquinho :)',
+            "Tivemos problemas ao efetuar seu login! tente novamente daqui a pouquinho :)"
           );
           break;
       }
-    } 
+    }
 
-  try{
+    try {
       userFichaResponse = await api.get(`/fichas/${userLoginResponse.data.id}`);
-   } catch(error) {
-    console.log(error)
-   } finally{
-    setLoginSplash(false);
-   }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoginSplash(false);
+    }
 
-   const userData = {
-     userData: userDataResponse.data,
-     userFicha: userFichaResponse ? userFichaResponse.data : null 
-   }
+    const userData = {
+      userData: userDataResponse.data,
+      userFicha: userFichaResponse ? userFichaResponse.data : null,
+    };
 
-      localStorage.setItem('user', JSON.stringify(userData))
-      updateUser(userData);
-      console.log(userData)
-      
-      if(userData.userFicha === null){
-        navigate('/cadastroParq');
-        return;
-     }
-  
-     switch (userData.userData.tipo) {
-       case 'USUARIO':
-         redirecionarHome();
-         break;
-       case 'PERSONAL':
-         redirecionarHomePersonal();
-         break;
-     }
+    localStorage.setItem("user", JSON.stringify(userData));
+    updateUser(userData);
+    console.log(userData);
+
+    if (userData.userFicha === null) {
+      navigate("/cadastroParq");
+      return;
+    }
+
+    switch (userData.userData.tipo) {
+      case "USUARIO":
+        redirecionarHome();
+        break;
+      case "PERSONAL":
+        redirecionarHomePersonal();
+        break;
+    }
   };
-
-
-
-
 
   return (
     <div className="bg-[#F7FBFC]">
@@ -136,25 +133,25 @@ export function LoginPage() {
         <div className="flex flex-col gap-10">
           <form className="flex flex-col gap-6" id="myForm">
             <Input
-              labelContent={'Nickname:'}
-              nome={'nickname'}
+              labelContent={"Nickname:"}
+              nome={"nickname"}
               icon={<User size={24} color="#000000" />}
               onChangeFunction={onNicknameInputChanged}
             />
             <Input
-              labelContent={'Senha:'}
-              nome={'senha'}
+              labelContent={"Senha:"}
+              nome={"senha"}
               icon={<Lock size={24} color="#000000" />}
               onChangeFunction={onSenhaInputChanged}
-              inputType={'password'}
+              inputType={"password"}
             ></Input>
           </form>
 
           <div className="w-full flex justify-center">
             <div>
               <span>Ainda não tem uma conta? </span>
-              <Link to={'/cadastro'} className="font-bold text-[#519747]">
-                Clique aqui!{' '}
+              <Link to={"/cadastro"} className="font-bold text-[#519747]">
+                Clique aqui!{" "}
               </Link>
             </div>
           </div>

@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { parseISO, format } from "date-fns";
 import { id, ptBR } from "date-fns/locale";
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { api } from "../../api";
 import { toast } from 'react-toastify';
 
@@ -18,7 +17,7 @@ export function PlanosPage() {
   const [assinatura, setAssinatura] = useState({});
   const [paymentId, setPaymentId] = useState(null);
   const [situacao, setSituacao] = useState("pending");
-  const { user, updatePagamento, updateUser } = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
 
   const [loadingPage, setLoadingPage] = useState(null);
 
@@ -39,11 +38,10 @@ export function PlanosPage() {
         setSituacao(status);
         console.log(status)
         if (status === "approved") {
-          
           let updatedUser = JSON.parse(JSON.stringify(user))
-
           updatedUser.userData.pagamentoAtivo = true;
           updateUser(updatedUser)
+          
           toast.success('Pagamento efetuado com sucesso!');
 
           console.log('redirecionando...')
@@ -70,32 +68,6 @@ export function PlanosPage() {
     }
   };
 
-  // VERIFICAR SE O STATUS DE PAGAMENTO MUDA PARA APROVADO
-  // useEffect(() => {
-  //   // Função para verificar o status do pagamento
-  //   const verificarStatus = async () => {
-  //     if (!paymentId) return;
-
-  //     try {
-  //       const response = await axios.get(`/api/mercado-pago/status/${paymentId}`);
-  //       const { status } = response.data;
-  //       setStatus(status);
-
-  //       if (status === 'approved') {
-  //         clearInterval(intervalId);
-  //       }
-  //     } catch (error) {
-  //       console.error('Erro ao verificar o status do pagamento:', error);
-  //     }
-  //   };
-
-  //   // Verifica o status a cada 10 segundos
-  //   const intervalId = setInterval(verificarStatus, 10000);
-
-  //   // Limpa o intervalo quando o componente for desmontado
-  //   return () => clearInterval(intervalId);
-  // }, [paymentId]);
-
   const handlePayment = async () => {
     const requestBody = {
       usuarioId: user.userData.id,
@@ -114,7 +86,12 @@ export function PlanosPage() {
       );
       generateDateExpiration(response.data.date_of_expiration);
       setPaymentId(response.data.id);
-      updatePagamento();
+
+      // LEMBRAR DE COMENTAR DEPOIS (((DESENVOLVIMENTO)))
+      let updatedUser = JSON.parse(JSON.stringify(user))
+
+      updatedUser.userData.pagamentoAtivo = true;
+      updateUser(updatedUser)
     } catch (e) {
       console.error("Error in POST request:", e);
     }
