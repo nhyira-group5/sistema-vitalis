@@ -1,5 +1,5 @@
 
-resource "aws_instance" "websocket_ec2_01" {
+resource "aws_instance" "public_ec2_01" {
   ami               = var.ami
   availability_zone = var.az
   instance_type     = var.inst_type
@@ -30,7 +30,7 @@ which git || sudo apt-get install -y git
 which node || sudo apt-get install -y nodejs npm
 
 # Clonar ou atualizar o repositório
-cd /home/ubuntu/websocket || {
+cd /home/ubuntu/frontend || {
   git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
 }
 
@@ -60,7 +60,7 @@ echo "Script de inicialização concluído" | tee -a /var/log/user_data.log
 EOF
 }
 
-resource "aws_instance" "websocket_ec2_02" {
+resource "aws_instance" "public_ec2_02" {
   ami               = var.ami
   availability_zone = var.az
   instance_type     = var.inst_type
@@ -91,7 +91,7 @@ which git || sudo apt-get install -y git
 which node || sudo apt-get install -y nodejs npm
 
 # Clonar ou atualizar o repositório
-cd /home/ubuntu/websocket || {
+cd /home/ubuntu/frontend || {
   git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
 }
 
