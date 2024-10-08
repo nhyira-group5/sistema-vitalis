@@ -1,0 +1,5 @@
+services:
+  nhyira-web:
+    image: willdantas/nhyira-web:00.00
+    ports:
+      - "80:80"
