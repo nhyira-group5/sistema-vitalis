@@ -58,18 +58,17 @@ export function BuscarPersonalPage() {
   // }, []);
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchCore = async () => {
       // getUsuario();
       try {
-        api.get(`/usuarios/personais`).then((response) => {
+        const response = await api.get(`/usuarios/personais`)
           setPersonais(response.data);
-        });
       } catch (error) {
         console.log(error);
       }
     };
 
-    validarLoginEUsuario();
+    fetchCore();
   }, []);
 
   function handleInputCep(e) {

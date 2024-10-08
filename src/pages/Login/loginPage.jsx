@@ -66,25 +66,31 @@ export function LoginPage() {
       const userDataResponse = await api.get(
         `/usuarios/${userLoginResponse.data.id}`
       );
-      const userFichaResponse = await api.get(
-        `/fichas/${userLoginResponse.data.id}`
-      );
+
+      // if (
+      //   userDataResponse.data.meta === null &&
+      //   userDataResponse.data.tipo === "USUARIO"
+      // ) {
+      //   navigate("/cadastroParq");
+      //   return;
+      // }
+
+      let userFichaResponse;
+      if (userDataResponse.data.tipo === "USUARIO") {
+        userFichaResponse = await api.get(
+          `/fichas/${userLoginResponse.data.id}`
+        );
+      }
 
       const userData = {
         userData: userDataResponse.data,
-        userFicha: userFichaResponse.data || null,
+        userFicha: userFichaResponse?.data || null,
       };
 
       localStorage.setItem("user", JSON.stringify(userData));
       updateUser(userData);
 
-      if (
-        userData.userFicha === null &&
-        userDataResponse.data.tipo === "USUARIO"
-      ) {
-        navigate("/cadastroParq");
-        return;
-      }
+     
 
       if (userData.userData.tipo === "USUARIO") navigate("/home");
       if (userData.userData.tipo === "PERSONAL") navigate("/home-personal");

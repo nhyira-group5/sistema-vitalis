@@ -29,7 +29,8 @@ export function ChatPage() {
   }, []);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3001");
+    // socket.current = io("http://localhost:3001");
+    socket.current = io("http://44.196.0.230:3001");
 
     socket.current.on("receive_message", (data) => {
       handleMessageReceived(data);
@@ -96,7 +97,7 @@ export function ChatPage() {
     socket.current.emit("send_message", {
       chat_id: chatId,
       remetente_id: user.userData.id,
-      destinatario_id: personal.idUsuario,
+      destinatario_id: personal.iadUsuario,
       assunto: inputValue,
       data_hora: new Date(),
     });

@@ -48,8 +48,8 @@ export function Select({
           <option value="" selected disabled>
             {placeholder}
           </option>
-          {options.map((option) => (
-            <option key={option.id} value={option.id}>
+          {options.map((option, index) => (
+            <option key={index} value={option.id}>
              {option.nome}
             </option>
           ))}
