@@ -1,7 +1,7 @@
 import { User, Lock } from "@phosphor-icons/react";
 import { Input } from "../../components/Input/input";
 import { Link } from "react-router-dom";
-import { useEffect, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { api } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,24 +9,11 @@ import { UserContext } from "../../user-context";
 
 export function LoginPage() {
   const { updateUser } = useContext(UserContext);
-  const navigate = useNavigate();
-
-  const redirecionarHome = () => {
-    navigate("/home");
-  };
-
-  const redirecionarHomePersonal = () => {
-    navigate("/home-personal");
-  };
-
-  useEffect(() => {
-    sessionStorage.clear();
-  }, []);
-
-  const [nicknname, setNicknname] = useState("");
+  const [nickname, setNicknname] = useState("");
   const [senha, setSenha] = useState("");
-
   const [loginSplash, setLoginSplash] = useState(false);
+
+  const navigate = useNavigate();
 
   function onNicknameInputChanged(event) {
     setNicknname(event.target.value);
@@ -45,75 +32,72 @@ export function LoginPage() {
     return userLoginDto;
   }
 
+  const handleLoginError = (error) => {
+    switch (error.response?.data?.status) {
+      case 401:
+      case 400:
+        toast.error("Nickname e/ou senha inválidos!");
+        break;
+      case 500:
+        toast.error(
+          "Tivemos problemas ao efetuar seu login! Tente novamente mais tarde."
+        );
+        break;
+      default:
+        toast.error("Erro inesperado ao tentar logar.");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setLoginSplash(true);
+
+    if (!nickname || !senha) {
+      toast.error("Preencha todos os campos");
+      return;
+    }
 
     const myForm = document.getElementById("myForm");
     const dadosFormulario = new FormData(myForm);
     const userLoginDto = userDtoCriacao(dadosFormulario);
-    let userFichaResponse;
-    let userLoginResponse;
-    let userDataResponse;
 
     try {
-      userLoginResponse = await api.post("/login/usuario", userLoginDto);
-      userDataResponse = await api.get(
+      const userLoginResponse = await api.post("/login/usuario", userLoginDto);
+      const userDataResponse = await api.get(
         `/usuarios/${userLoginResponse.data.id}`
       );
-    } catch (error) {
-      switch (error.response.data.status) {
-        case 401:
-          toast.error("Nickname e/ou senha inválidos!");
-          break;
-        case 400:
-          toast.error("Nickname e/ou senha inválidos!");
-          break;
-        case 500:
-          toast.error(
-            "Tivemos problemas ao efetuar seu login! tente novamente daqui a pouquinho :)"
-          );
-          break;
-      }
-    }
+      const userFichaResponse = await api.get(
+        `/fichas/${userLoginResponse.data.id}`
+      );
 
-    try {
-      userFichaResponse = await api.get(`/fichas/${userLoginResponse.data.id}`);
+      const userData = {
+        userData: userDataResponse.data,
+        userFicha: userFichaResponse.data || null,
+      };
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      updateUser(userData);
+
+      if (
+        userData.userFicha === null &&
+        userDataResponse.data.tipo === "USUARIO"
+      ) {
+        navigate("/cadastroParq");
+        return;
+      }
+
+      if (userData.userData.tipo === "USUARIO") navigate("/home");
+      if (userData.userData.tipo === "PERSONAL") navigate("/home-personal");
     } catch (error) {
-      console.log(error);
+      handleLoginError(error);
     } finally {
       setLoginSplash(false);
-    }
-
-    const userData = {
-      userData: userDataResponse.data,
-      userFicha: userFichaResponse ? userFichaResponse.data : null,
-    };
-
-    localStorage.setItem("user", JSON.stringify(userData));
-    updateUser(userData);
-    console.log(userData);
-
-    if (userData.userFicha === null) {
-      navigate("/cadastroParq");
-      return;
-    }
-
-    switch (userData.userData.tipo) {
-      case "USUARIO":
-        redirecionarHome();
-        break;
-      case "PERSONAL":
-        redirecionarHomePersonal();
-        break;
     }
   };
 
   return (
     <div className="bg-[#F7FBFC]">
       <div className="h-screen py-12 px-14 max-w-min w-fit mx-auto flex flex-col gap-10 justify-between bg-[FF00FF} text-nowrap font-mavenPro">
-        {/* CABEÇALHO/TITULO  */}
         <div className="text-center flex flex-col gap-7">
           <h1 className="font-bold text-6xl text-center bg-gradient-to-r from-[#64C273] from-35% to-[#734A91] to-70% text-transparent bg-clip-text">
             Bem vindo(a) de volta!
@@ -129,7 +113,6 @@ export function LoginPage() {
           </div>
         </div>
 
-        {/* FORMS COM INPUT */}
         <div className="flex flex-col gap-10">
           <form className="flex flex-col gap-6" id="myForm">
             <Input
