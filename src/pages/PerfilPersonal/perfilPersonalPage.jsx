@@ -1,37 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 import { InfoPerfil } from "../../components/InfoPerfil/infoPerfil";
 import { SideBarPersonal } from "../../components/SideBar/sideBar";
 import axios from "axios";
 
-import { validateLogin, validatePersonal, getLoginResponse} from "@utils/globalFunc"
+import defaultIcon from "@assets/defaultIcon.png"
+
+import { validateLogin, validatePersonal} from "@utils/globalFunc"
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../../user-context'; 
+import {
+  formatarCPF,
+  converterDataFormato,
+} from '@utils/globalFunc';
 
 export function PerfilPersonalPage() {
-  const [user, setUser] = useState(null);
+  const { user, loading, error} = useContext(UserContext);
   const [speciality, setSpeciality] = useState(null);
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState([]);
   
-  const [endereco, setEndereco] = useState(null);
+  const [endereco, setEndereco] = useState(user.userData.academiaId);
   const navigate = useNavigate();
 
   //USUARIO
   useEffect(() => {
-    const loginResponse = getLoginResponse();
-    const url = `http://localhost:8080/usuarios/${loginResponse.id}`;
-
     const validarLoginEUsuario = async () =>{
-
-      await validateLogin(navigate);
-      await validatePersonal(navigate);
-
-      axios
-      .get(url)
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      await validateLogin(navigate, user);
+      await validatePersonal(navigate, user);
   }
 
   validarLoginEUsuario();
@@ -39,7 +33,7 @@ export function PerfilPersonalPage() {
   }, []);
 
   useEffect(() => {
-    const url = "http://localhost:8080/especialidadesPersonais/2";
+    const url = `http://localhost:8080/especialidadesPersonais/${user.userData.id}`;
     axios
     .get(url)
     .then((response) => {
@@ -48,18 +42,19 @@ export function PerfilPersonalPage() {
   }, [user])
 
   useEffect(() => {
+    console.log(user)
     obterEspecialdiades()
   }, [speciality])
 
   //ENDEREÇO
-  useEffect(() => {
-    const url = "http://localhost:8080/enderecos/1"
-    axios
-    .get(url)
-    .then((response) => {
-      setEndereco(response.data)
-    })
-  })
+  // useEffect(() => {
+  //   const url = `http://localhost:8080/enderecos/${user.userData.academiaId.id}`
+  //   axios
+  //   .get(url)
+  //   .then((response) => {
+  //     setEndereco(response.data)
+  //   })
+  // })
 
   function transformaData(data) {
     let dataObj = new Date(data);
@@ -99,60 +94,47 @@ export function PerfilPersonalPage() {
       <div className="w-[88%] h-[90%] flex flex-col justify-between">
         <h1 className="text-[#503465] font-semibold text-2xl">Perfil</h1>
         <div className="w-full h-[88%] flex justify-between items-center">
-          <div className="w-[48%] h-full bg-white drop-shadow-lg rounded-xl p-5 flex flex-col justify-between">
-            <h1 className="font-medium text-xl text-[#503465]">
-              Informações Pessoais
-            </h1>
-            <div className="w-full h-2/6 flex justify-between">
-              <div className="w-[45%] h-full flex items-center justify-center">
-                <img
-                  className="size-32 border rounded-full self-center object-cover"
-                  src="https://png.pngtree.com/png-clipart/20230928/original/pngtree-salad-with-vegetables-png-image_13008901.png"
-                  alt=""
-                />
-              </div>
-              <div className="w-[42%] h-full flex flex-col justify-center gap-10">
-                <InfoPerfil width="w-[50%]" title="Nome" text={user.nome} />
-                <InfoPerfil width="w-[50%]" title="Email" text={user.email} />
-              </div>
+        
+        <div className="w-[48%] h-full bg-white rounded-xl p-5 shadow-lg flex flex-col justify-between">
+            <h2 className="text-xl font-semibold text-[#2B6E36]">Informações pessoais</h2>
+            <div className="w-36 h-36 mx-auto relative rounded-full overflow-hidden">
+              <img
+                className=" object-cover  h-full"
+                src={user && user.userData.midia ? user.userData.midia.caminho : defaultIcon}
+                alt=""
+              />
+              {/* <CloudinaryButtonPerfil uploadFunction={insertImage} /> */}
             </div>
-            <div className="w-full h-3/6 flex flex-col justify-between pb-2">
-              <div className="w-full h-fit flex justify-between">
-                <InfoPerfil
-                  width="w-[50%]"
-                  title="Nickname"
-                  text={user.nickname}
-                />
-                <InfoPerfil
-                  width="w-[42%]"
-                  title="Data de nascimento"
-                  text={transformaData(user.dtNasc)}
-                />
+            <div className="grid grid-cols-4">
+              <div className="px-2 py-2 col-span-2 border-r border-b">
+                <h3 className="font-semibold text-sm">Nome Completo</h3>
+                <p>{user && user.userData.nome ? user.userData.nome : 'xtop'}</p>
               </div>
-              <div className="w-full h-fit flex justify-between">
-                <InfoPerfil
-                  width="w-[50%]"
-                  title="Sexo"
-                  text={user.sexo === "M" ? "Masculino" : "Feminino"}
-                />
-                <InfoPerfil width="w-[42%]" title="Senha" text="********" />
+              <div className="px-2 py-2 col-span-2 border-b">
+                <h3 className="font-semibold text-sm">E-mail</h3>
+                <p>{user && user.userData.email ? user.userData.email : 'caue@gmail.com'}</p>
               </div>
-              <div className="w-full h-fit flex justify-between">
-                <InfoPerfil
-                  width="w-[50%]"
-                  title="Especialidades"
-                  text={items !== null && items.join(', ')}
-                />
-                {/* <InfoPerfil
-                  width="w-[42%]"
-                  title="Data formação"
-                  text="17/01/05"
-                /> */}
+              <div className="px-2 py-2 col-span-2 border-r border-b">
+                <h3 className="font-semibold text-sm">CPF</h3>
+                <p>{user && user.userData.cpf ? formatarCPF(user.userData.cpf) : '000.000.000-00'}</p>
               </div>
-            </div>
+              <div className="px-2 py-2 border-b border-r">
+                <h3 className="font-semibold text-sm">Data de Nasc.</h3>
+                <p>{user && user.userData.dtNasc ? converterDataFormato(user.userData.dtNasc) : '25/01/2004'}</p>
+              </div>
+              <div className="px-2 py-2 border-b">
+                <h3 className="font-semibold text-sm">Sexo</h3>
+                <p>{user && user.userData.sexo ? user.userData.sexo === 'F' ? 'Feminino' : user.userData.sexo === 'M' ? 'Masculino' : '' : ''}</p>
+              </div>
+              <div className="px-2 py-2 border-b col-span-full">
+                <h3 className="font-semibold text-sm">Especialidades</h3>
+                <p>{items.length > 0 ? items.join(', ') : null}</p>
+              </div>
           </div>
+        </div>
 
-          <div className="w-[48%] h-full bg-white drop-shadow-lg rounded-xl p-5 flex flex-col justify-between">
+
+        <div className="w-[48%] h-fit bg-white drop-shadow-lg rounded-xl p-5 flex flex-col gap-10">
             <h1 className="font-medium text-xl text-[#503465]">
               Informações do endereço da sua academia
             </h1>
@@ -174,10 +156,13 @@ export function PerfilPersonalPage() {
               <InfoPerfil width="w-[30%]" title="Cidade" text={endereco.cidade} />
               <InfoPerfil width="w-1/6" title="Estado" text={endereco.estado} />
             </div>
-            <div className="w-full h-[58%] bg-pink-400"></div>
+            {/* <div className="w-full h-[58%] flex flex-col justify-center items-center border">
+              <span>Endereço não encontrado :(</span>
+              <span>Tente mais tarde </span>
+            </div> */}
           </div>
-        </div>
       </div>
     </div>
+  </div>
   );
 }

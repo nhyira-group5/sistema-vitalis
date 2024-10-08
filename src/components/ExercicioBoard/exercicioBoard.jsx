@@ -16,10 +16,6 @@ export function ExercicioBoard({
   listFoodName,
   onClickFunction,
 }) {
-  useEffect(() => {
-    console.log("TIPO:" + type + " " + name);
-  }, []);
-
   return (
     <div className="h-full w-full flex flex-col justify-between">
       <div className="w-full h-[35%] bg-black rounded-xl flex justify-center">
@@ -45,7 +41,7 @@ export function ExercicioBoard({
       {type == "Refeição" && listFoodName !== null ? (
         <div className="w-full h-[18%] flex justify-around overflow-x-auto gap-4 scrollbar-thin">
           {listFoodName.map((foodName, index) => {
-            return <CardBoard textInfo={foodName} />;
+            return <CardBoard key={index} textInfo={foodName} />;
           })}
         </div>
       ) : (
@@ -59,7 +55,7 @@ export function ExercicioBoard({
         {type === "Refeição" ? (
           <Link
             to={`/refeicoes/${id}`}
-            className="w-[40%] h-fit py-2 rounded-2xl shadow-lg text-sm flex items-center justify-center text-white bg-[#48B75A]"
+            className="w-[40%] py-2 rounded-2xl shadow-lg text-sm flex items-center justify-center text-white bg-[#48B75A]"
           >
             Ir para a refeição
           </Link>

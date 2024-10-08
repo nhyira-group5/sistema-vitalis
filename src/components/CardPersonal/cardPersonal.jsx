@@ -1,131 +1,111 @@
-import { DotsThree, X } from "@phosphor-icons/react";
-import { twMerge } from "tailwind-merge";
-import { api } from "@apis/api";
-import { getLoginResponse, getDataAtual } from "@utils/globalFunc";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Checkbox } from "@components/Checkbox/checkbox";
-import { Button } from "@components/Button/button";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import defaultIcon from "@assets/defaultIcon.png"
+import { DotsThree, X } from '@phosphor-icons/react';
+import { twMerge } from 'tailwind-merge';
+import { api } from '../../api';
+import {  getDataAtual } from '@utils/globalFunc';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { Checkbox } from '@components/Checkbox/checkbox';
+import { Button } from '@components/Button/button';
+import { useEffect, useState, useContext } from 'react';
+import { toast } from 'react-toastify';
+import defaultIcon from '@assets/defaultIcon.png';
+import { UserContext } from '../../user-context'; 
 
 export function CardPersonal({
   size,
   haveDots,
   haveShadow,
   isUser,
-
   personal,
   usuario,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, loading, error} = useContext(UserContext);
 
   function modalInteract() {
     setIsModalOpen(!isModalOpen);
   }
 
   function postContact() {
-    const loginResponse = getLoginResponse();
-
     const contratoDto = {
-      usuarioId: loginResponse.id,
-
+      usuarioId: user.userData.id,
       personalId: personal.idPersonal,
-      inicioContrato: getDataAtual()
-    }
+      inicioContrato: getDataAtual(),
+    };
 
-    try{
-      api.post(`/contratos`, contratoDto)
-      .then((response)=>{
-        modalInteract()
-        toast.success("Solicitação enviada!")
-      })
-    } catch(error){
+    try {
+      api.post(`/contratos`, contratoDto).then((response) => {
+        modalInteract();
+        toast.success('Solicitação enviada!');
+      });
+    } catch (error) {
       console.log(error);
-      toast.error("Erro ao enviar solicitação!");
+      toast.error('Erro ao enviar solicitação!');
     }
   }
 
-8
-  
+  8;
 
-   function isUserFiliado(){    
-    if(usuario == undefined || personal == undefined) return false;
+  function isUserFiliado() {
+    if (usuario == undefined || personal == undefined) return false;
 
-      return usuario.personalId == personal.idPersonal
-
+    return usuario.personalId == personal.idPersonal;
   }
 
   useEffect(() => {
     isUserFiliado();
+    console.log(personal, usuario)
   }, []);
 
   return (
     <>
+      <div
+        className={twMerge(
+          'w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between',
+          haveShadow ? 'drop-shadow-lg' : '',
+          isUserFiliado() ? 'bg-primary-green100' : 'bg-white ',
+        )}
+      >
+        <div className="flex gap-5 w-full">
+          <img
+            className={twMerge(
+              'size-10 rounded-full object-cover self-center',
+              size,
+            )}
+            src={defaultIcon}
+            alt=""
+          />
 
-    <div
-      className={twMerge("w-full h-[20%] rounded-2xl p-4 flex gap-4 justify-between", haveShadow ? "drop-shadow-lg" : "", isUserFiliado() ? "bg-primary-green100" : "bg-white ")}
-    >
+          <div className="h-full w-full flex flex-col justify-between self-center ">
+            <h2
+              className={twMerge(
+                'font-semibold text-[#2B6E36]',
+                !isUser ? 'text-[#2B6E36]' : 'text-[#503465]',
+              )}
+            >
+              {personal.nome || 'Xpto'}
+            </h2>
 
-              
-      <div className="flex gap-5">
-        <img
-          className={twMerge(
-            "size-10 rounded-full object-cover self-center",size)}
-          src={defaultIcon}
-          alt=""
-        />
-
-        <div className="h-full flex flex-col justify-between self-center ">
-          <h2
-            className={twMerge("font-semibold text-[#2B6E36]", !isUser ? "text-[#2B6E36]" : "text-[#503465]")}>
-            {personal.nome || "Xpto"}
-          </h2>
-
-
-          <span className="text-sm">
-            {!isUser ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}` : `Meta em ${usuario.meta.nome}`}
-            <span className="font-semibold"> {""}</span>
-          </span>
-
-            {/* {personal.academiaId.cidade != null && personal.academiaId.estado != null ? (
-            <span className="text-sm font-semibold">
-              {personal.academiaId.cidade}, {personal.academiaId.estado}
+            <span className="text-sm">
+              {!isUser
+                ? `Especialista em ${personal.exibitonDto[0].especialidadeId.nome}`
+                : `Meta em ${usuario.meta.nome}`}
+              <span className="font-semibold"> {''}</span>
             </span>
-          ) : (
-            <span className="text-sm font-semibold text-transparent">sas</span>
-          )} */}
-          </div>
-        </div>
 
-        {haveDots && isUserFiliado ? (
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <button className="absolute right-2 top-0 outline-none">
-                <DotsThree size={32} color={"#000000"} />
-              </button>
-            </DropdownMenu.Trigger>
 
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="min-w-[220px] bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
-                sideOffset={5}
-                side={"left"}
+            {haveDots && isUserFiliado ? (
+            <button
+                to="/buscar-personal"
+                className="place-self-end bg-[#2B6E36] text-white py-1 px-2 rounded-md font-medium hover:bg-[#1E6129]"
+                onClick={modalInteract}
               >
-                <DropdownMenu.Item
-                  onClick={modalInteract}
-                  className=" group text-[13px] leading-none text-primary-green300 rounded-[3px] flex pl-5  h-[25px] px-[5px] relative select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-primary-green200 data-[highlighted]:text-white"
-                >
-                  <button className="w-full flex justify-start items-center">
-                    Se afiliar ao personal
-                  </button>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+                  Afiliar-se!
+              </button>
         ) : (
           <></>
         )}
+          </div>
+        </div>
       </div>
 
       {isModalOpen ? (
@@ -155,7 +135,7 @@ export function CardPersonal({
 
             <div className="w-full flex justify-end items-center">
               <Button
-                content={"Solicitar"}
+                content={'Solicitar'}
                 iconVisibility={false}
                 onClick={postContact}
               />

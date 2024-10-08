@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { AltInput } from "@components/Input/input";
-import {Button} from "@components/Button/button";
-import { AltSelect } from "@components/Select/select";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { AltInput } from '@components/Input/input';
+import { Button } from '@components/Button/button';
+import { AltSelect } from '@components/Select/select';
 
 import {
   validateNome,
@@ -13,7 +13,7 @@ import {
   validateIdade,
   validateCPF,
   validateCEP,
-} from "@utils/validacoes";
+} from '@utils/validacoes';
 import {
   User,
   PencilSimpleLine,
@@ -24,10 +24,10 @@ import {
   MapPinArea,
   ArrowLeft,
   ArrowRight,
-} from "@phosphor-icons/react";
-import { api } from "../../../../apis/api";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+} from '@phosphor-icons/react';
+import { api } from '../../../../api';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function userCriacaoDto(userFormInfo) {
   const userDto = {
@@ -39,7 +39,7 @@ function userCriacaoDto(userFormInfo) {
     sexo: userFormInfo.sexo,
     email: userFormInfo.email,
     senha: userFormInfo.senha,
-    academiaId: null
+    academiaId: null,
   };
 
   return userDto;
@@ -53,7 +53,7 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
     cidade: userFormInfo.cidade,
     estado: userFormInfo.estado,
     cep: userFormInfo.cep,
-    complemento: "",
+    complemento: '',
   };
 
   return enderecoAcademiaDto;
@@ -62,7 +62,7 @@ function enderecoAcademiaCriacaoDto(userFormInfo) {
 function usuarioEspecialidadeCriacaoDto(userFormInfo) {
   const usuarioEspecialidadeDto = {
     personalId: null,
-    especialidadeId: userFormInfo.especialidadeId
+    especialidadeId: userFormInfo.especialidadeId,
   };
   return usuarioEspecialidadeDto;
 }
@@ -70,31 +70,28 @@ function usuarioEspecialidadeCriacaoDto(userFormInfo) {
 export function InstrutorFormCadastro() {
   const navigate = useNavigate();
   const redirecionarLogin = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
-  function getEspecialidades(){
-      api.get(`/especialidades`)
-      .then((response) =>{
-        console.log(response.data);  
-        setEspecialidades([...especialidades,...response.data])
-      })      
+  function getEspecialidades() {
+    api
+      .get(`/especialidades`)
+      .then((response) => {
+        console.log(response.data);
+        setEspecialidades([...especialidades, ...response.data]);
+      })
       .catch((error) => {
         error.response.data.errors.forEach((erroMsg) => {
-          toast.error(
-            erroMsg.defaultMessage
-          );
-        })
+          toast.error(erroMsg.defaultMessage);
+        });
       });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getEspecialidades();
-  },[])
+  }, []);
 
-
-
-  const [especialidades, setEspecialidades] = useState([])
+  const [especialidades, setEspecialidades] = useState([]);
 
   const [formStep, setFormStep] = useState(1);
 
@@ -106,7 +103,8 @@ export function InstrutorFormCadastro() {
   const [isCPFValid, setIsCPFValid] = useState(true);
   const [isIdadeValid, setIsIdadeValid] = useState(true);
   const [isSexoSelecionado, setIsSexoSelecionado] = useState(true);
-  const [isEspecialidadeSelecionado, setIsEspecialidadeSelecionado] = useState(true);
+  const [isEspecialidadeSelecionado, setIsEspecialidadeSelecionado] =
+    useState(true);
 
   const [isCepValid, setIsCepValid] = useState(true);
   const [isNumeroValid, setIsNumeroValid] = useState(true);
@@ -115,38 +113,33 @@ export function InstrutorFormCadastro() {
   const [isBairroValid, setIsBairroValid] = useState(true);
   const [isEstadoValid, setIsEstadoValid] = useState(true);
   const [isCidadeValid, setIsCidadeValid] = useState(true);
-  
-
 
   const [isFormValid, setIsFormValid] = useState(true);
   const [isForm2Valid, setIsForm2Valid] = useState(true);
 
-
-
   const [formData, setFormData] = useState({
-    tipo: "PERSONAL",
-    nome: "",
-    username: "",
-    email: "",
-    CPF: "",
-    senha: "",
-    confSenha: "",
-    dtNasc: "",
-    sexo: "",
-    especialidadeId: "",
+    tipo: 'PERSONAL',
+    nome: '',
+    username: '',
+    email: '',
+    CPF: '',
+    senha: '',
+    confSenha: '',
+    dtNasc: '',
+    sexo: '',
+    especialidadeId: '',
 
-    cep: "",
-    rua: "",
-    estado: "",
-    bairro: "",
-    numero: "",
-    cidade: "",
+    cep: '',
+    rua: '',
+    estado: '',
+    bairro: '',
+    numero: '',
+    cidade: '',
   });
 
   useEffect(() => {
     console.log(formData);
-}, [formData]);
-
+  }, [formData]);
 
   function formNextStep() {
     setFormStep((prevStep) => prevStep + 1);
@@ -159,16 +152,15 @@ export function InstrutorFormCadastro() {
   function buscaCep() {
     let cepValue = formData.cep;
 
-    cepValue = cepValue.replace(" ", "");
-    cepValue = cepValue.replace(".", "");
-    cepValue = cepValue.replace("-", "");
+    cepValue = cepValue.replace(' ', '');
+    cepValue = cepValue.replace('.', '');
+    cepValue = cepValue.replace('-', '');
     cepValue = cepValue.trim();
 
     if (validateCEP(cepValue)) {
       axios
         .get(`https://viacep.com.br/ws/${cepValue}/json/`)
         .then((response) => {
-
           setFormData((prevState) => ({
             ...prevState,
             rua: response.data.logradouro,
@@ -185,13 +177,13 @@ export function InstrutorFormCadastro() {
     setIsEstadoValid(true);
     setIsBairroValid(true);
     setIsCidadeValid(true);
-        
+
     setFormData((prevState) => ({
       ...prevState,
-      rua: "",
-      estado: "",
-      bairro: "",
-      cidade: "",
+      rua: '',
+      estado: '',
+      bairro: '',
+      cidade: '',
     }));
   }
 
@@ -203,16 +195,14 @@ export function InstrutorFormCadastro() {
     const isUsernameValid = validateUsername(formData.username);
     const isConfSenhaValid = validateConfSenha(
       formData.confSenha,
-      formData.senha
+      formData.senha,
     );
     const isEmailValid = validateEmail(formData.email);
     const isIdadeValid = validateIdade(formData.dtNasc);
     const isCPFValid = validateCPF(formData.CPF);
-    const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== "";
-    const isEspecialidadeSelecionado = formData.especialidadeId && formData.especialidadeId.trim() !== "";
-
-
-
+    const isSexoSelecionado = formData.sexo && formData.sexo.trim() !== '';
+    const isEspecialidadeSelecionado =
+      formData.especialidadeId && formData.especialidadeId.trim() !== '';
 
     setIsNomeValid(isNomeValid);
     setIsSenhaValid(isSenhaValid);
@@ -245,12 +235,11 @@ export function InstrutorFormCadastro() {
     event.preventDefault();
 
     const isCepValid = validateCEP(formData.cep);
-    const isNumeroValid = formData.numero && formData.numero.trim != "";
-    const isLogradouroValid = formData.rua && formData.rua.trim != "";
-    const isBairroValid = formData.bairro && formData.bairro.trim != "";
-    const isEstadoValid = formData.estado && formData.estado.trim != "";
-    const isCidadeValid = formData.cidade && formData.cidade.trim != "";
-
+    const isNumeroValid = formData.numero && formData.numero.trim != '';
+    const isLogradouroValid = formData.rua && formData.rua.trim != '';
+    const isBairroValid = formData.bairro && formData.bairro.trim != '';
+    const isEstadoValid = formData.estado && formData.estado.trim != '';
+    const isCidadeValid = formData.cidade && formData.cidade.trim != '';
 
     setIsCepValid(isCepValid);
     setIsNumeroValid(isNumeroValid);
@@ -259,101 +248,94 @@ export function InstrutorFormCadastro() {
     setIsEstadoValid(isEstadoValid);
     setIsCidadeValid(isCidadeValid);
 
-    const isForm2Valid = 
-    isCepValid && 
-    isNumeroValid &&
-    isLogradouroValid &&
-    isBairroValid &&
-    isEstadoValid &&
-    isCidadeValid;
+    const isForm2Valid =
+      isCepValid &&
+      isNumeroValid &&
+      isLogradouroValid &&
+      isBairroValid &&
+      isEstadoValid &&
+      isCidadeValid;
 
     setIsForm2Valid(isForm2Valid);
 
     if (isForm2Valid) {
-
       try {
         const userDto = userCriacaoDto(formData);
         const enderecoAcademiaDto = enderecoAcademiaCriacaoDto(formData);
-        const usuarioEspecialidadeDto = usuarioEspecialidadeCriacaoDto(formData);
+        const usuarioEspecialidadeDto =
+          usuarioEspecialidadeCriacaoDto(formData);
 
-
-        
-        const academiaResponse = await api.post(`/enderecos`, enderecoAcademiaDto);
-        const academiaId = academiaResponse.data.id; 
+        const academiaResponse = await api.post(
+          `/enderecos`,
+          enderecoAcademiaDto,
+        );
+        const academiaId = academiaResponse.data.id;
 
         userDto.enderecoId = academiaId;
 
         const responseUser = await api.post(`/usuarios`, userDto);
-        const userId = responseUser.data.id; 
-        
+        const userId = responseUser.data.id;
+
         usuarioEspecialidadeDto.personalId = userId;
-        
+
         await api.post(`/especialidadesPersonais`, usuarioEspecialidadeDto);
 
-
         redirecionarLogin();
-
-        } catch (error) {
-          error.response.data.errors.forEach((erroMsg) => {
-            toast.error(
-              erroMsg.defaultMessage
-            );
-          })
-  }
-
-
+      } catch (error) {
+        error.response.data.errors.forEach((erroMsg) => {
+          toast.error(erroMsg.defaultMessage);
+        });
+      }
     }
   };
-
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
     switch (name) {
-      case "nome":
+      case 'nome':
         setIsNomeValid(true);
         break;
-      case "username":
+      case 'username':
         setIsUsernameValid(true);
         break;
-      case "email":
+      case 'email':
         setIsEmailValid(true);
         break;
-      case "senha":
+      case 'senha':
         setIsSenhaValid(true);
         break;
-      case "confSenha":
+      case 'confSenha':
         setIsConfSenhaValid(true);
         break;
-      case "dtNasc":
+      case 'dtNasc':
         setIsIdadeValid(true);
         break;
-      case "CPF":
+      case 'CPF':
         setIsCPFValid(true);
         break;
-      case "sexo":
+      case 'sexo':
         setIsSexoSelecionado(true);
         break;
-      case "cep":
+      case 'cep':
         setIsCepValid(true);
         break;
-      case "numero":
+      case 'numero':
         setIsNumeroValid(true);
         break;
-      case "rua":
+      case 'rua':
         setIsLogradouroValid(true);
         break;
-      case "estado":
+      case 'estado':
         setIsEstadoValid(true);
         break;
-      case "bairro":
+      case 'bairro':
         setIsBairroValid(true);
         break;
-      case "cidade":
+      case 'cidade':
         setIsCidadeValid(true);
         break;
-      case "especialidade":
+      case 'especialidade':
         setIsEspecialidadeSelecionado(true);
         break;
 
@@ -365,17 +347,12 @@ export function InstrutorFormCadastro() {
       ...prevState,
       [name]: value,
     }));
-
-
   };
 
-  
   const sexos = [
-    {nome: 'Masculino',
-     id: 'M'},
-    {nome: 'Feminino',
-     id: 'F'}
-  ]
+    { nome: 'Masculino', id: 'M' },
+    { nome: 'Feminino', id: 'F' },
+  ];
 
   const nomeErroList = () => {
     return (
@@ -472,11 +449,9 @@ export function InstrutorFormCadastro() {
     );
   };
 
-
-
   return (
     <>
-      <div className={`${formStep == 1 ? "flex flex-col gap-3" : "hidden"}`}>
+      <div className={`${formStep == 1 ? 'flex flex-col gap-3' : 'hidden'}`}>
         <span className={`text-7xl font-bold text-alt-purple300`}>
           Cadastro Personal
         </span>
@@ -492,7 +467,7 @@ export function InstrutorFormCadastro() {
         </div>
       </div>
 
-      <div className={`${formStep == 2 ? "flex flex-col gap-3" : "hidden"}`}>
+      <div className={`${formStep == 2 ? 'flex flex-col gap-3' : 'hidden'}`}>
         <span className={`text-7xl font-bold text-alt-purple300`}>
           Seu Endereço!
         </span>
@@ -512,14 +487,14 @@ export function InstrutorFormCadastro() {
         onSubmit={handleFirstSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
 
-        xl:gap-x-16 xl:gap-y-5 xl:h-full xl:grid-cols-2 xl:overflow-auto ${formStep == 1 ? "lg:flex  xl:grid" : "hidden"}`}
-
+        xl:gap-x-16 xl:gap-y-5 xl:h-full xl:grid-cols-2 xl:overflow-auto ${formStep == 1 ? 'lg:flex  xl:grid' : 'hidden'
+          }`}
       >
         <AltInput
-          labelContent={"Nome do usuário"}
+          labelContent={'Nome do usuário'}
           icon={<PencilSimpleLine size={`28`} color="#000000" />}
-          placeholder={"Cauê Augusto da Silva Paroquia"}
-          nome={"nome"}
+          placeholder={'Cauê Augusto da Silva Paroquia'}
+          nome={'nome'}
           value={formData.nome}
           onChangeFunction={handleChange}
           valid={!isNomeValid}
@@ -527,10 +502,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Nickname"}
+          labelContent={'Nickname'}
           icon={<User size={`28`} color="#000000" />}
-          placeholder={"CaueBigForças"}
-          nome={"username"}
+          placeholder={'CaueBigForças'}
+          nome={'username'}
           value={formData.username}
           onChangeFunction={handleChange}
           valid={!isUsernameValid}
@@ -538,10 +513,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Email"}
+          labelContent={'Email'}
           icon={<EnvelopeSimple size={`28`} color="#000000" />}
-          placeholder={"caue@gmail.com"}
-          nome={"email"}
+          placeholder={'caue@gmail.com'}
+          nome={'email'}
           value={formData.email}
           onChangeFunction={handleChange}
           valid={!isEmailValid}
@@ -549,49 +524,49 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Data de nascimento"}
+          labelContent={'Data de nascimento'}
           icon={<CalendarDots size={`28`} color="#000000" />}
-          placeholder={"25/01/2004"}
-          nome={"dtNasc"}
+          placeholder={'25/01/2004'}
+          nome={'dtNasc'}
           value={formData.dtNasc}
           onChangeFunction={handleChange}
-          inputType={"date"}
+          inputType={'date'}
           valid={!isIdadeValid}
           invalidMessage={idadeErroList}
         />
 
         <AltInput
-          labelContent={"Senha"}
+          labelContent={'Senha'}
           icon={<Lock size={`28`} color="#000000" />}
-          placeholder={"◦◦◦◦◦◦"}
-          nome={"senha"}
+          placeholder={'◦◦◦◦◦◦'}
+          nome={'senha'}
           value={formData.senha}
           onChangeFunction={handleChange}
-          inputType={"password"}
+          inputType={'password'}
           valid={!isSenhaValid}
           invalidMessage={senhaErroList}
         />
 
         <AltInput
-          labelContent={"Confirmar senha"}
+          labelContent={'Confirmar senha'}
           icon={<Lock size={`28`} color="#000000" />}
-          placeholder={"◦◦◦◦◦◦"}
-          nome={"confSenha"}
+          placeholder={'◦◦◦◦◦◦'}
+          nome={'confSenha'}
           value={formData.confSenha}
           onChangeFunction={handleChange}
-          inputType={"password"}
+          inputType={'password'}
           valid={!isConfSenhaValid}
           invalidMessage={confSenhaErroList}
         />
 
         <AltInput
-          labelContent={"CPF"}
+          labelContent={'CPF'}
           icon={<Hash size={`28`} color="#000000" />}
-          placeholder={"123.123.123-10"}
-          nome={"CPF"}
+          placeholder={'123.123.123-10'}
+          nome={'CPF'}
           value={formData.CPF}
           onChangeFunction={handleChange}
-          inputType={"text"}
+          inputType={'text'}
           valid={!isCPFValid}
           invalidMessage={CPFErrorList}
         />
@@ -603,31 +578,27 @@ export function InstrutorFormCadastro() {
           id="sexo"
           nome="sexo"
           valid={!isSexoSelecionado}
-          placeholder={"Selecione um sexo"}
+          placeholder={'Selecione um sexo'}
         />
-
-
-
 
         <fieldset className="col-span-2 grid justify-center items-center">
-        <AltSelect
-          options={especialidades}
-          labelContent="Especialidade"
-          onChangeFunction={handleChange}
-          id="especialidade"
-          nome="especialidadeId"
-          valid={!isEspecialidadeSelecionado}
-          placeholder={"Selecione uma especialidade"}
-        />
+          <AltSelect
+            options={especialidades}
+            labelContent="Especialidade"
+            onChangeFunction={handleChange}
+            id="especialidade"
+            nome="especialidadeId"
+            valid={!isEspecialidadeSelecionado}
+            placeholder={'Selecione uma especialidade'}
+          />
         </fieldset>
-
 
         <fieldset className="col-span-2 grid justify-center items-center">
           <Button
-            content={"Continuar"}
-            type={"submit"}
+            content={'Continuar'}
+            type={'submit'}
             buttonStyle={
-              "text-gray100 bg-alt-purple300 rounded-full font-bold px-5 py-4 hover:bg-alt-purple400 transition-all flex items-center gap-1 flex-row-reverse justify-center w-[16rem]"
+              'text-gray100 bg-alt-purple300 rounded-full font-bold px-5 py-4 hover:bg-alt-purple400 transition-all flex items-center gap-1 flex-row-reverse justify-center w-[16rem]'
             }
             icon={<ArrowRight />}
           />
@@ -637,28 +608,27 @@ export function InstrutorFormCadastro() {
       <form
         onSubmit={handleSecondSubmit}
         className={`lg:gap-y-10 lg:h-full lg:flex-col lg:overflow-auto
-        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${
-          formStep == 2 ? "lg:flex  xl:grid" : "hidden"
-        }`}
+        xl:gap-x-16 xl:gap-y-0 xl:h-full xl:grid-cols-2 xl:grid-rows-5 xl:overflow-auto ${formStep == 2 ? 'lg:flex  xl:grid' : 'hidden'
+          }`}
       >
         <AltInput
-          labelContent={"CEP"}
+          labelContent={'CEP'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"0451845"}
-          nome={"cep"}
+          placeholder={'0451845'}
+          nome={'cep'}
           value={formData.cep}
           onChangeFunction={handleChange}
           onBlurFunction={buscaCep}
-          inputType={"text"}
+          inputType={'text'}
           valid={!isCepValid}
           invalidMessage={CEPErrorList}
         />
 
         <AltInput
-          labelContent={"Rua/Logradouro"}
+          labelContent={'Rua/Logradouro'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"Hadock Lobo"}
-          nome={"rua"}
+          placeholder={'Hadock Lobo'}
+          nome={'rua'}
           value={formData.rua}
           onChangeFunction={handleChange}
           valid={!isLogradouroValid}
@@ -666,10 +636,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Estado"}
+          labelContent={'Estado'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"São Paulo"}
-          nome={"estado"}
+          placeholder={'São Paulo'}
+          nome={'estado'}
           value={formData.estado}
           onChangeFunction={handleChange}
           valid={!isEstadoValid}
@@ -677,10 +647,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Bairro"}
+          labelContent={'Bairro'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"Guaianases"}
-          nome={"bairro"}
+          placeholder={'Guaianases'}
+          nome={'bairro'}
           value={formData.bairro}
           onChangeFunction={handleChange}
           valid={!isBairroValid}
@@ -688,10 +658,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Número"}
+          labelContent={'Número'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"1313"}
-          nome={"numero"}
+          placeholder={'1313'}
+          nome={'numero'}
           value={formData.numero}
           onChangeFunction={handleChange}
           valid={!isNumeroValid}
@@ -699,10 +669,10 @@ export function InstrutorFormCadastro() {
         />
 
         <AltInput
-          labelContent={"Cidade"}
+          labelContent={'Cidade'}
           icon={<MapPinArea size={`28`} color="#000000" />}
-          placeholder={"SP"}
-          nome={"cidade"}
+          placeholder={'SP'}
+          nome={'cidade'}
           value={formData.cidade}
           onChangeFunction={handleChange}
           valid={!isCidadeValid}
@@ -711,11 +681,11 @@ export function InstrutorFormCadastro() {
 
         <fieldset className=" grid justify-end items-start">
           <Button
-            content={"Voltar"}
-            type={"button"}
+            content={'Voltar'}
+            type={'button'}
             onClick={formPreviusStep}
             buttonStyle={
-              "text-gray100 bg-gray300 rounded-full font-bold px-5 py-4 hover:bg-gray400 transition-all flex items-center gap-1 w-[16rem] justify-center"
+              'text-gray100 bg-gray300 rounded-full font-bold px-5 py-4 hover:bg-gray400 transition-all flex items-center gap-1 w-[16rem] justify-center'
             }
             icon={<ArrowLeft />}
           />
@@ -723,10 +693,10 @@ export function InstrutorFormCadastro() {
 
         <fieldset className=" grid justify-start items-start">
           <Button
-            content={"Criar conta"}
-            type={"submit"}
+            content={'Criar conta'}
+            type={'submit'}
             buttonStyle={
-              "text-gray100 bg-alt-purple300 rounded-full font-bold px-5 py-4 hover:bg-alt-purple400 transition-all flex items-center gap-1 w-[16rem] justify-center"
+              'text-gray100 bg-alt-purple300 rounded-full font-bold px-5 py-4 hover:bg-alt-purple400 transition-all flex items-center gap-1 w-[16rem] justify-center'
             }
           />
         </fieldset>

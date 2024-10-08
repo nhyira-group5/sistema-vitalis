@@ -1,66 +1,52 @@
-
-export function getLoginResponse(){
-    const storedResponse = JSON.parse(sessionStorage.getItem('loginResponse'));
-    
-    return storedResponse;
+export function validateLogin(navigate, user) {
+  if (!user) {
+    navigate('/login');
+  }
 }
 
-export function validateLogin(navigate) {
-    const usuarioLogado = getLoginResponse();
+export function validatePersonal(navigate, user) {
 
-    if (!usuarioLogado) {
-        navigate("/login");
-       
-      } 
-  };
+  if (user && user.userData.tipo != 'PERSONAL') {
+    navigate('/home');
+  }
+}
 
-  export function validatePersonal(navigate){
-    const usuarioLogado = getLoginResponse();
+export function validateUsuario(navigate, user) {
+  if (user && user.userData.tipo != 'USUARIO') {
+    navigate('/home-personal');
+  }
+}
 
-    if (usuarioLogado && usuarioLogado.tipo != "PERSONAL") {
-      navigate("/home");
-    } 
+export function formatarCPF(cpf) {
+  if (cpf == undefined) {
+    return;
   }
 
-  export function validateUsuario(navigate){
-    const usuarioLogado = getLoginResponse();
-
-    if (usuarioLogado && usuarioLogado.tipo != "USUARIO") {
-      navigate("/home-personal");
-    } 
+  if (cpf.length !== 11) {
+    return 'CPF inválido';
   }
 
+  const cpfFormatado = cpf.replace(
+    /(\d{3})(\d{3})(\d{3})(\d{2})/,
+    '$1.$2.$3-$4',
+  );
 
-
-  export function formatarCPF(cpf) {
-    if(cpf == undefined){
-        return;
-    }
-
-
-    if (cpf.length!== 11) {
-      return 'CPF inválido';
-    }
-  
-    const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-  
-    return cpfFormatado;
-  }
+  return cpfFormatado;
+}
 
 export function converterDataFormato(data) {
- 
-  if (typeof data!== 'string') {
+  if (typeof data !== 'string') {
     console.error('A entrada precisa ser uma string.');
-    return; 
+    return;
   }
 
   const dataConvertida = data.replace(/-/g, '/');
   return dataConvertida;
 }
 
-  export function formatarData(date) {
-    const parts = date.split("-");
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+export function formatarData(date) {
+  const parts = date.split('-');
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
 
 export function getDataAtual() {

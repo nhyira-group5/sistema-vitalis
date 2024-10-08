@@ -4,26 +4,19 @@ import {
   HouseLine,
   Barbell,
   CookingPot,
-  Notepad,
   Users,
   Chat,
   Images,
-  SignOut 
+  SignOut,
+  CurrencyCircleDollar,
 } from "@phosphor-icons/react";
 import * as Separator from "@radix-ui/react-separator";
-import { space } from "postcss/lib/list";
 import { SideBarItemPersonal } from "./sideBarItem";
 
-
 export function SideBar() {
-  // const location = useLocation();
-  // const path = location.pathname;
-  // if(path = "/home") {
-
-  // }
   return (
     <nav className="h-fit rounded-xl border-1 bg-[#48B75A] flex flex-col w-fit items-center justify-center overflow-hidden">
-      <SideBarItem URI={"/perfil"} Icon={<UserCircle size={40} />} />
+      <SideBarItem URI={"/perfil"} Icon={<UserCircle size={28} />} />
 
       <div className="w-full px-2 my-3">
         <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full " />
@@ -35,7 +28,7 @@ export function SideBar() {
 
       <SideBarItem URI={"/refeicoes"} Icon={<CookingPot size={28} />} />
 
-      <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} />
+      {/* <SideBarItem URI={"/relatorio"} Icon={<Notepad size={28} />} /> */}
 
       <SideBarItem URI={"/buscar-personal"} Icon={<Users size={28} />} />
 
@@ -43,25 +36,39 @@ export function SideBar() {
 
       <SideBarItem URI={"/mural"} Icon={<Images size={28} />} />
 
-      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
+      <SideBarItem URI={"/planos"} Icon={<CurrencyCircleDollar size={28} />} />
+
+      <SideBarItem
+        URI={"/login"}
+        Icon={<SignOut size={28} color="#CA1B1B" />}
+      />
     </nav>
   );
 }
 
 export function SideBarPersonal() {
-  return(
+  return (
     <nav className="h-fit rounded-xl border-1 bg-[#8656A9] flex flex-col w-fit items-center justify-center overflow-hidden">
-      <SideBarItemPersonal URI={"/perfil-personal"} Icon={<UserCircle size={40} />} />
+      <SideBarItemPersonal
+        URI={"/perfil-personal"}
+        Icon={<UserCircle size={40} />}
+      />
 
       <div className="w-full px-2 my-3">
         <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full " />
       </div>
 
-      <SideBarItemPersonal URI={"/home-personal"} Icon={<HouseLine size={28} />} />
+      <SideBarItemPersonal
+        URI={"/home-personal"}
+        Icon={<HouseLine size={28} />}
+      />
 
       <SideBarItemPersonal URI={"/chat-personal"} Icon={<Chat size={28} />} />
 
-      <SideBarItem URI={"/login"} Icon={<SignOut  size={28} color="#CA1B1B"/>} />
+      <SideBarItem
+        URI={"/login"}
+        Icon={<SignOut size={28} color="#CA1B1B" />}
+      />
     </nav>
-  )
+  );
 }

@@ -6,7 +6,7 @@ export function AtividadeOption({
   nameActivity,
   done,
   onClickFunction,
-  option
+  option,
 }) {
   const [colorText, setColorText] = useState("");
   const [colorIcon, setColorIcon] = useState("");
@@ -27,7 +27,7 @@ export function AtividadeOption({
 
   return (
     <div
-      className={`h-20 w-full flex items-center justify-between pl-4 bg-${
+      className={`h-20 w-full flex items-center justify-between pl-4 hover:opacity-85 bg-${
         done !== 0 ? "[#48B75A]" : "[#FFFFFF]"
       } rounded-xl shadow-md cursor-pointer`}
       onClick={onClickFunction}
@@ -40,16 +40,18 @@ export function AtividadeOption({
         )}
         <span className={`text-${colorText} font-semibold`}>{activity}:</span>
         <span
-          className={`font-medium text-${colorText} ${done !== 0 && "line-through"}`}
+          className={`font-medium text-${colorText} ${
+            done !== 0 && "line-through"
+          }`}
         >
           {nameActivity}
         </span>
       </div>
-      {option && 
-      <div className="h-full flex items-center bg-[#91D49C] p-1 rounded-xl rounded-ss-none rounded-es-none">
-        <CaretRight size={20} color="white" />
-      </div>
-      }
+      {option && (
+        <div className="h-full flex items-center bg-[#91D49C] p-1 rounded-xl rounded-ss-none rounded-es-none">
+          <CaretRight size={20} color="white" />
+        </div>
+      )}
     </div>
   );
 }

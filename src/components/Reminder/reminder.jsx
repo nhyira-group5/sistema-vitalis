@@ -1,31 +1,159 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { api } from "../../api";
+import { UserContext } from "../../user-context";
 
-export function Reminder({ text, handleChange, handleSubmit}) {
-  const [value, setValue] = useState(text);
-  const [isEditable, setIsEditable] = useState(true);
-  
-  function handleChange(e) {
-    setValue(e.target.value);
+export function ReminderMessage({ texto, data }) {
+  function formatISODateToDDMM(isoDateString) {
+    const date = new Date(isoDateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    return `${day}/${month}`;
+  }
+
+  return (
+    <div className="bg-white text-black rounded-xl py-3 px-2 relative min-h-20 break-words overflow-hidden text-sm">
+      {texto}{" "}
+      <span className="text-gray-600 text-xs absolute bottom-1 right-3">
+        {formatISODateToDDMM(data)}
+      </span>
+    </div>
+  );
+}
+
+export function Reminder() {
+  const [reminders, setReminders] = useState(null);
+  const [textAreaValue, setTextAreaValue] = useState("");
+  const [textAreaVisible, setTextAreaVisible] = useState(false);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    fetchReminders();
+  }, [user]);
+
+  function createReminder() {
+    setTextAreaVisible(true);
+  }
+
+  async function salveReminder() {
+    if (textAreaValue.length > 0) {
+      const bodyRequest = {
+        conteudo: textAreaValue,
+        dataLembrete: new Date().toISOString(),
+        usuarioId: user.userData.id,
+      };
+
+      const response = await postReminder(bodyRequest);
+      console.log(response);
+
+      if (response !== null) {
+        setReminders((prev) => [
+          ...prev,
+          { conteudo: response.conteudo, dataLembrete: response.dataLembrete },
+        ]);
+        hiddenCreationReminder();
+      }
+    }
+  }
+
+  function hiddenCreationReminder() {
+    setTextAreaValue("");
+    setTextAreaVisible(false);
+  }
+
+  const postReminder = async (bodyRequest) => {
+    let json;
+    try {
+      const response = await api.post(`/lembretes`, bodyRequest);
+      console.log(response.data);
+      json = response.data;
+    } catch (e) {
+      console.error("Error in POST request:", e);
+    }
+
+    return json;
   };
 
-  function handleSubmit(e) {
-    if (e.key === 'Enter') {
-      console.log("deu certo")
-      e.preventDefault();
-      setIsEditable(false);
+  const fetchReminders = async () => {
+    if (user == null) return;
+    try {
+      const response = await api.get(`/lembretes/${user.userData.id}`);
+      setReminders(response.data);
+    } catch (e) {
+      console.error("Error in GET request:", e);
     }
   };
-  
+
   return (
-    <div className="rounded-lg bg-white p-4 leading-4 text-sm">
-      <input
-      className="w-full h-full ring-0 "
-      type="text"
-      value={text}
-      onChange={handleChange}
-      onKeyDown={handleSubmit}
-      readOnly={!isEditable}
-    />
+    <div className="w-[20%] h-full bg-[#1A1A1A] flex flex-col justify-between items-center rounded-xl shadow-lg px-5 py-6">
+      <h1 className="text-white text-xl font-semibold text-center mb-6">
+        Lembretes
+      </h1>
+      <div className="h-5/6 flex flex-col gap-2 overflow-y-auto w-full">
+        {textAreaVisible && (
+          <TextArea
+            textAreaValue={textAreaValue}
+            setTextAreaValue={setTextAreaValue}
+          />
+        )}
+        {(reminders !== null && reminders.length > 0) ||
+        textAreaVisible === true ? (
+          reminders.map((r, index) => {
+            return (
+              <ReminderMessage
+                key={index}
+                texto={r.conteudo}
+                data={r.dataLembrete}
+              />
+            );
+          })
+        ) : (
+          <div className="w-full h-full flex justify-center items-center text-white text-sm font-small ">
+            Nenhum lembrete adicionado.
+          </div>
+        )}
+      </div>
+      {textAreaVisible ? (
+        <div className="flex gap-5">
+          <button
+            // className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A] hover:opacity-90"
+            className="px-3 py-1.5 bg-red-500  rounded-2xl text-white text-sm hover:opacity-90"
+            onClick={hiddenCreationReminder}
+          >
+            Cancelar
+          </button>
+
+          <button
+            className="px-3 bg-green-500  rounded-2xl text-white text-sm hover:opacity-90 "
+            onClick={salveReminder}
+          >
+            Salvar
+          </button>
+        </div>
+      ) : (
+        <button
+          className="px-9 py-2 rounded-2xl shadow-lg text-sm text-white bg-[#48B75A] hover:opacity-90"
+          onClick={createReminder}
+          disabled={textAreaVisible}
+        >
+          Adicionar lembrete
+        </button>
+      )}
     </div>
+  );
+}
+
+export function TextArea({ textAreaValue, setTextAreaValue }) {
+  return (
+    <textarea
+      id="name"
+      rows={1}
+      cols={2}
+      maxLength={48}
+      className="min-h-20 outline-none resize-none leading-tight px-2 py-3 rounded-xl text-sm"
+      placeholder="Digite aqui seu texto..."
+      value={textAreaValue}
+      onChange={({ target }) => setTextAreaValue(target.value)}
+    ></textarea>
   );
 }
