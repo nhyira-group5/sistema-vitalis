@@ -1,5 +1,15 @@
+version: '3'
 services:
-  nhyira-web:
-    image: willdantas/nhyira-web:00.00
+  web:
+    image: nginx:latest
     ports:
-      - "80:80"
+      - "80:80"   # Porta para HTTP
+      - "443:443" # Porta para HTTPS
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs # Certificados SSL
+      - ./html:/usr/share/nginx/html # Código da aplicação
+    networks:
+      - webnet
+networks:
+  webnet:
