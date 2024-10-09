@@ -31,7 +31,7 @@ export function PerfilPersonalPage() {
 
   useEffect(() => {
     const fetchCore = async () => {
-      const response = await api.get(`http://localhost:8080/especialidadesPersonais/${user.userData.id}`);
+      const response = await api.get(`/especialidadesPersonais/${user.userData.id}`);
       setSpeciality(response.data);
     };
     fetchCore();
