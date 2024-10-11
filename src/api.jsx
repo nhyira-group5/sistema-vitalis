@@ -5,7 +5,7 @@ export const api = axios.create({
 });
 
 export const apiChat = axios.create({
-  baseURL: "http://3.226.245.89:3001",
+  baseURL: "http://54.164.44.70:3001",
 });
 
 export function USER_GET(id) {
