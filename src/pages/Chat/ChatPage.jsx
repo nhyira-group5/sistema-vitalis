@@ -99,7 +99,7 @@ export function ChatPage() {
     socket.current.emit("send_message", {
       chat_id: chatId,
       remetente_id: user.userData.id,
-      destinatario_id: personal.iadUsuario,
+      destinatario_id: personal.idUsuario,
       assunto: inputValue,
       data_hora: new Date(),
     });
