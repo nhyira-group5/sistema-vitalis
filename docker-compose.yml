@@ -1,10 +1,12 @@
+services:
   nhyira-web:
-    image: willdantas/nhyira-web:00.00
+    build:
+      context: ./frontend  # Diretório onde está o Dockerfile
     ports:
-      - "80:80"  # Expor a porta 80 para HTTP
-      - "443:443"  # Expor a porta 443 para HTTPS
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./frontend:/home/ubuntu/frontend  # Montar a pasta frontend
+      - ./frontend:/home/ubuntu/frontend
     environment:
-      - NODE_ENV=production  # Definir variáveis de ambiente, se necessário
-    restart: unless-stopped  # Garantir que o serviço reinicie em caso de falha
+      - NODE_ENV=production
+    restart: unless-stopped
