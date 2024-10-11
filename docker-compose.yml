@@ -1,7 +1,7 @@
 services:
   nhyira-web:
     build:
-      context: ./frontend  # Diretório onde está o Dockerfile
+      context: ./
     ports:
       - "80:80"
       - "443:443"
