@@ -32,7 +32,7 @@ export function ChatPage() {
     if (!user) return;
     
     // socket.current = io("http://localhost:3001");
-    socket.current = io("http://44.223.87.21:3001");
+    socket.current = io("http://3.226.245.89:3001");
 
     socket.current.on("receive_message", (data) => {
       handleMessageReceived(data);
