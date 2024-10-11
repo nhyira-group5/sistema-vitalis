@@ -206,6 +206,9 @@ resource "aws_instance" "public_ec2_02" {
   EOF
 }
 
+
+
+
 resource "aws_eip_association" "eip_assoc_01" {
   instance_id   = aws_instance.public_ec2_01.id
   allocation_id = "eipalloc-0b33881f72855426a" 
@@ -213,5 +216,7 @@ resource "aws_eip_association" "eip_assoc_01" {
 
 resource "aws_eip_association" "eip_assoc_02" {
   instance_id   = aws_instance.public_ec2_02.id
-  allocation_id = "eipalloc-01952682e36b66c3" 
+  allocation_id = "eipalloc-01952682e36b66c07"   
 }
+
+
