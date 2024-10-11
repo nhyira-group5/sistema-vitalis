@@ -37,15 +37,9 @@ resource "aws_instance" "public_ec2_01" {
     sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
 
-    # Verificar se o Docker Compose foi instalado corretamente
-    docker-compose --version
-
-    # Instalar git, Node.js e npm, se necessário
-    sudo apt-get install -y git nodejs npm
-
     # Clonar ou atualizar o repositório
     cd /home/ubuntu/frontend || {
-      git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
     }
 
     cd /home/ubuntu/frontend
@@ -145,12 +139,10 @@ resource "aws_instance" "public_ec2_02" {
     # Verificar se o Docker Compose foi instalado corretamente
     docker-compose --version
 
-    # Instalar git, Node.js e npm, se necessário
-    sudo apt-get install -y git nodejs npm
 
     # Clonar ou atualizar o repositório
     cd /home/ubuntu/frontend || {
-      git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
     }
 
     cd /home/ubuntu/frontend
