@@ -1,5 +1,5 @@
 
-name: Destroy Front End Infrastructure - Nhyira
+name: Destroy Front End Infra - Nhyira
 
 on:
   workflow_dispatch:

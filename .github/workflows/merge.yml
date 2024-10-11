@@ -1,4 +1,4 @@
-name: PR da Branch de Desenvolvedor
+name: PR da Branch de Desenvolvedor para Main
 
 on:
   push:
