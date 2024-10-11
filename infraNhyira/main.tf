@@ -15,8 +15,9 @@ resource "aws_instance" "public_ec2_01" {
   vpc_security_group_ids      = [var.sg_id]
 
   tags = {
-    Name = "public_ec2_01"
+     Name = "public_ec2_01"
   }
+
 
   user_data = <<-EOF
     #!/bin/bash
@@ -121,6 +122,7 @@ resource "aws_instance" "public_ec2_02" {
   tags = {
     Name = "public_ec2_02"
   }
+
 
   user_data = <<-EOF
     #!/bin/bash
