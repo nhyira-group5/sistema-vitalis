@@ -1,6 +1,6 @@
 # ✨ Pull Request Front End Nhyira - Detalhes
 
-## 📋 Descrição das Mudanças
+## 📋 Descrição das Mudanças no commit
 🔍 **O que foi feito:**
 [________] Descreva as mudanças na interface de usuário, comportamento, ou estilo visual.
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 🖼️ Capturas de Tela (ou GIFs)
+## 🖼️ Capturas de Tela (ou GIFs para comprovar)
 📸 **Antes:**
 [Adicione uma captura de tela ou gif mostrando o estado anterior da UI]
 
@@ -30,7 +30,7 @@
 
 ---
 
-## 🧪 Como Testar as Alterações
+## 🧪 Como Testar as Alterações dentro do WEB
 1️⃣ **Passo 1:**
 [________] Descreva como acessar a página ou componente alterado.
 
