@@ -19,63 +19,72 @@ resource "aws_instance" "public_ec2_01" {
   }
 
 
-  user_data = <<-EOF
-    #!/bin/bash
-    # Atualizar pacotes
-    sudo apt-get update
-    sudo apt-get upgrade -y
+user_data = <<-EOF
+#!/bin/bash
 
-    # Instalar Docker e Docker Compose
-    sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
-    sudo apt-get update
-    sudo apt-get install -y docker-ce
+# Atualizar pacotes
+sudo apt-get update
+sudo apt-get upgrade -y
 
-    # Instalar a versão mais recente do Docker Compose
-    DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
-    sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
+# Criar a pasta se não existir
+mkdir -p /home/ubuntu/frontend
 
-    # Clonar ou atualizar o repositório
-    cd /home/ubuntu/frontend || {
-      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-    }
+# Clonar ou atualizar o repositório
+cd /home/ubuntu/frontend || {
+  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+}
 
-    # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Navegar para o diretório do repositório
+cd /home/ubuntu/frontend || exit 1
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Instalar Docker e Docker Compose
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
 
-    cd /home/ubuntu/frontend
-    git pull origin main  # Atualiza o repositório
+# Instalar a versão mais recente do Docker Compose
+DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-    # Instalar dependências do Node.js
-    sudo npm ci
+# Instalar Certbot
+sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Apagar diretório dist anterior e criar nova build
-    sudo rm -rf /var/www/dist
-    sudo npm run build
+# Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
-    # Copiar a pasta 'dist' para o diretório web
-    sudo mkdir -p /var/www
-    sudo cp -r dist /var/www
+# Atualizar o repositório
+git pull origin main
 
-    # Ajustar permissões para o nginx (usuário www-data)
-    sudo chown -R www-data:www-data /var/www
+# Verificar permissões no diretório do repositório
+sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
 
-   # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Instalar dependências do Node.js
+# (Certifique-se de que npm e Node.js estão instalados)
+sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -  # Instalar Node.js (substitua a versão se necessário)
+sudo apt-get install -y nodejs
+sudo npm install -g npm  # Atualizar npm para a versão mais recente
+sudo npm ci  # Instalar dependências do repositório
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Apagar diretório dist anterior e criar nova build
+sudo rm -rf /var/www/dist
+sudo npm run build
 
-    # Reiniciar nginx
-    sudo systemctl restart nginx
+# Copiar a pasta 'dist' para o diretório web
+sudo mkdir -p /var/www
+sudo cp -r dist /var/www
 
-    # Logar o sucesso da execução do script
-    echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+# Ajustar permissões para o nginx (usuário www-data)
+sudo chown -R www-data:www-data /var/www
+
+# Reiniciar nginx
+sudo systemctl restart nginx
+
+# Logar o sucesso da execução do script
+echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+
   EOF
 }
 
@@ -99,63 +108,72 @@ resource "aws_instance" "public_ec2_02" {
     Name = "public_ec2_02"
   }
 
-  user_data = <<-EOF
-    #!/bin/bash
-    # Atualizar pacotes
-    sudo apt-get update
-    sudo apt-get upgrade -y
+ user_data = <<-EOF
+#!/bin/bash
 
-    # Instalar Docker e Docker Compose
-    sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
-    sudo apt-get update
-    sudo apt-get install -y docker-ce
+# Atualizar pacotes
+sudo apt-get update
+sudo apt-get upgrade -y
 
-    # Instalar a versão mais recente do Docker Compose
-    DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
-    sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
+# Criar a pasta se não existir
+mkdir -p /home/ubuntu/frontend
 
-    # Clonar ou atualizar o repositório
-    cd /home/ubuntu/frontend || {
-      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-    }
+# Clonar ou atualizar o repositório
+cd /home/ubuntu/frontend || {
+  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+}
 
-    # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Navegar para o diretório do repositório
+cd /home/ubuntu/frontend || exit 1
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Instalar Docker e Docker Compose
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
 
-    cd /home/ubuntu/frontend
-    git pull origin main  # Atualiza o repositório
+# Instalar a versão mais recente do Docker Compose
+DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-    # Instalar dependências do Node.js
-    sudo npm ci
+# Instalar Certbot
+sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Apagar diretório dist anterior e criar nova build
-    sudo rm -rf /var/www/dist
-    sudo npm run build
+# Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
-    # Copiar a pasta 'dist' para o diretório web
-    sudo mkdir -p /var/www
-    sudo cp -r dist /var/www
+# Atualizar o repositório
+git pull origin main
 
-    # Ajustar permissões para o nginx (usuário www-data)
-    sudo chown -R www-data:www-data /var/www
+# Verificar permissões no diretório do repositório
+sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
 
-   # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Instalar dependências do Node.js
+# (Certifique-se de que npm e Node.js estão instalados)
+sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -  # Instalar Node.js (substitua a versão se necessário)
+sudo apt-get install -y nodejs
+sudo npm install -g npm  # Atualizar npm para a versão mais recente
+sudo npm ci  # Instalar dependências do repositório
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Apagar diretório dist anterior e criar nova build
+sudo rm -rf /var/www/dist
+sudo npm run build
 
-    # Reiniciar nginx
-    sudo systemctl restart nginx
+# Copiar a pasta 'dist' para o diretório web
+sudo mkdir -p /var/www
+sudo cp -r dist /var/www
 
-    # Logar o sucesso da execução do script
-    echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+# Ajustar permissões para o nginx (usuário www-data)
+sudo chown -R www-data:www-data /var/www
+
+# Reiniciar nginx
+sudo systemctl restart nginx
+
+# Logar o sucesso da execução do script
+echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+
   EOF
 }
 
