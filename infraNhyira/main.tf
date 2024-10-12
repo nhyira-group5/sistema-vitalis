@@ -42,6 +42,12 @@ resource "aws_instance" "public_ec2_01" {
       sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
     }
 
+    # Instalar Certbot
+    sudo apt-get install -y certbot python3-certbot-nginx
+
+    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+
     cd /home/ubuntu/frontend
     git pull origin main  # Atualiza o repositório
 
@@ -59,35 +65,11 @@ resource "aws_instance" "public_ec2_01" {
     # Ajustar permissões para o nginx (usuário www-data)
     sudo chown -R www-data:www-data /var/www
 
-    # Criar diretório de certificados SSL
-    sudo mkdir -p /home/ubuntu/frontend/certs
+   # Instalar Certbot
+    sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Gerar certificado SSL autoassinado
-    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /home/ubuntu/frontend/certs/selfsigned.key -out /home/ubuntu/frontend/certs/selfsigned.crt -subj "/C=BR/ST=Sao Paulo/L=Sao Paulo/O=Minha Empresa/OU=TI/CN=example.com"
-
-    # Configurar o nginx para usar o certificado
-    sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
-    server {
-        listen 80;
-        server_name _;
-        return 301 https://\$host\$request_uri;
-    }
-
-    server {
-        listen 443 ssl;
-        server_name _;
-
-        ssl_certificate /home/ubuntu/frontend/certs/selfsigned.crt;
-        ssl_certificate_key /home/ubuntu/frontend/certs/selfsigned.key;
-
-        root /var/www/dist;
-        index index.html;
-
-        location / {
-            try_files \$uri \$uri/ /index.html;
-        }
-    }
-    EOL
+    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
     # Reiniciar nginx
     sudo systemctl restart nginx
@@ -117,7 +99,6 @@ resource "aws_instance" "public_ec2_02" {
     Name = "public_ec2_02"
   }
 
-
   user_data = <<-EOF
     #!/bin/bash
     # Atualizar pacotes
@@ -136,14 +117,16 @@ resource "aws_instance" "public_ec2_02" {
     sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
 
-    # Verificar se o Docker Compose foi instalado corretamente
-    docker-compose --version
-
-
     # Clonar ou atualizar o repositório
     cd /home/ubuntu/frontend || {
       sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
     }
+
+    # Instalar Certbot
+    sudo apt-get install -y certbot python3-certbot-nginx
+
+    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
     cd /home/ubuntu/frontend
     git pull origin main  # Atualiza o repositório
@@ -162,35 +145,11 @@ resource "aws_instance" "public_ec2_02" {
     # Ajustar permissões para o nginx (usuário www-data)
     sudo chown -R www-data:www-data /var/www
 
-    # Criar diretório de certificados SSL
-    sudo mkdir -p /home/ubuntu/frontend/certs
+   # Instalar Certbot
+    sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Gerar certificado SSL autoassinado
-    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /home/ubuntu/frontend/certs/selfsigned.key -out /home/ubuntu/frontend/certs/selfsigned.crt -subj "/C=BR/ST=Sao Paulo/L=Sao Paulo/O=Minha Empresa/OU=TI/CN=example.com"
-
-    # Configurar o nginx para usar o certificado
-    sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
-    server {
-        listen 80;
-        server_name _;
-        return 301 https://\$host\$request_uri;
-    }
-
-    server {
-        listen 443 ssl;
-        server_name _;
-
-        ssl_certificate /home/ubuntu/frontend/certs/selfsigned.crt;
-        ssl_certificate_key /home/ubuntu/frontend/certs/selfsigned.key;
-
-        root /var/www/dist;
-        index index.html;
-
-        location / {
-            try_files \$uri \$uri/ /index.html;
-        }
-    }
-    EOL
+    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+   sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
     # Reiniciar nginx
     sudo systemctl restart nginx
@@ -199,8 +158,6 @@ resource "aws_instance" "public_ec2_02" {
     echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
   EOF
 }
-
-
 
 
 resource "aws_eip_association" "eip_assoc_01" {
