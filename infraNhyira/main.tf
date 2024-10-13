@@ -36,6 +36,10 @@ resource "aws_instance" "public_ec2_01" {
     # Navegar para o diretório do repositório
     cd /home/ubuntu/frontend || exit 1
 
+    # Instala Docker e Docker Compose
+    sudo apt update
+    sudo apt install -y docker.io 
+
     # Instala Docker Compose
     sudo apt update
     sudo apt install -y docker-compose
@@ -130,6 +134,10 @@ resource "aws_instance" "public_ec2_02" {
 
     # Navegar para o diretório do repositório
     cd /home/ubuntu/frontend || exit 1
+
+     # Instala Docker e Docker Compose
+    sudo apt update
+    sudo apt install -y docker.io 
 
     # Instala Docker Compose
     sudo apt update
