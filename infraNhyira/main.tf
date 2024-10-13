@@ -19,71 +19,66 @@ resource "aws_instance" "public_ec2_01" {
   }
 
   user_data = <<-EOF
-    #!/bin/bash
+#!/bin/bash
 
-    # Atualizar pacotes
-    sudo apt-get update
-    sudo apt-get upgrade -y
+# Atualizar pacotes
+sudo apt-get update
+sudo apt-get upgrade -y
 
-    # Criar a pasta se não existir
-    mkdir -p /home/ubuntu/frontend
+# Verificar se o repositório já foi clonado
+if [ -d "/home/ubuntu/frontend/.git" ]; then
+  # Se o repositório já existe, navegar até ele e atualizar
+  cd /home/ubuntu/frontend || exit 1
+  sudo git pull
+else
+  # Se o repositório não existe, clonar
+  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+  cd /home/ubuntu/frontend || exit 1
+fi
 
-    # Clonar ou atualizar o repositório
-    cd /home/ubuntu/frontend || {
-      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-    }
+# Instalar Docker e Docker Compose
+sudo apt install -y docker.io
 
-    # Navegar para o diretório do repositório
-    cd /home/ubuntu/frontend || exit 1
+# Baixar e instalar a versão mais recente do Docker Compose
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-    # Instala Docker e Docker Compose
-    sudo apt update
-    sudo apt install -y docker.io 
+# Instalar Certbot
+sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Instala Docker Compose
-    sudo apt update
-    sudo apt install -y docker-compose
+# Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
-    # Baixar a versão mais recente do Docker Compose
-    DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
-    sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Verificar permissões no diretório do repositório
+sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
 
-    # Dar permissão de execução ao binário
-    sudo chmod +x /usr/local/bin/docker-compose
+# Instalar dependências do Node.js
+sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install -g npm  # Atualizar npm para a versão mais recente
+sudo npm ci  # Instalar dependências do repositório
 
-    # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Apagar diretório dist anterior e criar nova build
+sudo rm -rf /var/www/dist
+sudo npm run build
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-    sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Copiar a pasta 'dist' para o diretório web
+sudo mkdir -p /var/www
+sudo cp -r dist /var/www
 
-    # Verificar permissões no diretório do repositório
-    sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
+# Ajustar permissões para o nginx (usuário www-data)
+sudo chown -R www-data:www-data /var/www
 
-    # Instalar dependências do Node.js
-    # (Certifique-se de que npm e Node.js estão instalados)
-    sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -  # Instalar Node.js (substitua a versão se necessário)
-    sudo apt-get install -y nodejs
-    sudo npm install -g npm  # Atualizar npm para a versão mais recente
-    sudo npm ci  # Instalar dependências do repositório
+# Rodar docker-compose
+sudo docker-compose up -d
 
-    # Apagar diretório dist anterior e criar nova build
-    sudo rm -rf /var/www/dist
-    sudo npm run build
+# Reiniciar nginx
+sudo systemctl restart nginx
 
-    # Copiar a pasta 'dist' para o diretório web
-    sudo mkdir -p /var/www
-    sudo cp -r dist /var/www
-
-    # Ajustar permissões para o nginx (usuário www-data)
-    sudo chown -R www-data:www-data /var/www
-
-    # Reiniciar nginx
-    sudo systemctl restart nginx
-
-    # Logar o sucesso da execução do script
-    echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
-  EOF
+# Logar o sucesso da execução do script
+echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+    EOF
 }
 
 resource "aws_instance" "public_ec2_02" {
@@ -106,72 +101,67 @@ resource "aws_instance" "public_ec2_02" {
     Name = "public_ec2_02"
   }
 
-  user_data = <<-EOF
-    #!/bin/bash
+ user_data = <<-EOF
+#!/bin/bash
 
-    # Atualizar pacotes
-    sudo apt-get update
-    sudo apt-get upgrade -y
+# Atualizar pacotes
+sudo apt-get update
+sudo apt-get upgrade -y
 
-    # Criar a pasta se não existir
-    mkdir -p /home/ubuntu/frontend
+# Verificar se o repositório já foi clonado
+if [ -d "/home/ubuntu/frontend/.git" ]; then
+  # Se o repositório já existe, navegar até ele e atualizar
+  cd /home/ubuntu/frontend || exit 1
+  sudo git pull
+else
+  # Se o repositório não existe, clonar
+  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+  cd /home/ubuntu/frontend || exit 1
+fi
 
-    # Clonar ou atualizar o repositório
-    cd /home/ubuntu/frontend || {
-      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-    }
+# Instalar Docker e Docker Compose
+sudo apt install -y docker.io
 
-    # Navegar para o diretório do repositório
-    cd /home/ubuntu/frontend || exit 1
+# Baixar e instalar a versão mais recente do Docker Compose
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-    # Instala Docker e Docker Compose
-    sudo apt update
-    sudo apt install -y docker.io 
+# Instalar Certbot
+sudo apt-get install -y certbot python3-certbot-nginx
 
-    # Instala Docker Compose
-    sudo apt update
-    sudo apt install -y docker-compose
+# Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
+sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
-    # Baixar a versão mais recente do Docker Compose
-    DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
-    sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Verificar permissões no diretório do repositório
+sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
 
-    # Dar permissão de execução ao binário
-    sudo chmod +x /usr/local/bin/docker-compose
+# Instalar dependências do Node.js
+sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install -g npm  # Atualizar npm para a versão mais recente
+sudo npm ci  # Instalar dependências do repositório
 
-    # Instalar Certbot
-    sudo apt-get install -y certbot python3-certbot-nginx
+# Apagar diretório dist anterior e criar nova build
+sudo rm -rf /var/www/dist
+sudo npm run build
 
-    # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-    sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+# Copiar a pasta 'dist' para o diretório web
+sudo mkdir -p /var/www
+sudo cp -r dist /var/www
 
-    # Verificar permissões no diretório do repositório
-    sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
+# Ajustar permissões para o nginx (usuário www-data)
+sudo chown -R www-data:www-data /var/www
 
-    # Instalar dependências do Node.js
-    # (Certifique-se de que npm e Node.js estão instalados)
-    sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -  # Instalar Node.js (substitua a versão se necessário)
-    sudo apt-get install -y nodejs
-    sudo npm install -g npm  # Atualizar npm para a versão mais recente
-    sudo npm ci  # Instalar dependências do repositório
+# Rodar docker-compose
+sudo docker-compose up -d
 
-    # Apagar diretório dist anterior e criar nova build
-    sudo rm -rf /var/www/dist
-    sudo npm run build
+# Reiniciar nginx
+sudo systemctl restart nginx
 
-    # Copiar a pasta 'dist' para o diretório web
-    sudo mkdir -p /var/www
-    sudo cp -r dist /var/www
-
-    # Ajustar permissões para o nginx (usuário www-data)
-    sudo chown -R www-data:www-data /var/www
-
-    # Reiniciar nginx
-    sudo systemctl restart nginx
-
-    # Logar o sucesso da execução do script
-    echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
-  EOF
+# Logar o sucesso da execução do script
+echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
+   EOF
 }
 
 resource "aws_eip_association" "eip_assoc_01" {
