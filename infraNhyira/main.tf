@@ -37,17 +37,24 @@ cd /home/ubuntu/frontend || {
 # Navegar para o diretório do repositório
 cd /home/ubuntu/frontend || exit 1
 
-# Instalar Docker e Docker Compose
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
+# Instala Docker Compose
+sudo apt update
+sudo apt install docker-compose
+ # Baixar a versão mais recente do Docker Compose
+ DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
+ sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-# Instalar a versão mais recente do Docker Compose
-DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
-sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+ # Atualiza pacotes e instala Java
+ sudo apt-get update -y
+ sudo apt-get install -y default-jdk
+
+ # Instala Docker
+sudo apt-get install -y docker.io
+
+
+# Dar permissão de execução ao binário
 sudo chmod +x /usr/local/bin/docker-compose
+
 
 # Instalar Certbot
 sudo apt-get install -y certbot python3-certbot-nginx
@@ -126,17 +133,19 @@ cd /home/ubuntu/frontend || {
 # Navegar para o diretório do repositório
 cd /home/ubuntu/frontend || exit 1
 
-# Instalar Docker e Docker Compose
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
+# Instala Docker Compose
+sudo apt update
+sudo apt install docker-compose
+# Baixar a versão mais recente do Docker Compose
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-# Instalar a versão mais recente do Docker Compose
-DOCKER_COMPOSE_VERSION=\$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\\K[^\\"]+')
-sudo curl -L "https://github.com/docker/compose/releases/download/\$DOCKER_COMPOSE_VERSION/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+ # Atualiza pacotes e instala Java
+ sudo apt-get update -y
+ sudo apt-get install -y default-jdk
+
+ # Instala Docker
+sudo apt-get install -y docker.io
 
 # Instalar Certbot
 sudo apt-get install -y certbot python3-certbot-nginx
