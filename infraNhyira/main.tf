@@ -48,14 +48,6 @@ resource "aws_instance" "public_ec2_01" {
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
     sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-   # Instala Docker
-    sudo apt-get install -y docker.io
-
-    # Atualiza pacotes e instala Java
-    sudo apt-get update -y
-    sudo apt-get install -y default-jdk
-
-
     # Dar permissão de execução ao binário
     sudo chmod +x /usr/local/bin/docker-compose
 
@@ -64,9 +56,6 @@ resource "aws_instance" "public_ec2_01" {
 
     # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
     sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
-
-    # Atualizar o repositório
-    git pull origin main
 
     # Verificar permissões no diretório do repositório
     sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
@@ -135,7 +124,7 @@ resource "aws_instance" "public_ec2_02" {
     # Navegar para o diretório do repositório
     cd /home/ubuntu/frontend || exit 1
 
-     # Instala Docker e Docker Compose
+    # Instala Docker e Docker Compose
     sudo apt update
     sudo apt install -y docker.io 
 
@@ -147,21 +136,14 @@ resource "aws_instance" "public_ec2_02" {
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
     sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-  # Instala Docker
-    sudo apt-get install -y docker.io
-
-    # Atualiza pacotes e instala Java
-    sudo apt-get update -y
-    sudo apt-get install -y default-jdk
+    # Dar permissão de execução ao binário
+    sudo chmod +x /usr/local/bin/docker-compose
 
     # Instalar Certbot
     sudo apt-get install -y certbot python3-certbot-nginx
 
     # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
     sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
-
-    # Atualizar o repositório
-    git pull origin main
 
     # Verificar permissões no diretório do repositório
     sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
