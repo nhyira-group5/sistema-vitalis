@@ -25,21 +25,27 @@ resource "aws_instance" "public_ec2_01" {
 sudo apt-get update
 sudo apt-get upgrade -y
 
-# Verificar se o repositório já foi clonado
-if [ -d "/home/ubuntu/frontend/.git" ]; then
-  # Se o repositório já existe, navegar até ele e atualizar
-  cd /home/ubuntu/frontend || exit 1
-  sudo git pull
-else
-  # Se o repositório não existe, clonar
-  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-  cd /home/ubuntu/frontend || exit 1
-fi
+ # Cria a pasta aws
+sudo mkdir -p /home/ubuntu/frontend
 
-# Instalar Docker e Docker Compose
-sudo apt install -y docker.io
+ # Clonar ou atualizar o repositório
+    if [ ! -d "/home/ubuntu/frontend/.git" ]; then
+      sudo git clone https://PERSONAL_ACCESS_TOKEN@github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+    else
+      cd /home/ubuntu/frontend
+      sudo git pull origin main  # Atualiza o repositório
+    fi
 
-# Baixar e instalar a versão mais recente do Docker Compose
+ # Instala Docker e Docker Compose
+   sudo apt update
+   sudo apt install -y docker.io 
+
+ # Instala Docker Compose
+   sudo apt update
+   sudo apt install -y docker-compose
+
+ # Baixar a versão mais recente do Docker Compose
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -101,28 +107,34 @@ resource "aws_instance" "public_ec2_02" {
     Name = "public_ec2_02"
   }
 
- user_data = <<-EOF
+  user_data = <<-EOF
 #!/bin/bash
 
 # Atualizar pacotes
 sudo apt-get update
 sudo apt-get upgrade -y
 
-# Verificar se o repositório já foi clonado
-if [ -d "/home/ubuntu/frontend/.git" ]; then
-  # Se o repositório já existe, navegar até ele e atualizar
-  cd /home/ubuntu/frontend || exit 1
-  sudo git pull
-else
-  # Se o repositório não existe, clonar
-  sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
-  cd /home/ubuntu/frontend || exit 1
-fi
+ # Cria a pasta aws
+sudo mkdir -p /home/ubuntu/frontend
 
-# Instalar Docker e Docker Compose
-sudo apt install -y docker.io
+ # Clonar ou atualizar o repositório
+    if [ ! -d "/home/ubuntu/frontend/.git" ]; then
+      sudo git clone https://PERSONAL_ACCESS_TOKEN@github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+      sudo git clone https://github.com/nhyira-group5/sistema-vitalis.git /home/ubuntu/frontend
+    else
+      cd /home/ubuntu/frontend
+      sudo git pull origin main  # Atualiza o repositório
+    fi
 
-# Baixar e instalar a versão mais recente do Docker Compose
+ # Instala Docker e Docker Compose
+   sudo apt update
+   sudo apt install -y docker.io 
+
+ # Instala Docker Compose
+   sudo apt update
+   sudo apt install -y docker-compose
+
+ # Baixar a versão mais recente do Docker Compose
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^\"]+')
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -161,8 +173,9 @@ sudo systemctl restart nginx
 
 # Logar o sucesso da execução do script
 echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
-   EOF
+    EOF
 }
+
 
 resource "aws_eip_association" "eip_assoc_01" {
   instance_id   = aws_instance.public_ec2_01.id
