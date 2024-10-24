@@ -76,6 +76,10 @@ sudo cp -r dist /var/www
 # Ajustar permissões para o nginx (usuário www-data)
 sudo chown -R www-data:www-data /var/www
 
+# Rodar build da img
+sudo docker-compose build
+
+
 # Rodar docker-compose
 sudo docker-compose up -d
 
@@ -164,6 +168,10 @@ sudo cp -r dist /var/www
 
 # Ajustar permissões para o nginx (usuário www-data)
 sudo chown -R www-data:www-data /var/www
+
+# Rodar build da img
+sudo docker-compose build
+
 
 # Rodar docker-compose
 sudo docker-compose up -d
