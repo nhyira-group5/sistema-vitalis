@@ -94,7 +94,7 @@ echo "Script de inicialização concluído" | sudo tee -a /var/log/user_data.log
 
 resource "aws_eip_association" "eip_assoc_01" {
   instance_id   = aws_instance.public_ec2_01.id
-  allocation_id = "eipalloc-0b33881f72855426a"
+  allocation_id = "eipalloc-0acf2f0ec8a2d7a08"
 }
 
 
