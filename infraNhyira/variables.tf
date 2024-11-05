@@ -7,13 +7,13 @@ variable "az" {
 variable "key_pair_name" {
   description = "Key Pair Name"
   type        = string
-  default     = "tf_key"  
+  default     = "ti_key"  
 }
 
 variable "ami" {
   description = "AMI ID"
   type        = string
-  default     = "ami-08c6a39626fa63ad7"  
+  default     = "ami-0167aed34e622a91c"  
 }
 
 variable "inst_type" {
@@ -25,11 +25,11 @@ variable "inst_type" {
 variable "subnet_id" {
   description = "Subnet ID"
   type        = string
-  default     = "subnet-03538fa6c1081c33b" 
+  default     = "vpc-0c5ef8617e965e118 " 
 }
 
 variable "sg_id" {
   description = "Security Group ID"
   type        = string
-  default     = "sg-041d7ba94beddfa4e" 
+  default     = "sg-002628b8078cbb0b0" 
 }
