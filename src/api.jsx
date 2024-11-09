@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://18.211.206.217:5225",
+  baseURL: "http://vitalis-uat.zapto.org",
 });
 
 export const apiChat = axios.create({
