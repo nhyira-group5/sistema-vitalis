@@ -1,10 +1,9 @@
 services:
   nhyira-web:
     build:
-      context: ./
+      context: ./ 
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"  # Expõe a porta 80 do contêiner na porta 80 da máquina host
     volumes:
       - ./frontend:/home/ubuntu/frontend
     environment:
