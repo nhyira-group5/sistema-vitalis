@@ -3,7 +3,7 @@ services:
     build:
       context: ./ 
     ports:
-      - "80:80"  # Expõe a porta 80 do contêiner na porta 80 da máquina host
+      - "80:80"  
     volumes:
       - ./frontend:/home/ubuntu/frontend
     environment:
