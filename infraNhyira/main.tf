@@ -54,7 +54,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo apt-get install -y certbot python3-certbot-nginx
 
 # Obter o certificado SSL usando Certbot (substitua pelo seu domínio)
-sudo certbot --nginx -d vitalis-prod.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
+sudo certbot --nginx -d vitalis-uat.zapto.org --non-interactive --agree-tos --email will.adolpho@sptech.school
 
 # Verificar permissões no diretório do repositório
 sudo chown -R $USER:$USER /home/ubuntu/frontend  # Ajustar permissões para o usuário atual
