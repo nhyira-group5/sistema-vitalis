@@ -27,7 +27,7 @@ jobs:
           # Tenta fazer o merge da branch Developer na main para verificar conflitos
           if ! git merge --no-commit --no-ff main --allow-unrelated-histories; then
             echo "conflict=true" >> $GITHUB_ENV
-            git merge --abort
+            # Não faz o git merge --abort aqui, pois o merge não foi iniciado
           else
             echo "conflict=false" >> $GITHUB_ENV
           fi
