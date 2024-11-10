@@ -25,15 +25,15 @@ jobs:
         id: merge_check
         run: |
           # Tenta fazer o merge da branch Developer na main para verificar conflitos
-          if ! git merge --no-commit --no-ff main; then
-            echo "::set-output name=conflict::true"
+          if ! git merge --no-commit --no-ff main --allow-unrelated-histories; then
+            echo "conflict=true" >> $GITHUB_ENV
             git merge --abort
           else
-            echo "::set-output name=conflict::false"
+            echo "conflict=false" >> $GITHUB_ENV
           fi
 
       - name: Create Pull Request
-        if: steps.merge_check.outputs.conflict == 'false'
+        if: env.conflict == 'false'
         uses: peter-evans/create-pull-request@v3
         id: create_pr
         with:
@@ -44,7 +44,7 @@ jobs:
           head: Developer
 
       - name: Comment on PR
-        if: steps.merge_check.outputs.conflict == 'false'
+        if: env.conflict == 'false'
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
