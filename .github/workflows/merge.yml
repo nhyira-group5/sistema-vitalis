@@ -1,4 +1,4 @@
-name: PR da Branch de Developer para Main
+name: PR da Branch de Desenvolvedor para Main
 
 on:
   push:
@@ -10,43 +10,24 @@ permissions:
   pull-requests: write
 
 jobs:
-  check_and_open_pr:
+  open_pr:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Fetch main branch
+      - name: Check for changes
+        id: changes
         run: |
-          git fetch origin main:main
-
-      - name: Check for merge conflicts
-        id: merge_check
-        run: |
-          # Tenta fazer o merge da branch Developer na main para verificar conflitos
-          git merge --no-commit --no-ff main --allow-unrelated-histories || echo "conflict=true" >> $GITHUB_ENV
+          git diff --quiet HEAD^ HEAD || echo "changes" >> changes.txt
 
       - name: Create Pull Request
-        if: env.conflict != 'true'
+        if: steps.changes.outputs.changes != ''
         uses: peter-evans/create-pull-request@v3
-        id: create_pr
         with:
           title: 'Automated Pull Request'
           body: |
             This pull request is automatically created from the Developer branch.
           base: main
-          head: Developer
-
-      - name: Comment on PR
-        if: env.conflict != 'true'
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          body: |
-            ### Automated PR Details
-            - **Branch**: `Developer`
-            - **Base Branch**: `main`
-            - **Latest Commit**: `${{ github.sha }}`
-            - **Linting**: ✅ Passed
-            - **Tests**: ✅ Passed
+          head: Developer
