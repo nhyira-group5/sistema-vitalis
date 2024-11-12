@@ -1,6 +1,6 @@
 # ✨ Pull Request Front End Nhyira - Detalhes
 
-## 📋 Descrição das Mudanças no commit
+## 📋 Descrição das Mudanças
 🔍 **O que foi feito:**
 [________] Descreva as mudanças na interface de usuário, comportamento, ou estilo visual.
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 📦 Tipo de Mudança no Front-End
+## 📦 Tipo de Mudança 
 - [ ] 🎨 Atualização de estilo (CSS/SCSS)
 - [ ] 🖼️ Atualização de layout/componente (HTML/CSS)
 - [ ] 🛠️ Nova funcionalidade de UI
