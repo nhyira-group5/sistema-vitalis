@@ -1,9 +1,7 @@
-API JS QUE FUNCIONA
-
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://18.211.206.217:5225", 
+  baseURL: "http://18.211.206.217:5225", // Corrigido: substitua o ponto e vírgula por vírgula
 });
 
 export const apiChat = axios.create({
