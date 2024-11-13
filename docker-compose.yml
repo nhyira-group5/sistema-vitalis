@@ -1,11 +1,12 @@
+Docker composse qu efunciona
 services:
   nhyira-web:
     build:
-      context: ./
+      context: ./ 
     ports:
-      - "443:443"  # Expondo apenas a porta HTTPS
+      - "80:80"  # Expõe a porta 80 do contêiner
     volumes:
       - ./frontend:/home/ubuntu/frontend
     environment:
       - NODE_ENV=production
-    restart: unless-stopped
+    restart: unless-stopped
