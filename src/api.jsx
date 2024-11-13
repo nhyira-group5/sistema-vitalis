@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://18.211.206.217:5225", // Corrigido: substitua o ponto e vírgula por vírgula
+  baseURL: "http://vitalis-uat.zapto.org", // URL pública do Nginx
 });
 
 export const apiChat = axios.create({
