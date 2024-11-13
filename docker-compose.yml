@@ -1,4 +1,3 @@
-Docker composse qu efunciona
 services:
   nhyira-web:
     build:
