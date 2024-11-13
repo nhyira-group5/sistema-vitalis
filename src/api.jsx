@@ -1,7 +1,9 @@
+API JS QUE FUNCIONA
+
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://vitalis-uat.zapto.org", // URL pública do Nginx
+  baseURL: "http://18.211.206.217:5225", 
 });
 
 export const apiChat = axios.create({
@@ -10,6 +12,6 @@ export const apiChat = axios.create({
 
 export function USER_GET(id) {
   return {
-    url: API_URL + "/usuarios/" + id,
-  };
+    url: API_URL + "/usuarios/" + id,
+  };
 }
