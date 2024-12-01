@@ -3,8 +3,8 @@ export const validateNome = (nome) => {
     if (!nome) return false;
     if (nome.length < 3) return false;
 
-    const regex = /^[\p{L}\s~^`]*$/u;
-    if (!regex.test(nome)) return false;
+    // const regex = /^[\p{L}\s~^`]*$/u;
+    // if (!regex.test(nome)) return false;
 
     return true;
    };

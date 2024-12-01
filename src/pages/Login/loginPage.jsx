@@ -67,20 +67,16 @@ export function LoginPage() {
         `/usuarios/${userLoginResponse.data.id}`
       );
 
-      // if (
-      //   userDataResponse.data.meta === null &&
-      //   userDataResponse.data.tipo === "USUARIO"
-      // ) {
-      //   navigate("/cadastroParq");
-      //   return;
-      // }
+      console.log(userDataResponse)
 
       let userFichaResponse;
-      if (userDataResponse.data.tipo === "USUARIO") {
+      if (userDataResponse.data.tipo === "USUARIO" && userDataResponse.data.meta !== null) {
         userFichaResponse = await api.get(
           `/fichas/${userLoginResponse.data.id}`
         );
       }
+
+      console.log(userFichaResponse)
 
       const userData = {
         userData: userDataResponse.data,
@@ -90,10 +86,19 @@ export function LoginPage() {
       localStorage.setItem("user", JSON.stringify(userData));
       updateUser(userData);
 
-     
 
-      if (userData.userData.tipo === "USUARIO") navigate("/home");
-      if (userData.userData.tipo === "PERSONAL") navigate("/home-personal");
+      console.log(userDataResponse.data.meta === null, userDataResponse.data.tipo === "USUARIO")
+
+      if (
+        userDataResponse.data.meta === null &&
+        userDataResponse.data.tipo === "USUARIO"
+      ) {
+        navigate("/cadastroParq");
+      } else if (userData.userData.tipo === "USUARIO") {
+        navigate("/home");
+      } else if (userData.userData.tipo === "PERSONAL") {
+        navigate("/home-personal");
+      }
     } catch (error) {
       handleLoginError(error);
     } finally {

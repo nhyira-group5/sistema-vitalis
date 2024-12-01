@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../user-context'; 
 
 function fichaDtoCriacao(userFormInfo) {
+
   const fichaDto = {
     problemaCardiaco: userFormInfo.problemasCardiacos,
     dorPeitoAtividade: userFormInfo.dorPeitoAtividade,
@@ -35,16 +36,12 @@ function fichaDtoCriacao(userFormInfo) {
   return fichaDto;
 }
 
-function rotinaUsuarioDtoCriacao(userFormInfo) {
-  const rotinaUsuarioDto = {
-    metaId: userFormInfo.metaId,
-    usuarioId: userFormInfo.idUsuario,
-  };
 
-  return rotinaUsuarioDto;
-}
 
 export function CadastroParqPage() {
+
+  const [modalAtivo, SetModalAtivo] = useState(false);
+
   const navigate = useNavigate();
   const {updateUser, user, loading, error} = useContext(UserContext);
   console.log(user)
@@ -67,6 +64,7 @@ export function CadastroParqPage() {
     metaId: null,
     metaNome: null,
     idUsuario: user.userData.id,
+    rotinaAlternativa: 0,
 
     problemasCardiacos: 0,
     dorPeitoAtividade: 0,
@@ -78,6 +76,25 @@ export function CadastroParqPage() {
 
   const [splashActive, setSplashActive] = useState(false);
   
+  function rotinaUsuarioDtoCriacao(userFormInfo) {
+  
+    if (userFormInfo.problemasCardiacos != 0 ||
+      userFormInfo.dorPeitoAtividade != 0 ||
+      userFormInfo.dorPeitoUltimoMes != 0 ||
+      userFormInfo.problemaOsseoArticular != 0 ||
+      userFormInfo.medicamentoPressaoCoracao != 0 ||
+      userFormInfo.impedimentoAtividade != 0) {
+        SetModalAtivo(true); 
+      }
+  
+    const rotinaUsuarioDto = {
+      metaId: +userFormInfo.metaId,
+      usuarioId: userFormInfo.idUsuario,
+      rotinaAlternativa: 0
+    };
+  
+    return rotinaUsuarioDto;
+  }
 
   function getMetas() {
     api
@@ -161,7 +178,11 @@ export function CadastroParqPage() {
         updateUser(userData);
 
         toast.success('Ficha criada com sucesso');
-        navigate('/home');
+
+        console.log(modalAtivo)
+        if (!modalAtivo) {
+          navigate('/home');
+        }
       } catch (error) {
         console.log(error);
         error.response.data.errors.forEach((erroMsg) => {
@@ -229,9 +250,37 @@ export function CadastroParqPage() {
     );
   };
 
+  function voltaProSite() {
+    navigate("/")
+  }
+
+  function vaiPraHome() {
+    navigate("/home")
+  }
+
   return (
     <>
-      <div className="flex">
+      
+
+      <div className="flex w-full h-screen justify-evenly items-center">
+      {modalAtivo && 
+      (
+        <div className='absolute mx-auto my-0 max-w-96 text-white border-2 border-[#48B75A] p-8 rounded-2xl bg-black z-10 grid grid-cols-1 text-center gap-5'>
+        {/* // <div className='absolute bg-white mx-auto my-0 max-w-prose p-4 rounded-xl z-10 grid grid-cols-[1fr_auto] place-content-start items-center gap-x-8 gap-y-4'> */}
+          <h1>Cuidado com sua Saúde!</h1>
+          <p>Percebemos que você tem uma condição de saúde que merece atenção. Para sua segurança, é importante evitar atividades físicas intensas sem orientação profissional.
+          </p>
+          <p>Recomendamos consultar um Personal Trainer para um plano seguro e eficaz.</p>
+          <p>Como deseja proseguir?</p>
+          <div className='flex justify-between'>
+            <button className='p-2 bg-[#48B75A] rounded-lg text-sm' onClick={voltaProSite}>Aceito os riscos</button>
+            <button className='p-2 bg-[#1B70CA] rounded-lg text-sm' onClick={vaiPraHome}>Quero pegar mais leve</button>
+          </div>
+
+          <p>Não nos responsabilizamos por quaisquer danos a saúde ou consequências derivadas dos exercícios remomendados pela plataforma.</p>
+        </div>
+      )}
+
         <div className="w-1/2 h-screen bg-gray500 py-16 px-11 flex flex-col text-white overflow-auto">
           <div className={`flex flex-col gap-3`}>
             <span className={`text-7xl font-bold text-primary-green300`}>
